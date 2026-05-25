@@ -1,4 +1,5 @@
 {
+  "$schema": "/schema/patch.json",
   "version": "0.17.0",
   "title": "The Echoing Spire",
   "date": "2026-05-25",

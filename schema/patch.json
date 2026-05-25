@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "/schema/patch.json",
+  "title": "SpiritVale Patch Note",
+  "description": "Schema for a single SpiritVale patch note file (patches/v*.json and patches/latest.json).",
+  "type": "object",
+  "required": ["version", "title", "date", "added", "changed", "fixed", "removed"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference — always /schema/patch.json"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "SemVer version string, e.g. '0.17.0'"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable patch name, e.g. 'The Echoing Spire'"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Release date in YYYY-MM-DD format"
+    },
+    "current": {
+      "type": "boolean",
+      "description": "true on the latest version only — drives the 'Latest' badge in /patch/ viewer"
+    },
+    "url": {
+      "oneOf": [
+        { "type": "string", "format": "uri" },
+        { "type": "null" }
+      ],
+      "description": "Claude artifact URL for interactive notes, or null if not yet published"
+    },
+    "added": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "New features and content added in this patch"
+    },
+    "changed": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Existing behaviour that was modified"
+    },
+    "fixed": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Bugs resolved in this patch"
+    },
+    "removed": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Features or content removed in this patch"
+    }
+  }
+}

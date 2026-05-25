@@ -243,6 +243,7 @@ async function loadAll() {
     const latest = await latestRes.json();
 
     // Merge latest data into index entry (index may have less detail)
+    // "Latest" badge: driven by p.current === true in patch JSON, not array position
     const versions = (index.versions || []).map(v =>
       v.version === latest.version ? { ...v, ...latest } : v
     );

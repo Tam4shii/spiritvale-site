@@ -22,13 +22,12 @@
     color: var(--fg);
     line-height: 1.6;
     min-height: 100vh;
-    display: grid;
-    place-items: center;
     padding: 2rem;
     background-image: radial-gradient(at 20% 30%, rgba(124, 58, 237, 0.15), transparent 50%),
                       radial-gradient(at 80% 70%, rgba(167, 139, 250, 0.1), transparent 50%);
   }
-  main { max-width: 640px; width: 100%; text-align: center; }
+  main { max-width: 700px; margin: 0 auto; }
+  .hero { text-align: center; margin-bottom: 2.5rem; }
   .badge {
     display: inline-block;
     padding: 0.3rem 0.8rem;
@@ -51,8 +50,8 @@
     margin-bottom: 0.5rem;
     letter-spacing: -0.03em;
   }
-  .tagline { color: var(--muted); font-size: 1.1rem; margin-bottom: 3rem; }
-  .links { display: grid; gap: 0.75rem; }
+  .tagline { color: var(--muted); font-size: 1.1rem; margin-bottom: 2rem; }
+  .links { display: grid; gap: 0.75rem; margin-bottom: 2.5rem; }
   .link {
     display: flex;
     align-items: center;
@@ -68,27 +67,125 @@
   .link:hover { transform: translateY(-2px); border-color: var(--accent); }
   .link .label { font-weight: 600; }
   .link .path { color: var(--muted); font-family: ui-monospace, "SF Mono", monospace; font-size: 0.85rem; }
-  footer { color: var(--muted); margin-top: 3rem; font-size: 0.85rem; }
+  /* Patch viewer */
+  .patch-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .patch-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .patch-title { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+  .patch-date { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+  .patch-group { margin-bottom: 0.9rem; }
+  .patch-group:last-of-type { margin-bottom: 0; }
+  .group-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .patch-item {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(167,139,250,0.07);
+    font-size: 0.93rem;
+  }
+  .patch-item:last-child { border-bottom: none; }
+  .patch-empty { color: var(--muted); font-size: 0.88rem; font-style: italic; text-align: center; padding: 0.5rem 0; }
+  .patch-view-link {
+    display: inline-block;
+    margin-top: 1.1rem;
+    color: var(--accent);
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  .patch-view-link:hover { text-decoration: underline; }
+  footer { color: var(--muted); margin-top: 1rem; font-size: 0.85rem; text-align: center; }
   footer a { color: var(--accent); text-decoration: none; }
 </style>
 </head>
 <body>
 <main>
-  <div class="badge">⊹ Community Hub ⊹</div>
-  <h1>SpiritVale</h1>
-  <p class="tagline">Unofficial patch notes & community resources</p>
+  <div class="hero">
+    <div class="badge">⊹ Community Hub ⊹</div>
+    <h1>SpiritVale</h1>
+    <p class="tagline">Unofficial patch notes & community resources</p>
 
-  <div class="links">
-    <a class="link" href="/patch.json">
-      <span class="label">📋 Patch Notes (JSON)</span>
-      <span class="path">/patch.json</span>
-    </a>
+    <div class="links">
+      <a class="link" href="/patches/latest.json">
+        <span class="label">📋 Latest Patch (JSON feed)</span>
+        <span class="path">/patches/latest.json</span>
+      </a>
+      <a class="link" href="/patches/index.json">
+        <span class="label">🗄️ Version Archive</span>
+        <span class="path">/patches/index.json</span>
+      </a>
+    </div>
   </div>
+
+  <div id="latest-patch"></div>
 
   <footer>
     Made with 💜 by fans · Not affiliated with the developers<br>
     <a href="https://store.steampowered.com/app/3918510/">Steam Page</a>
   </footer>
 </main>
+<script>
+  const GROUPS = [
+    { key: 'added',   label: '🟢 Added' },
+    { key: 'changed', label: '🟡 Changed' },
+    { key: 'fixed',   label: '🔧 Fixed' },
+    { key: 'removed', label: '🔴 Removed' },
+  ];
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  async function loadPatch() {
+    const el = document.getElementById('latest-patch');
+    try {
+      const res = await fetch('/patches/latest.json');
+      if (!res.ok) return;
+      const patch = await res.json();
+      if (!patch || !patch.version) return;
+
+      const groups = GROUPS
+        .filter(g => Array.isArray(patch[g.key]) && patch[g.key].length > 0)
+        .map(g => `<div class="patch-group">
+          <div class="group-label">${g.label}</div>
+          ${patch[g.key].map(item => `<div class="patch-item">${esc(item)}</div>`).join('')}
+        </div>`)
+        .join('');
+
+      const viewLink = patch.url
+        ? `<a class="patch-view-link" href="${esc(patch.url)}" target="_blank" rel="noopener">View full interactive notes →</a>`
+        : `<a class="patch-view-link" href="/patches/v${esc(patch.version)}.json">View raw JSON archive →</a>`;
+
+      el.innerHTML = `<div class="patch-card">
+        <div class="patch-header">
+          <span class="patch-title">v${esc(patch.version)} — ${esc(patch.title)}</span>
+          <span class="patch-date">${esc(patch.date)}</span>
+        </div>
+        ${groups || '<p class="patch-empty">Patch notes coming soon…</p>'}
+        ${viewLink}
+      </div>`;
+    } catch (_) {}
+  }
+
+  loadPatch();
+</script>
 </body>
 </html>

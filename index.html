@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale — Community Hub</title>
+<meta name="description" content="Unofficial community hub for SpiritVale (Steam app 3918510).">
+<style>
+  :root {
+    --bg: #0a0612;
+    --fg: #e8e3f0;
+    --muted: #8b82a0;
+    --accent: #a78bfa;
+    --accent-2: #7c3aed;
+    --card: rgba(167, 139, 250, 0.08);
+    --border: rgba(167, 139, 250, 0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    background-image: radial-gradient(at 20% 30%, rgba(124, 58, 237, 0.15), transparent 50%),
+                      radial-gradient(at 80% 70%, rgba(167, 139, 250, 0.1), transparent 50%);
+  }
+  main { max-width: 640px; width: 100%; text-align: center; }
+  .badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.03em;
+  }
+  .tagline { color: var(--muted); font-size: 1.1rem; margin-bottom: 3rem; }
+  .links { display: grid; gap: 0.75rem; }
+  .link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--fg);
+    text-decoration: none;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .link:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .link .label { font-weight: 600; }
+  .link .path { color: var(--muted); font-family: ui-monospace, "SF Mono", monospace; font-size: 0.85rem; }
+  footer { color: var(--muted); margin-top: 3rem; font-size: 0.85rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<main>
+  <div class="badge">⊹ Community Hub ⊹</div>
+  <h1>SpiritVale</h1>
+  <p class="tagline">Unofficial patch notes & community resources</p>
+
+  <div class="links">
+    <a class="link" href="/patch.json">
+      <span class="label">📋 Patch Notes (JSON)</span>
+      <span class="path">/patch.json</span>
+    </a>
+  </div>
+
+  <footer>
+    Made with 💜 by fans · Not affiliated with the developers<br>
+    <a href="https://store.steampowered.com/app/3918510/">Steam Page</a>
+  </footer>
+</main>
+</body>
+</html>

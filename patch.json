@@ -1,0 +1,11 @@
+{
+  "patches": [
+    {
+      "version": "0.17.0",
+      "title": "The Echoing Spire",
+      "date": "2026-05-25",
+      "url": "https://claude.ai/public/artifacts/YOUR_ARTIFACT_URL_HERE",
+      "current": true
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
+  Access-Control-Allow-Headers: *
+  X-Content-Type-Options: nosniff
+
+/*.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=60, s-maxage=60

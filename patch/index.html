@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale — Patch Notes</title>
+<meta name="description" content="SpiritVale patch notes archive — all versions.">
+<style>
+  :root {
+    --bg: #0a0612;
+    --fg: #e8e3f0;
+    --muted: #8b82a0;
+    --accent: #a78bfa;
+    --accent-2: #7c3aed;
+    --card: rgba(167, 139, 250, 0.08);
+    --border: rgba(167, 139, 250, 0.2);
+    --added: #34d399;
+    --changed: #fbbf24;
+    --fixed: #60a5fa;
+    --removed: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem;
+    background-image: radial-gradient(at 20% 30%, rgba(124, 58, 237, 0.15), transparent 50%),
+                      radial-gradient(at 80% 70%, rgba(167, 139, 250, 0.1), transparent 50%);
+  }
+  main { max-width: 800px; margin: 0 auto; }
+
+  /* Nav */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .nav a { color: var(--accent); text-decoration: none; }
+  .nav a:hover { text-decoration: underline; }
+
+  /* Page header */
+  .page-header { margin-bottom: 2rem; }
+  .page-header h1 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+  }
+  .page-header .sub { color: var(--muted); font-size: 0.95rem; }
+
+  /* Version card */
+  .version-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.15s;
+  }
+  .version-card.current {
+    border-color: rgba(167, 139, 250, 0.45);
+    box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.15);
+  }
+  .card-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .version-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .current-badge {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    background: rgba(167, 139, 250, 0.15);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    vertical-align: middle;
+  }
+  .version-date { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+
+  /* Sections */
+  .sections { display: grid; gap: 0.5rem; }
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+  .section-heading.added   { color: var(--added); }
+  .section-heading.changed { color: var(--changed); }
+  .section-heading.fixed   { color: var(--fixed); }
+  .section-heading.removed { color: var(--removed); }
+  .section-block { margin-bottom: 0.9rem; }
+  .section-block:last-child { margin-bottom: 0; }
+  .patch-item {
+    padding: 0.3rem 0 0.3rem 0.75rem;
+    border-left: 2px solid rgba(167,139,250,0.12);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .patch-item + .patch-item { margin-top: 0.15rem; }
+
+  /* Empty state */
+  .empty-note {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-style: italic;
+    text-align: center;
+    padding: 1rem 0;
+  }
+
+  /* Card footer */
+  .card-footer {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(167,139,250,0.1);
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .card-footer a {
+    color: var(--accent);
+    font-size: 0.85rem;
+    text-decoration: none;
+    opacity: 0.85;
+    transition: opacity 0.12s;
+  }
+  .card-footer a:hover { opacity: 1; text-decoration: underline; }
+
+  /* Loading / error */
+  .state-msg {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  footer { color: var(--muted); margin-top: 2rem; font-size: 0.85rem; text-align: center; }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<main>
+  <nav class="nav">
+    <a href="/">SpiritVale</a>
+    <span>/</span>
+    <span>Patch Notes</span>
+  </nav>
+
+  <div class="page-header">
+    <h1>Patch Notes</h1>
+    <p class="sub">Full archive of all SpiritVale updates</p>
+  </div>
+
+  <div id="patches-root"></div>
+
+  <footer>
+    Made with 💜 by fans · Not affiliated with the developers<br>
+    <a href="https://store.steampowered.com/app/3918510/">Steam Page</a>
+  </footer>
+</main>
+<script>
+const SECTIONS = [
+  { key: 'added',   label: '🟢 Added',   cls: 'added' },
+  { key: 'changed', label: '🟡 Changed', cls: 'changed' },
+  { key: 'fixed',   label: '🔧 Fixed',   cls: 'fixed' },
+  { key: 'removed', label: '🔴 Removed', cls: 'removed' },
+];
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function renderPatch(p) {
+  const sections = SECTIONS
+    .filter(s => Array.isArray(p[s.key]) && p[s.key].length > 0)
+    .map(s => `
+      <div class="section-block">
+        <div class="section-heading ${s.cls}">${s.label}</div>
+        ${p[s.key].map(item => `<div class="patch-item">${esc(item)}</div>`).join('')}
+      </div>`)
+    .join('');
+
+  const footer = [];
+  if (p.url) footer.push(`<a href="${esc(p.url)}" target="_blank" rel="noopener">📝 Full interactive notes →</a>`);
+  footer.push(`<a href="/patches/v${esc(p.version)}.json">📦 Raw JSON →</a>`);
+
+  return `<div class="version-card${p.current ? ' current' : ''}">
+    <div class="card-header">
+      <span class="version-title">
+        v${esc(p.version)} — ${esc(p.title)}
+        ${p.current ? '<span class="current-badge">Latest</span>' : ''}
+      </span>
+      <span class="version-date">${esc(p.date)}</span>
+    </div>
+    <div class="sections">
+      ${sections || '<p class="empty-note">Patch notes coming soon…</p>'}
+    </div>
+    <div class="card-footer">${footer.join('')}</div>
+  </div>`;
+}
+
+async function loadAll() {
+  const root = document.getElementById('patches-root');
+  root.innerHTML = '<p class="state-msg">Loading patch notes…</p>';
+  try {
+    const [indexRes, latestRes] = await Promise.all([
+      fetch('/patches/index.json'),
+      fetch('/patches/latest.json'),
+    ]);
+    if (!indexRes.ok || !latestRes.ok) throw new Error('fetch failed');
+    const index = await indexRes.json();
+    const latest = await latestRes.json();
+
+    // Merge latest data into index entry (index may have less detail)
+    const versions = (index.versions || []).map(v =>
+      v.version === latest.version ? { ...v, ...latest } : v
+    );
+
+    if (!versions.length) {
+      root.innerHTML = '<p class="state-msg">No patch notes yet.</p>';
+      return;
+    }
+
+    root.innerHTML = versions.map(renderPatch).join('');
+  } catch (e) {
+    root.innerHTML = '<p class="state-msg">Could not load patch notes. Try refreshing.</p>';
+  }
+}
+
+loadAll();
+</script>
+</body>
+</html>

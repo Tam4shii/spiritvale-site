@@ -5,7 +5,7 @@
       "title": "The Echoing Spire",
       "date": "2026-05-25",
       "current": true,
-      "url": "https://claude.ai/public/artifacts/YOUR_ARTIFACT_URL_HERE",
+      "url": null,
       "archive_url": "/patches/v0.17.0.json",
       "added": [],
       "changed": [],

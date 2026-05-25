@@ -30,13 +30,14 @@
 
 ## PHASE 0 (Now)
 - [x] Local scaffold + `patch.json`
-- [ ] Push GitHub repo
-- [ ] Connect CF Pages
-- [ ] Custom domain + DNS
+- [x] Push GitHub repo (patches/ structure + _redirects + immutable cache headers — 2026-05-25)
+- [ ] Connect CF Pages (manual: dash.cloudflare.com → Pages → New → Connect GitHub → Tam4shii/spiritvale-site)
+- [ ] Custom domain + DNS (manual: CF Pages → Custom domain → spiritvale.tama.sh)
+- [ ] Fill in real artifact URL in `patches/v0.17.0.json` + `patches/latest.json` + `patch.json` (set `"url"` field — currently `null`, safe for clients to check `if patch.url`)
 - [ ] Verify CORS from artifact
 
 ## FUTURE (ถ้าจะขยาย)
-- HTML patch viewer ที่ `/patch/` (render markdown patch notes สวยๆ)
+- [x] HTML patch viewer ที่ `/patch/` (deployed 2026-05-26 — full archive + per-section rendering)
 - Build guides / class info
 - Boss tracker / event calendar
 - API endpoints อื่นๆ (เช่น `/builds`, `/items`)

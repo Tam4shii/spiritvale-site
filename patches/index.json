@@ -1,0 +1,11 @@
+{
+  "versions": [
+    {
+      "version": "0.17.0",
+      "title": "The Echoing Spire",
+      "date": "2026-05-25",
+      "current": true,
+      "archive_url": "/patches/v0.17.0.json"
+    }
+  ]
+}

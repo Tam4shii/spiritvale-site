@@ -7,3 +7,7 @@
 /*.json
   Content-Type: application/json; charset=utf-8
   Cache-Control: public, max-age=60, s-maxage=60
+
+/patches/v*.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=31536000, s-maxage=31536000, immutable

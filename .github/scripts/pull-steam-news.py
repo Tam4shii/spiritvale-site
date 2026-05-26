@@ -28,7 +28,13 @@ PATCHES_DIR = Path("patches")
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
 HTML_TAGS = re.compile(r"<[^>]+>")
-BB_TAGS = re.compile(r"\[/?[a-z][a-z0-9]*(?:=[^\]]+)?\]", re.IGNORECASE)
+# Covers Steam BB-code: [b], [i], [u], [strike], [h1]-[h3], [list], [*], [url=...],
+# [img], [previewyoutube], [table], [tr], [td], [code], [quote], [spoiler], and their
+# closing counterparts. [*] (list bullet, no closing tag) requires the |\* branch.
+# [url=URL]text[/url] → strips both tags, preserves anchor text only (URL is dropped;
+# text is sufficient for draft classification and links can be resolved via steam_url).
+# Sample: "[b]Fix[/b]: [list][*]Item[/list]" → "Fix: Item"
+BB_TAGS = re.compile(r"\[/?(?:\*|[a-z][a-z0-9]*)(?:=[^\]]+)?\]", re.IGNORECASE)
 
 
 def fetch_news():
@@ -123,7 +129,7 @@ def main():
         pub_ts = item.get("date", 0)
         pub_dt = datetime.fromtimestamp(pub_ts, tz=timezone.utc)
         raw_body = strip_html(item.get("contents", ""))[:2000]
-        item_url = item.get("url") or None
+        steam_url = item.get("url") or None
 
         draft = {
             "$schema": "/schema/patch.json",
@@ -131,8 +137,9 @@ def main():
             "title": title,
             "date": pub_dt.strftime("%Y-%m-%d"),
             "current": False,
-            "url": item_url,
+            "url": None,           # Claude artifact URL — set manually after publishing
             "steam_news_id": gid,
+            "steam_url": steam_url,  # canonical upstream Steam announcement URL
             "released_at": pub_dt.isoformat(),
             "raw_body": raw_body,
             "added": [],

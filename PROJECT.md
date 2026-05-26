@@ -36,12 +36,26 @@
 - [ ] Fill in real artifact URL in `patches/v0.17.0.json` + `patches/latest.json` + `patch.json` (set `"url"` field — currently `null`, safe for clients to check `if patch.url`)
 - [ ] Verify CORS from artifact
 
+## PHASE 1 (Post-launch hardening)
+- [ ] **Content-Security-Policy** — baseline `default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'` reduces XSS surface; deferred until CF Pages is live so CSP can be tested against real origin
+- [ ] **/feed.xml (Atom)** — hand-written from `patches/index.json`; unlocks Discord webhook bots + RSS readers for patch-release notifications
+- [ ] **`patches/manifest.json` alias** — `patches/index.json` already serves this role; add `_redirects` alias if clients expect `/manifest.json` path
+
 ## FUTURE (ถ้าจะขยาย)
 - [x] HTML patch viewer ที่ `/patch/` (built 2026-05-26 — full archive + per-section rendering; **live only after CF Pages is connected** — see Phase 0 above)
 - [x] JSON Schema at `/schema/patch.json` (published 2026-05-26 — validates Added/Changed/Fixed/Removed contract; `$schema` wired into all `patches/*.json`)
 - Build guides / class info
 - Boss tracker / event calendar
 - API endpoints อื่นๆ (เช่น `/builds`, `/items`)
+
+## BLOCKERS (Boss Actions Required)
+| # | Action | Where | Notes |
+|---|---|---|---|
+| 1 | Connect CF Pages | [dash.cloudflare.com → Pages → New → Connect GitHub → Tam4shii/spiritvale-site](https://dash.cloudflare.com/) | No build command, output dir = `/` |
+| 2 | Set custom domain | CF Pages → Custom domains → `spiritvale.tama.sh` | CNAME auto-created; ~5 min DNS propagation |
+| 3 | Fill v0.17.0 patch arrays | `patches/v0.17.0.json` + `patches/latest.json` + `patch.json` — `added/changed/fixed/removed` arrays | Index page shows "Patch notes coming soon…" fallback until filled |
+| 4 | Set artifact URL | `patches/v0.17.0.json` + `patches/latest.json` + `patch.json` — `"url"` field (currently `null`) | Paste Claude artifact link; page auto-links it |
+| 5 | Verify CORS from artifact | `fetch("https://spiritvale.tama.sh/patches/latest.json")` in artifact console | Should 200 with `Access-Control-Allow-Origin: *` |
 
 ## RISKS
 - 🟡 **CF Pages free tier**: 500 builds/month, 100k requests/day — เยอะมากสำหรับ static, ไม่น่าจะถึง

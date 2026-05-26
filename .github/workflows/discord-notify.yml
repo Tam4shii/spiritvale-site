@@ -1,0 +1,52 @@
+name: Discord patch notification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'patches/index.json'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect new version in index.json
+        id: detect
+        run: |
+          # Lines added to index.json in this push that contain a "version" key
+          NEW_LINE=$(git diff HEAD~1 HEAD -- patches/index.json | grep '^+' | grep '"version"' | grep -v '"latest_version"' | head -1)
+          if [ -z "$NEW_LINE" ]; then
+            echo "No new version entry detected — skipping notify"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          VERSION=$(echo "$NEW_LINE" | grep -oP '"\d+\.\d+\.\d+"' | tr -d '"' | head -1)
+          TITLE=$(git diff HEAD~1 HEAD -- patches/index.json | grep '^+' | grep '"title"' | head -1 | grep -oP '": ".*?"' | sed 's/": "//;s/"//')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: Post Discord embed
+        if: steps.detect.outputs.skip == 'false'
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_PATCH_WEBHOOK }}
+          VERSION: ${{ steps.detect.outputs.version }}
+          TITLE: ${{ steps.detect.outputs.title }}
+        run: |
+          PATCH_URL="https://spiritvale.tama.sh/patch/?v=${VERSION}"
+          JSON_URL="https://spiritvale.tama.sh/patches/v${VERSION}.json"
+          curl -s -X POST "$WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"SpiritVale ${VERSION} — ${TITLE}\",
+                \"url\": \"${PATCH_URL}\",
+                \"color\": 5763719,
+                \"description\": \"New patch archive published. [View patch notes](${PATCH_URL}) · [Raw JSON](${JSON_URL})\",
+                \"footer\": { \"text\": \"spiritvale.tama.sh\" }
+              }]
+            }"

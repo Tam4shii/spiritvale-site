@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SpiritVale — Patch Notes</title>
 <meta name="description" content="SpiritVale patch notes archive — all versions.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://spiritvale.tama.sh/patch/">
 <style>
   :root {
     --bg: #0a0612;
@@ -234,26 +236,27 @@ async function loadAll() {
   const root = document.getElementById('patches-root');
   root.innerHTML = '<p class="state-msg">Loading patch notes…</p>';
   try {
-    const [indexRes, latestRes] = await Promise.all([
-      fetch('/patches/index.json'),
-      fetch('/patches/latest.json'),
-    ]);
-    if (!indexRes.ok || !latestRes.ok) throw new Error('fetch failed');
+    const indexRes = await fetch('/patches/index.json');
+    if (!indexRes.ok) throw new Error('fetch failed');
     const index = await indexRes.json();
-    const latest = await latestRes.json();
+    const entries = index.versions || [];
 
-    // Merge latest data into index entry (index may have less detail)
-    // "Latest" badge: driven by p.current === true in patch JSON, not array position
-    const versions = (index.versions || []).map(v =>
-      v.version === latest.version ? { ...v, ...latest } : v
-    );
-
-    if (!versions.length) {
+    if (!entries.length) {
       root.innerHTML = '<p class="state-msg">No patch notes yet.</p>';
       return;
     }
 
-    root.innerHTML = versions.map(renderPatch).join('');
+    // Fetch full data for each version via its immutable archive URL
+    // index.json only carries minimal metadata; per-version files have added/changed/fixed/removed
+    const patches = await Promise.all(
+      entries.map(v =>
+        fetch(v.archive_url)
+          .then(r => r.ok ? r.json() : v)
+          .catch(() => v)
+      )
+    );
+
+    root.innerHTML = patches.map(renderPatch).join('');
   } catch (e) {
     root.innerHTML = '<p class="state-msg">Could not load patch notes. Try refreshing.</p>';
   }

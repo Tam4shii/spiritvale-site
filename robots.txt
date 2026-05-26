@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /.wrangler/
+
+Sitemap: https://spiritvale.tama.sh/sitemap.xml

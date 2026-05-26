@@ -7,6 +7,7 @@
 <meta name="description" content="SpiritVale patch notes archive — all versions.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="https://spiritvale.tama.sh/patch/">
+<link rel="alternate" type="application/json" href="/patches/latest.json" title="Latest SpiritVale Patch">
 <style>
   :root {
     --bg: #0a0612;
@@ -246,13 +247,14 @@ async function loadAll() {
       return;
     }
 
-    // Fetch full data for each version via its immutable archive URL
-    // index.json only carries minimal metadata; per-version files have added/changed/fixed/removed
+    // Fetch full data for each version via its immutable archive URL.
+    // Guard against missing archive_url (seeded entries, future schema gaps) to
+    // avoid firing fetch("undefined") which wastes a round-trip and logs a 404.
     const patches = await Promise.all(
       entries.map(v =>
-        fetch(v.archive_url)
-          .then(r => r.ok ? r.json() : v)
-          .catch(() => v)
+        v.archive_url
+          ? fetch(v.archive_url).then(r => r.ok ? r.json() : v).catch(() => v)
+          : Promise.resolve(v)
       )
     );
 

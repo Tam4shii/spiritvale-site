@@ -197,7 +197,9 @@
         ${groups || '<p class="patch-empty">Patch notes coming soon…</p>'}
         ${viewLink}
       </div>`;
-    } catch (_) {}
+    } catch (_) {
+      el.innerHTML = '<p class="patch-empty">Could not load patch notes. Try refreshing.</p>';
+    }
   }
 
   loadPatch();

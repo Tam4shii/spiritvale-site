@@ -1,0 +1,43 @@
+name: Pull Steam News → Patch Draft
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # 01:00 UTC daily
+  workflow_dispatch:        # manual trigger for testing
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch Steam news & create draft
+        id: draft
+        run: python3 .github/scripts/pull-steam-news.py
+        env:
+          STEAM_APPID: '3918510'
+
+      - name: Open PR if draft created
+        if: steps.draft.outputs.new_draft == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: steam-patch-draft/${{ steps.draft.outputs.slug }}
+          title: "patch: steam draft — ${{ steps.draft.outputs.title }}"
+          body: |
+            🤖 Auto-generated from Steam news feed (app 3918510).
+
+            Pre-filled: `version`, `title`, `date`, `steam_news_id`, `released_at`, `raw_body`
+
+            **Boss action checklist:**
+            1. Open `patches/draft-${{ steps.draft.outputs.slug }}.json`
+            2. Classify bullets from `raw_body` into `added` / `changed` / `fixed` / `removed`
+            3. Delete the `raw_body` field
+            4. Set `"current": true` and flip the previous latest to `false`
+            5. Move file to `patches/v{version}.json` and update `patches/index.json`
+            6. Merge PR → CF Pages auto-deploys
+          labels: patch-draft
+          commit-message: "patch: steam draft — ${{ steps.draft.outputs.title }}"

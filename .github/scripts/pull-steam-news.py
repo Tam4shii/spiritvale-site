@@ -28,6 +28,7 @@ PATCHES_DIR = Path("patches")
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
 HTML_TAGS = re.compile(r"<[^>]+>")
+BB_TAGS = re.compile(r"\[/?[a-z][a-z0-9]*(?:=[^\]]+)?\]", re.IGNORECASE)
 
 
 def fetch_news():
@@ -70,7 +71,7 @@ def title_to_slug(title):
 
 def strip_html(html):
     text = HTML_TAGS.sub("", html)
-    # Collapse whitespace
+    text = BB_TAGS.sub("", text)
     return re.sub(r"\s+", " ", text).strip()
 
 

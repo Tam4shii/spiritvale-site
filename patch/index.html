@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="th">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -219,7 +219,7 @@ function renderPatch(p) {
   if (p.url) footer.push(`<a href="${esc(p.url)}" target="_blank" rel="noopener">📝 Full interactive notes →</a>`);
   footer.push(`<a href="/patches/v${esc(p.version)}.json">📦 Raw JSON →</a>`);
 
-  return `<div class="version-card${p.current ? ' current' : ''}">
+  return `<div class="version-card${p.current ? ' current' : ''}" id="v-${esc(p.version)}">
     <div class="card-header">
       <span class="version-title">
         v${esc(p.version)} — ${esc(p.title)}
@@ -232,6 +232,15 @@ function renderPatch(p) {
     </div>
     <div class="card-footer">${footer.join('')}</div>
   </div>`;
+}
+
+function scrollToVersion(version) {
+  const el = document.getElementById(`v-${version}`);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  el.style.transition = 'box-shadow 0.3s';
+  el.style.boxShadow = '0 0 0 2px rgba(167,139,250,0.6)';
+  setTimeout(() => { el.style.boxShadow = ''; }, 1800);
 }
 
 async function loadAll() {
@@ -260,6 +269,9 @@ async function loadAll() {
     );
 
     root.innerHTML = patches.map(renderPatch).join('');
+
+    const vParam = new URLSearchParams(location.search).get('v');
+    if (vParam) scrollToVersion(vParam);
   } catch (e) {
     root.innerHTML = '<p class="state-msg">Could not load patch notes. Try refreshing.</p>';
   }

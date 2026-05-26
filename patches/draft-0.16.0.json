@@ -1,0 +1,16 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.16.0",
+  "title": "[0.16.0] Rebalance Patch",
+  "date": "2026-04-17",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1830163047261470",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1830163047261470",
+  "released_at": "2026-04-17T21:53:36+00:00",
+  "raw_body": "Patch got delayed due to balancing difficulties with a small testing team, and a bit of feature creep. We were also going to include some new passives (think talents) but it took a bit too long and was not included.Patch tldr;The game balance had gotten pretty bad, getting out of hand with each class release but not much time to address them. We've rebalanced all class damage and sustain based on several metrics. These metrics will be used to balance future classes so we don't get into the same situation.Damage and sustain was very spikey, with one-shots and full heals being the norm. The game was becoming more like an ARPG where it only promoted solo aoe farming. The changes aim to start turning it around where combat is a bit slower, more fair, and promotes working together.Some QOL additions and missing features.Shared skills and passives (Heal/Haste/Cure/FreeCast) were removed, and distributed amongst base classes. This is to start give classes more of an identity/niche.Status effects have been revamped, for better clarity and reduce status bloat for future classes. Also gives classes different niches with which status effects they have access to.All armor sets have been revamped (late game armors were overshadowing everything else too much).Monster & Boss ChangesChangesMonsters now have Def and MdefRemoved regen from BossesMonster damage reduced by around 25%Removed random casting and extra cast range from bossesSpawner Bosses now have 60s of No KS protection for the Spawner and Party. This is cleared if the Spawner leaves the mapGoalsGiving monsters certain strengths and weaknesses (therefore giving different builds/classes different niches). Much like how the introduction of Crit Defence means Crit builds are less effective in some maps. This is just the start of it, we will slowly push maps to different niches as we do map expansionsReducing spikey-ness of incoming and outgoing damageThreat SystemChangesMonsters target the player in range with the most threa",
+  "added": [],
+  "changed": [],
+  "fixed": [],
+  "removed": []
+}

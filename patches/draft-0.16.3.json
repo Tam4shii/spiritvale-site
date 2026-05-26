@@ -1,0 +1,22 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.16.3",
+  "title": "[Update 0.16.3]",
+  "date": "2026-05-13",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1832700592786579",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1832700592786579",
+  "released_at": "2026-05-13T14:44:08+00:00",
+  "raw_body": "- Update for server list, future servers should show up automatically - We have setup 2 SEA servers, we will be setting up another EU, NA and SEA server soon Fixes and Improvements - Fix Rage not working on Berserker - Vending list now automatically populates when opening",
+  "added": [
+    "2 SEA servers (more EU / NA / SEA servers coming soon)",
+    "Server list now auto-populates for future servers"
+  ],
+  "changed": [],
+  "fixed": [
+    "Rage skill not working on Berserker",
+    "Vending list now automatically populates when opened"
+  ],
+  "removed": []
+}

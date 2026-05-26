@@ -1,0 +1,16 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.15.0",
+  "title": "[Update 0.15.0] PVP Systems and Status Immunities",
+  "date": "2026-03-24",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1827626365765818",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1827626365765818",
+  "released_at": "2026-03-24T14:18:12+00:00",
+  "raw_body": "Hey! This patch introduces the first instanced modes in the form of PVP. Not everyone likes PVP but a lot of groundwork has now been setup for the future (like ET and map channels, leaderboards). Also touched on balance changes, more to come. (no damage changes yet) PVP Systems Skirmish Mode (existing free for all sandpit) PVP NPC, shows how many people are in Skirmish mode New Arena map by @Polliwagon Arena 2v2 Mode (new arena map with instancing) Arena 3v3 Mode (new arena map with instancing) Arena modes give rewards for each match, more for wins MMR calculation and leaderboard A lot of bug fixes in PVP Inside PVP: All damage is reduced by 75% All healing is reduced by 50% Revive skill is set to Lv.1 (priest skill and pressing F on dead players) All summon stat inheritance is halved Fixes and Improvements Added autoattack hotkey (default C), which lets you press/hold to autoattack the highlighted enemy Autoattack now starts after using a physical targeted attack skill Pet loot interval reduced: 2s > 1s Gear swap is now prevented for 3s after dealing or taking a hit Increased see through wall radius in most maps Added more information to stat tooltips Shinobi Fan of Knives now lands where your cursor is, works like Stomp Balance Changes Gunslinger Range changes affect the base weapon type and skills Pistol/Shotgun range: 5 > 6 Gatling/Launcher range: 8 > 9 Rifle range: 10 > 12 Shotgun bonus range: 5 > 6 Flash bang backslide: 8 > 10 (same as Shadow Feint) Flash bang charges: 1 > 2 Jump shot range: 10 > 15 (same as Earth Splitter) Status Effect Immunities Cards and Gear only grant 50% resist, instead of 100% Priest skills still grant 100% resist Attributes now grant 2/3% resist per point to designated status effects Silence durations have been reduced, amongst a few other skill status durations, mainly affects Summoner, Priest and Wizard You can now cast Cure/Mass Cure while silenced Gunk Shot and Wide Poison no longer slows SQ Execute replaced by Gunk Shot again Des",
+  "added": [],
+  "changed": [],
+  "fixed": [],
+  "removed": []
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.13.2",
+  "title": "[Update 0.13.2]",
+  "date": "2026-02-20",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1825093633187162",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633187162",
+  "released_at": "2026-02-20T08:04:11+00:00",
+  "raw_body": "Hey hey! Hopefully database stuff are fixed.. (please be fixed) Fixes/Improvements - Fixed some issues with database integration - Set Crafting and Refine cooldown 0.7s > 0.1s - Fix healing not working against undead enemies - Fix cooldown recovery stat - Improve summon behaviour Balance Changes - Execute Axe: Cooldown -1 > -2, Damage 35% > 15%, Exclusive - Chaos Reaver: Dark Claw Damage 35% > 15% - Eclipse Kunai: Black Blade cooldown changed to Twist of Fate cooldown - Fuma Shuriken: Removed skill mods, Slots 1 > 2 - Razor Kunai: Moved skills mods here (Fan of Knives and Shuriken Fan mods) [Underground Cavern] - Stormfeather Kunai: Changed to melee substats - Red Maw / Flintlock / Serpent Fang: Slots 3 > 2",
+  "added": [],
+  "changed": [],
+  "fixed": [],
+  "removed": []
+}

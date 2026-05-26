@@ -1,0 +1,25 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.16.7",
+  "title": "[Update 0.16.7]",
+  "date": "2026-05-16",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1832700592795176",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1832700592795176",
+  "released_at": "2026-05-16T22:02:53+00:00",
+  "added": [],
+  "changed": [
+    "Vending Search: double-clicking an item now lets you buy it directly",
+    "Each account limited to 1 vending character (was 2)"
+  ],
+  "fixed": [
+    "Damage numbers now optimised (major source of lag reduced)",
+    "Server optimisations to reduce rubberbanding",
+    "Vendors no longer huddle in a corner"
+  ],
+  "removed": [
+    "Sell shops no longer visible on maps (purchase shops remain; sell shops may return in future)"
+  ],
+  "raw_body": "Hey all! We've been doing alot of optimisations and bug fixes, hope things are getting better, let me know! We've since opened up a tonne of servers, capped them at around 300 and did what optimisations we could Will need to further improve server and database structure, wasn't really designed for or anticipating more than 1k users. But we'll be testing a new database soon. Fixes/Improvements Damage numbers optimisation (this one was a major source of lag, so let me know if it has improved) Server optimisations (trying to reduce rubberbanding, let me knowi f it has improved) Vendors no longer huddle in a corner Vending Changes Sunny Meadows has become super crowded and laggy, so something had to be done Player shops may return in some way in the future, but for now just the purchase shops remain Sell shops no longer show up on maps, Purchase shops remain Vending Search: double clicking an item now lets you buy the item You still setup vending as normal Each account is limited to 1 vending character instead of 2"
+}

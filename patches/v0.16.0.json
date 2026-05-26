@@ -1,0 +1,27 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.16.0",
+  "title": "Rebalance Patch",
+  "date": "2026-04-17",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1830163047261470",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1830163047261470",
+  "released_at": "2026-04-17T21:53:36+00:00",
+  "added": [
+    "Threat System — monsters target the highest-threat player in range",
+    "Spawner Bosses: 60s KS protection for the spawner and their party (cleared if spawner leaves map)"
+  ],
+  "changed": [
+    "All class damage and sustain rebalanced using new metrics to reduce one-shots and full-heal spam",
+    "Shared skills (Heal, Haste, Cure, FreeCast) removed from shared pool and redistributed to base classes",
+    "Status effects revamped for clarity and to reduce status bloat",
+    "All armor sets revamped (late-game armors were overpowering earlier sets)",
+    "Monsters now have Def and Mdef stats",
+    "Monster damage reduced by ~25%",
+    "Boss regen removed",
+    "Random boss casting and extra cast range removed"
+  ],
+  "fixed": [],
+  "removed": []
+}

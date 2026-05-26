@@ -1,0 +1,16 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.14.0",
+  "title": "[Update 0.14.0] Cosmetics Update",
+  "date": "2026-03-15",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1826992588599147",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1826992588599147",
+  "released_at": "2026-03-15T07:15:44+00:00",
+  "raw_body": "Hey all! This update took ages, had quite alot of technical difficulties. But hope the game runs/looks better and hope you find something you like in the store! There's also a lot of new cosmetic things you can hunt without premium currency. Important Information The first relog might take some time, since inventory/storage structures have changed for optimisation and need to be rebuilt. Premium currency is purchased via Kofi donations (tips only), we will move to Steam purchase after EA release. Make sure to correctly enter a valid character name or it won't work (See: https://spiritvale.info/kofi) Memberships currently don't award Premium Currency yet, that's being worked on More information will be in ⁠📢announcements Wardobe and Cosmetics System Credits to @Polliwagon , @soupsi, @Brilett and @Artist for designing and creating dozens of cosmetics Added premium currency (denoted as p below) New cosmetics wardrobe menu Cosmetic items can be purchased from here, adding it permanently to your wardrobe across all characters World drop cosmetics like pets and mounts can be added/removed from wardrobe and traded Dozens of gear, pet and mount cosmetics. Mix of asset pack and custom Equip conversion to cosmetic (100p) Boss exclusive cosmetics (boss drops) Monster exclusive pets / mounts, monsters can drop their pet version as well as a few mounts Mystery Pet Box: world drop that gives random monster pet Mystery Mount Box: world drop that gives random monster mount Storage Expansion +500 (500p) New hair colors, eye colors, eye styles, iris styles Character eye blinking Hair clipping through headgear now greatly improved Feet no longer clip through shoes Pets: periodically pick up items for you Mount: give you 40% movespeed out of combat All premium cosmetics are account bound, world droppable monster pets and mounts are tradable Features / Improvements Loot Filter (see settings screen) Objects now become invisible around the player, this is working for most maps but some ma",
+  "added": [],
+  "changed": [],
+  "fixed": [],
+  "removed": []
+}

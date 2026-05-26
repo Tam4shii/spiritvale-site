@@ -1,0 +1,16 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.13.5",
+  "title": "[Update 0.13.5]",
+  "date": "2026-02-24",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1825093633196404",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633196404",
+  "released_at": "2026-02-24T05:18:28+00:00",
+  "raw_body": "Fix summons not casting Soul Strike with Invoker (it only works with your Primary Summon btw) Fix gold not being deducted when setting up a purchase shop Fix toggles resetting summon skills Judgement Blade: Now Slows/ Divine Punishment: Now Blinds Optimised Divine Punishment FX (let me know!) Clones now copy toggle buffs upon being spawned Shadow Seal, Shadow Feint and Twist of Fate can now be casted while Silenced Unyielding and Blood Crash can now be casted while Silenced (and during Cyclone) --- Change to Animation Delay and After Cast Delay (info for nerds) tldr; Skills with cast times are now less affected by AGI based Animation Delay, because it is applied on cast instead of after cast Minimum After Cast Delay now 0.14s > 0.3s Removed individual Skill minimum cooldown of 0.3s, since After Cast Delay now matches it Movement is also slowed to 25% when Attacking/Casting, but only for 33% of Animation Delay, this is not affected by Free Cast Auto attacks are paused by Animation Delay after casting a skill Explained Apply Animation Delay (reduced by ASPD, matches Attack Delay) Begin Cast Wait for Cast Time (reduced by CTR) Complete Cast Apply skill Cooldown (reduced by Cooldown Recovery stat) Apply After Cast Delay (minimum is 0.3s, some skills may have more, reduced by future After Cast Delay stat) To cast a skill, you must wait for Animation Delay, After Cast Delay and Cooldown Animation Delay and After Cast Delay act as Global Cooldowns for skill usage Skill Cooldown only affects the individual skill Scenario A: Cast Strafing Volley @ 193 aspd Cast Time: 0s Animation Delay: 0.14s After Cast Delay: 0.3s Cooldown: 0s Max usage rate: 0.3s, limited by ACD Scenario B: Cast Holy Light @ 170 aspd / 90% CTR Cast Time: 0.1s Animation Delay: 0.37s After Cast Delay: 0.3s Cooldown: 0s Max usage rate: 0.37s, limited by Animation Delay",
+  "added": [],
+  "changed": [],
+  "fixed": [],
+  "removed": []
+}

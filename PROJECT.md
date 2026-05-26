@@ -40,6 +40,8 @@
 - [x] **Content-Security-Policy** — already in `_headers` (default-src 'self'; script/style 'unsafe-inline'; img data: https:; connect 'self'; frame-ancestors 'self')
 - [x] **/feed.xml (Atom)** — created 2026-05-26; serves from `/feed.xml`; `application/atom+xml` header in `_headers`; update summary when patch arrays are filled
 - [x] **`patches/manifest.json` alias** — `/manifest.json` and `/patches/manifest.json` both 302 → `/patches/index.json` (added to `_redirects` 2026-05-26)
+- [x] **favicon.svg** — purple spirit star icon; eliminates 404 on page load (2026-05-26)
+- [x] **patch viewer bug fix** — `/patch/` now fetches each version's `archive_url` for full data; previously old patches always showed "coming soon…" (2026-05-26)
 
 ## FUTURE (ถ้าจะขยาย)
 - [x] HTML patch viewer ที่ `/patch/` (built 2026-05-26 — full archive + per-section rendering; **live only after CF Pages is connected** — see Phase 0 above)

@@ -1,0 +1,33 @@
+name: Validate patch JSON schema
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'patches/**'
+      - 'schema/**'
+  pull_request:
+    paths:
+      - 'patches/**'
+      - 'schema/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install AJV CLI
+        run: npm install -g ajv-cli ajv-formats
+
+      - name: Validate patch files against schema
+        run: |
+          ajv validate \
+            -s schema/patch.json \
+            --spec=draft7 \
+            -c ajv-formats \
+            patches/latest.json patches/v*.json

@@ -178,6 +178,24 @@ Machine-readable source: [`patches/index.json`](patches/index.json)
 - Gold not deducted when setting up a purchase shop
 - Toggles resetting summon skills
 
+## [0.13.4] — Paladin Revamp  `2026-02-21`
+
+> Steam announcement: <https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633189958>
+
+### Added
+- Divine Punishment: New visual FX
+
+### Changed
+- Judgement Blade, Grand Cross and Divine Punishment now trigger hit effects (and sacrifice)
+- Oathbreaker and Radiant Scepter revamped
+- Judgement Blade: Cooldown 3s → 1s, Damage 77% → 100%, now Blinds
+- Grand Cross: Cast Time 0.75s → 1s, Damage 100% → 200%
+- Divine Punishment: Duration 1.5s → 5s, Cast Time 1s → 0.3s per level, Damage 150% → 77%, now Slows
+- Summons: Reduced AA damage
+
+### Fixed
+- Removed AA aftercast delay from Summons (broken after previous patch)
+
 ## [0.13.2] — Update 0.13.2  `2026-02-20`
 
 > Steam announcement: <https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633187162>

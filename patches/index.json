@@ -58,6 +58,14 @@
       "change_counts": { "added": 0, "changed": 10, "fixed": 3, "removed": 0 }
     },
     {
+      "version": "0.13.4",
+      "title": "Paladin Revamp",
+      "date": "2026-02-21",
+      "current": false,
+      "archive_url": "/patches/v0.13.4.json",
+      "change_counts": { "added": 1, "changed": 6, "fixed": 1, "removed": 0 }
+    },
+    {
       "version": "0.13.2",
       "title": "Update 0.13.2",
       "date": "2026-02-20",

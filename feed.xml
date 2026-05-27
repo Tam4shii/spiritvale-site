@@ -79,6 +79,16 @@
     <summary type="text">10 changed, 3 fixed. Judgement Blade applies Slow; Divine Punishment applies Blind. Animation Delay now applied on cast. Minimum After Cast Delay 0.14s → 0.3s. Clones copy toggle buffs on spawn.</summary>
   </entry>
 
+  <!-- v0.13.4 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.4.json</id>
+    <title>v0.13.4 – Paladin Revamp</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.4" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633189958" title="Steam Announcement" />
+    <updated>2026-02-21T06:14:18Z</updated>
+    <summary type="text">1 added, 6 changed, 1 fixed. Paladin skill revamp: Judgement Blade (Cooldown 3s→1s, Damage 77%→100%, now Blinds), Grand Cross (Cast Time 0.75s→1s, Damage 100%→200%), Divine Punishment (Duration 1.5s→5s, Damage 150%→77%, now Slows, New FX). All three now trigger hit effects. Oathbreaker and Radiant Scepter revamped. Summon AA aftercast delay removed (bug fix).</summary>
+  </entry>
+
   <!-- v0.13.2 -->
   <entry>
     <id>https://spiritvale.tama.sh/patches/v0.13.2.json</id>

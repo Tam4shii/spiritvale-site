@@ -63,6 +63,14 @@
       "date_published": "2026-02-24T05:18:28Z"
     },
     {
+      "id": "https://spiritvale.tama.sh/patches/v0.13.4.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.13.4",
+      "external_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633189958",
+      "title": "v0.13.4 – Paladin Revamp",
+      "content_text": "1 added, 6 changed, 1 fixed. Paladin skill revamp: Judgement Blade (Cooldown 3s→1s, Damage 77%→100%, now Blinds), Grand Cross (Cast Time 0.75s→1s, Damage 100%→200%), Divine Punishment (Duration 1.5s→5s, Damage 150%→77%, now Slows, New FX). All three now trigger hit effects. Oathbreaker and Radiant Scepter revamped. Summon AA aftercast delay removed (bug fix).",
+      "date_published": "2026-02-21T06:14:18Z"
+    },
+    {
       "id": "https://spiritvale.tama.sh/patches/v0.13.2.json",
       "url": "https://spiritvale.tama.sh/patch/?v=0.13.2",
       "external_url": "https://store.steampowered.com/news/app/3918510/view/1825093633187162",

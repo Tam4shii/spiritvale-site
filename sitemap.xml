@@ -62,7 +62,21 @@
     <changefreq>never</changefreq>
     <priority>0.6</priority>
   </url>
-  <!-- Machine-readable data endpoints -->
+  <!-- Machine-readable data endpoints (Vintage Story / aion-patch-notes API pattern) -->
+  <url>
+    <!-- Version manifest — enumerate all available patches; updates each release -->
+    <loc>https://spiritvale.tama.sh/patches/index.json</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <!-- Latest patch shortcut — always resolves to current version JSON -->
+    <loc>https://spiritvale.tama.sh/patches/latest.json</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://spiritvale.tama.sh/upstream/steam.json</loc>
     <lastmod>2026-05-27</lastmod>

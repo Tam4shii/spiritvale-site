@@ -1,0 +1,163 @@
+{
+  "$schema": "https://spiritvale.tama.sh/schema/upstream-steam.json",
+  "appid": 3918510,
+  "fetched_at": "2026-05-27T00:00:00Z",
+  "source": "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=3918510",
+  "note": "Static snapshot — refreshed manually or via CI on each new patch release",
+  "newsitems": [
+    {
+      "gid": "1833334318576172",
+      "title": "[Update 0.17.0] The Echoing Spire",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1833334318576172",
+      "is_external_url": true,
+      "author": "Phil",
+      "contents": "The Echoing Spire (ET) Entry requires a Spire Key (just need one to create/enter the instance) How to craft a key: A Resonance Core (0.1% drop from mobs / 1% from bosses) + 7 monster memories. Memory requirement increases per craft (7, 14, 21..), and is reset each week. Monster memories are obtained by dismantling Cards and Gems 100 Floors. Monster level starts at Lv100 increasing up to Lv200. All monsters and bosses in the game and some future ones will appear. Collect Umbral Fragments these will be awarded to each member per floor completed, as well as extra drops from bosses Dark Disciple Sells some new gear for Umbral Fragments These will cost significant Umbral Fragments, so it becomes a long grind, and Rebirth Essence will be useful here ~7 new weapons and ~4 new armor pieces Grimoires Grimoires are for a new equip slot, you can equip 3 at a time, they are class locked. Each grimoire gives a unique passive Trade in a full set of artifacts for a Grimoire There will be 'Base class' Grimoires (trade in box of origin sets) and 'Advanced class' Grimoires (trade in box of mastery sets) Trade with base class masters located in Nevaris This upcoming patch will only include Base Class Grimoires New Nevaris Map If you didn't catch it in the recent random stream, a new Nevaris map has been added We're slowly replacing the original asset pack environments for bigger/prettier/more optimised environments made by @Polliwagon Essence Changes Essence rarity order changed Flow > Growth > Destruction > Rebirth > Chaos, to help with imbalance Implicit swap has been removed from Chaos, which means higher chance for the other options to happen, and much less chance of nothing happening for non-weapons Rebirth now lets you lock a stat while randomising other stats, so it has more use cases while maintaining its original use case of re-rolling rare gear Balance Changes (Autocast was still a bit too strong for too little, it also made Shinobi reliant on the OP mana siphon, chances have been reduced but the damage unnerfed) Autocast reduced across the board (20% > 10%, 30% > 20%). Headgear autocast cards are now unique. Bolts/Meteor/CL autocast damage unnerfed (50% > 100%) Status damage reduced /8 > /10 (about 20% reduction) Scrap Fang: Slots 4 > 3, Multistrike 100% > 50% Launcher: Slots 4 > 3 Hidden 100% Multistrike removed from Naga/Bat/Wolf. Siphon is now part of leech system, so it's recovery overtime and capped by 20% hp/mp Perfect Dodge: no longer scales with AGI, capped at 95% Auto attacks can no longer hit the same target multiple times (Mainly for launcher/shotgun splash + chain) Bosses now recovery 10% hp per second when out of combat, instead of 100% instantly The following skills can now be both target and ground casted: Shadow Step, Fireball, Ice Shard, Damnation, HolyWrath, Piercing Shot, Sniper Shot Shadow Step: cooldown 2 > 7-1 per level Sniper Shot: damage 150% > 200% Bosses have been made a little bit harder, faster cast times, cooldowns and some more targeted attacks Bosses spawn giant minions Utility items: replaced def/mdef with weight limit per refine Reduced monster flat def scaling, VIT/2 > VIT/5 (had a little too much impact on classes like GS) Atk% is now a separate multiplier, gives a little bit more than before Bug Fixes and Improvements Fixed skill mods not working on summons Fixed Sacred Aegis not being refreshed Fixed some issues with monster leap attacks Loot UI no longer clickable, and moved location (let me know what you think!) You can now craft boss lures from craftsman for monster memories (might be OP, let me know!) Vending Search: You can now purchase items in stacks of 10/100 (hold ctrl/shift) New Server selection UI. Based on suggestion, thanks! ⁠📝feedback⁠Server Selection UI & Region Sy… Added Click to Move toggle (disables click / hold to move character) Cursor is now frozen during drag rotation What's next? Priority now is server and data stability We are close to switching to a new database solution, it should be much improved for both New and better servers will be added soon, once we figure out how to best scale them New Maps Polliwagon has already accumulated a backlog of new maps I need to implement (15+ new maps and growing 😅 ). We will definitely see these before Next Fest/EA, but need some time to figure out map/monster placements and maybe add some new item drops. As well as implementing the new world map Replacing AI assets As you might know, the artifact icons and a few others + item descriptions were made with AI We will be done with icon replacements very soon, which will all be implemented together (thanks to @Artist team ) Item descriptions are on its way (@Eviand and team has been writing literally thousands of descriptions 💀 ) Future (post EA launch) Advanced Class Grimoires and Artifact Sets Designing and balancing Grimoires / new Artifact sets are taking longer than expected But it should be pretty interesting once they are in. With Grimoire development, a lot of n...",
+      "feedlabel": "Community Announcements",
+      "date": 1779664221,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510,
+      "tags": [
+        "patchnotes"
+      ]
+    },
+    {
+      "gid": "1832700592795176",
+      "title": "[Update 0.16.7]",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1832700592795176",
+      "is_external_url": true,
+      "author": "Phil",
+      "contents": "Hey all! We've been doing alot of optimisations and bug fixes, hope things are getting better, let me know! We've since opened up a tonne of servers, capped them at around 300 and did what optimisations we could Will need to further improve server and database structure, wasn't really designed for or anticipating more than 1k users. But we'll be testing a new database soon. Fixes/Improvements Damage numbers optimisation (this one was a major source of lag, so let me know if it has improved) Server optimisations (trying to reduce rubberbanding, let me knowi f it has improved) Vendors no longer huddle in a corner Vending Changes Sunny Meadows has become super crowded and laggy, so something had to be done Player shops may return in some way in the future, but for now just the purchase shops remain Sell shops no longer show up on maps, Purchase shops remain Vending Search: double clicking an item now lets you buy the item You still setup vending as normal Each account is limited to 1 vending character instead of 2",
+      "feedlabel": "Community Announcements",
+      "date": 1778968973,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510,
+      "tags": [
+        "patchnotes"
+      ]
+    },
+    {
+      "gid": "1832700592786579",
+      "title": "[Update 0.16.3]",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1832700592786579",
+      "is_external_url": true,
+      "author": "Phil",
+      "contents": "- Update for server list, future servers should show up automatically - We have setup 2 SEA servers, we will be setting up another EU, NA and SEA server soon Fixes and Improvements - Fix Rage not working on Berserker - Vending list now automatically populates when opening",
+      "feedlabel": "Community Announcements",
+      "date": 1778683448,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510,
+      "tags": [
+        "patchnotes"
+      ]
+    },
+    {
+      "gid": "1830163047261470",
+      "title": "[0.16.0] Rebalance Patch",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1830163047261470",
+      "is_external_url": true,
+      "author": "Brilett",
+      "contents": "Patch got delayed due to balancing difficulties with a small testing team, and a bit of feature creep. We were also going to include some new passives (think talents) but it took a bit too long and was not included.Patch tldr;The game balance had gotten pretty bad, getting out of hand with each class release but not much time to address them. We've rebalanced all class damage and sustain based on several metrics. These metrics will be used to balance future classes so we don't get into the same situation.Damage and sustain was very spikey, with one-shots and full heals being the norm. The game was becoming more like an ARPG where it only promoted solo aoe farming. The changes aim to start turning it around where combat is a bit slower, more fair, and promotes working together.Some QOL additions and missing features.Shared skills and passives (Heal/Haste/Cure/FreeCast) were removed, and distributed amongst base classes. This is to start give classes more of an identity/niche.Status effects have been revamped, for better clarity and reduce status bloat for future classes. Also gives classes different niches with which status effects they have access to.All armor sets have been revamped (late game armors were overshadowing everything else too much).Monster & Boss ChangesChangesMonsters now have Def and MdefRemoved regen from BossesMonster damage reduced by around 25%Removed random casting and extra cast range from bossesSpawner Bosses now have 60s of No KS protection for the Spawner and Party. This is cleared if the Spawner leaves the mapGoalsGiving monsters certain strengths and weaknesses (therefore giving different builds/classes different niches). Much like how the introduction of Crit Defence means Crit builds are less effective in some maps. This is just the start of it, we will slowly push maps to different niches as we do map expansionsReducing spikey-ness of incoming and outgoing damageThreat SystemChangesMonsters target the player in range with the most threat.The party screen shows relative threat.Threat is generated when - You deal damage - You cast a targeted skill - You cast a skill near aggressive monsters - You use a threat generating skill like Taunt GoalsPretty standard system in MMOs, was just missing beforeAllows tanks to keep aggro and DPS to monitor their aggro generationStatus Effect ChangesChangesStatus effects have been revamped, for better clarify and reduce status bloat for future classes. Also gives classes different niches with which status effects they have access toMany status effects and their applications were changedStatus UI has been revamped for better visualisationRoughly how status effects are displayed in UI: - Buffs - Self Buffs and Effects - Debuffs Status EffectsStagger: Disable Block, -25% def Curse: Reverse Healing, -25% mdef Burning: Stacking dmg, 3% hp dmg per second Bleeding: Stacking dmg, Disable health recovery Poison: Stacking dmg, Disable mana recovery Decay: Stacking dmg, -1% healing received per stack Slow: -50% Cast/Attack/Move speed Blind: -25% Hit/Flee/Crit Weaken: -25% Final Damage Vulnerability: +1% Physical damage taken (max 25 stacks) Magic Exposure: +1% Magical damage taken (max 25 stacks) Might: +1% Melee/Magic/Ranged damage (max 25 stacks) Frenzy: +25% Attack speed, +1 Attack speed limit Focus: +25% Cast speed Haste: +25% Move speed, +10 Agi Fury: +20% Crit Vitality: +20% Health, +10 Vit Regeneration: Stacking recovery, +1% healing received (max 25 stacks) Protection: +25% Block Defiance: +10% Final Damage Reduction Stability: No Flinch, No Knockback Blood Lust: +25 HP Siphon Grace: +100% HP/MP recovery rate Benediction: +10 Str/Int/Dex/Luk, +20 Hit Zeal: +15 Atk/Matk Guardian Spirit: Immune to ranged damage Aegis: Immune to all damage GoalsClearer status displaysBetter set of statuses with clear effects, which are distributed to difference classes to give them a nicheSkill Scalings ChangesChangesStat scalings (like 5% atk per INT) has been moved to weapons e.g. staff gives you +0.5% skill damage per INTTo clarify what I mean using Firebolt as example with 100 INT: Current 1000% MATK + 5% per INT = 1500% MATK New 1000% MATK x 0.5% per INT with a Staff = 1500% MATK GoalsMakes things much easier to balance, because Lv1 vs Lv5 is truly 1/5 power, instead of being just a little bit weaker depending on your INT.Open up more build variety based on weapon choice, instead of locked by classEssence System & SubstatsAdded essence system for altering gear substatsAdded new substat types to itemsEssence System Each item comes with a random amount of potential (15-25). Each essence consumes potential. When reaching 0 potential essences can no longer be used. Weapons can have a max of 5 substats, other gear has a max of 4 substats. Essence drop chance from monsters based on level: 0.1%-0.5% When dropping an essence it has a chance to be one of the following types: - Rebirth (cost 2-3): removes all substats and adds 3-4 new substats (30% drop chance). - Flow (cos...",
+      "feedlabel": "Community Announcements",
+      "date": 1776462816,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510
+    },
+    {
+      "gid": "1827626365765818",
+      "title": "[Update 0.15.0] PVP Systems and Status Immunities",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1827626365765818",
+      "is_external_url": true,
+      "author": "Phil",
+      "contents": "Hey! This patch introduces the first instanced modes in the form of PVP. Not everyone likes PVP but a lot of groundwork has now been setup for the future (like ET and map channels, leaderboards). Also touched on balance changes, more to come. (no damage changes yet) PVP Systems Skirmish Mode (existing free for all sandpit) PVP NPC, shows how many people are in Skirmish mode New Arena map by @Polliwagon Arena 2v2 Mode (new arena map with instancing) Arena 3v3 Mode (new arena map with instancing) Arena modes give rewards for each match, more for wins MMR calculation and leaderboard A lot of bug fixes in PVP Inside PVP: All damage is reduced by 75% All healing is reduced by 50% Revive skill is set to Lv.1 (priest skill and pressing F on dead players) All summon stat inheritance is halved Fixes and Improvements Added autoattack hotkey (default C), which lets you press/hold to autoattack the highlighted enemy Autoattack now starts after using a physical targeted attack skill Pet loot interval reduced: 2s > 1s Gear swap is now prevented for 3s after dealing or taking a hit Increased see through wall radius in most maps Added more information to stat tooltips Shinobi Fan of Knives now lands where your cursor is, works like Stomp Balance Changes Gunslinger Range changes affect the base weapon type and skills Pistol/Shotgun range: 5 > 6 Gatling/Launcher range: 8 > 9 Rifle range: 10 > 12 Shotgun bonus range: 5 > 6 Flash bang backslide: 8 > 10 (same as Shadow Feint) Flash bang charges: 1 > 2 Jump shot range: 10 > 15 (same as Earth Splitter) Status Effect Immunities Cards and Gear only grant 50% resist, instead of 100% Priest skills still grant 100% resist Attributes now grant 2/3% resist per point to designated status effects Silence durations have been reduced, amongst a few other skill status durations, mainly affects Summoner, Priest and Wizard You can now cast Cure/Mass Cure while silenced Gunk Shot and Wide Poison no longer slows SQ Execute replaced by Gunk Shot again Designated Status Resistances by Attribute Str: Bleed/Stagger Agi: Slow/Freeze Vit: Stun/Decay Int: Silence/Burn Dex: Poison/Blind Luk: Curse/Weaken For example Sunflora Card (50%) + 75 Int (50%) = Immune to Silence Crit Def and making LUK a bit more useful Crit Def has been reintroduced into the game. What is Crit Def? Basically it reduces your Crit Chance Monsters and players gain Crit Def per 5 Luk. Luk Stat: Currently adds Crit per 3 Luk Crit Damage per 10 Luk Now also adds ATK per 5 Luk Perfect Dodge per 10 Luk Crit Def per 5 Luk",
+      "feedlabel": "Community Announcements",
+      "date": 1774361892,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510,
+      "tags": [
+        "patchnotes"
+      ]
+    },
+    {
+      "gid": "1826992588599147",
+      "title": "[Update 0.14.0] Cosmetics Update",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1826992588599147",
+      "is_external_url": true,
+      "author": "Phil",
+      "contents": "Hey all! This update took ages, had quite alot of technical difficulties. But hope the game runs/looks better and hope you find something you like in the store! There's also a lot of new cosmetic things you can hunt without premium currency. Important Information The first relog might take some time, since inventory/storage structures have changed for optimisation and need to be rebuilt. Premium currency is purchased via Kofi donations (tips only), we will move to Steam purchase after EA release. Make sure to correctly enter a valid character name or it won't work (See: https://spiritvale.info/kofi) Memberships currently don't award Premium Currency yet, that's being worked on More information will be in ⁠📢announcements Wardobe and Cosmetics System Credits to @Polliwagon , @soupsi, @Brilett and @Artist for designing and creating dozens of cosmetics Added premium currency (denoted as p below) New cosmetics wardrobe menu Cosmetic items can be purchased from here, adding it permanently to your wardrobe across all characters World drop cosmetics like pets and mounts can be added/removed from wardrobe and traded Dozens of gear, pet and mount cosmetics. Mix of asset pack and custom Equip conversion to cosmetic (100p) Boss exclusive cosmetics (boss drops) Monster exclusive pets / mounts, monsters can drop their pet version as well as a few mounts Mystery Pet Box: world drop that gives random monster pet Mystery Mount Box: world drop that gives random monster mount Storage Expansion +500 (500p) New hair colors, eye colors, eye styles, iris styles Character eye blinking Hair clipping through headgear now greatly improved Feet no longer clip through shoes Pets: periodically pick up items for you Mount: give you 40% movespeed out of combat All premium cosmetics are account bound, world droppable monster pets and mounts are tradable Features / Improvements Loot Filter (see settings screen) Objects now become invisible around the player, this is working for most maps but some maps are currently not compatible All vending stores now appear in all servers, so you don't need to switch around Bug Fixes Fix issues with skill delay and usage Fix some errors on client / server which maybe causing random disconnects Fix an error when purchasing a vend item which prevents gold being registered Loot pickup now happens at your location instead of walking to an item first Improved server security of movement / position Fix minion kills not counting in character stats Improved lag issues with storage and trade windows Fixed issues with chat text input and coin input Made chat filter less strict Fixed cards and other stackable items not being favorited after logout",
+      "feedlabel": "Community Announcements",
+      "date": 1773558944,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510,
+      "tags": [
+        "patchnotes"
+      ]
+    },
+    {
+      "gid": "1825093633196404",
+      "title": "[Update 0.13.5]",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633196404",
+      "is_external_url": true,
+      "author": "Phil",
+      "contents": "Fix summons not casting Soul Strike with Invoker (it only works with your Primary Summon btw) Fix gold not being deducted when setting up a purchase shop Fix toggles resetting summon skills Judgement Blade: Now Slows/ Divine Punishment: Now Blinds Optimised Divine Punishment FX (let me know!) Clones now copy toggle buffs upon being spawned Shadow Seal, Shadow Feint and Twist of Fate can now be casted while Silenced Unyielding and Blood Crash can now be casted while Silenced (and during Cyclone) --- Change to Animation Delay and After Cast Delay (info for nerds) tldr; Skills with cast times are now less affected by AGI based Animation Delay, because it is applied on cast instead of after cast Minimum After Cast Delay now 0.14s > 0.3s Removed individual Skill minimum cooldown of 0.3s, since After Cast Delay now matches it Movement is also slowed to 25% when Attacking/Casting, but only for 33% of Animation Delay, this is not affected by Free Cast Auto attacks are paused by Animation Delay after casting a skill Explained Apply Animation Delay (reduced by ASPD, matches Attack Delay) Begin Cast Wait for Cast Time (reduced by CTR) Complete Cast Apply skill Cooldown (reduced by Cooldown Recovery stat) Apply After Cast Delay (minimum is 0.3s, some skills may have more, reduced by future After Cast Delay stat) To cast a skill, you must wait for Animation Delay, After Cast Delay and Cooldown Animation Delay and After Cast Delay act as Global Cooldowns for skill usage Skill Cooldown only affects the individual skill Scenario A: Cast Strafing Volley @ 193 aspd Cast Time: 0s Animation Delay: 0.14s After Cast Delay: 0.3s Cooldown: 0s Max usage rate: 0.3s, limited by ACD Scenario B: Cast Holy Light @ 170 aspd / 90% CTR Cast Time: 0.1s Animation Delay: 0.37s After Cast Delay: 0.3s Cooldown: 0s Max usage rate: 0.37s, limited by Animation Delay",
+      "feedlabel": "Community Announcements",
+      "date": 1771910308,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510,
+      "tags": [
+        "patchnotes"
+      ]
+    },
+    {
+      "gid": "1825093633189958",
+      "title": "[0.13.4] Paladin Revamp",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633189958",
+      "is_external_url": true,
+      "author": "Phil",
+      "contents": "Hey hey! Just a quick Paladin Revamp Judgement Blade, Grand Cross and Divine Punishment now triggers hit effects (and sacrifice) Divine Punishment: New FX Oathbreaker and Radiant Scepter Revamped Judgement Blade: Cooldown 3s > 1s, Damage: 77% > 100%, Now Blinds Grand Cross: Cast Time: 0.75s > 1s, Damage: 100% > 200% Divine Punishment: Duration: 1.5s > 5s, Cast Time: 1s > 0.3s per lv, Damage: 150% > 77%, Now Slows Balance Changes (AA summons stopped working after the last patch) Removed AA aftercast delay from Summons Reduced AA damage of Summons",
+      "feedlabel": "Community Announcements",
+      "date": 1771678458,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510,
+      "tags": [
+        "patchnotes"
+      ]
+    },
+    {
+      "gid": "1825093633187162",
+      "title": "[Update 0.13.2]",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633187162",
+      "is_external_url": true,
+      "author": "Phil",
+      "contents": "Hey hey! Hopefully database stuff are fixed.. (please be fixed) Fixes/Improvements - Fixed some issues with database integration - Set Crafting and Refine cooldown 0.7s > 0.1s - Fix healing not working against undead enemies - Fix cooldown recovery stat - Improve summon behaviour Balance Changes - Execute Axe: Cooldown -1 > -2, Damage 35% > 15%, Exclusive - Chaos Reaver: Dark Claw Damage 35% > 15% - Eclipse Kunai: Black Blade cooldown changed to Twist of Fate cooldown - Fuma Shuriken: Removed skill mods, Slots 1 > 2 - Razor Kunai: Moved skills mods here (Fan of Knives and Shuriken Fan mods) - Stormfeather Kunai: Changed to melee substats - Red Maw / Flintlock / Serpent Fang: Slots 3 > 2",
+      "feedlabel": "Community Announcements",
+      "date": 1771574651,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510,
+      "tags": [
+        "patchnotes"
+      ]
+    },
+    {
+      "gid": "1825093633183456",
+      "title": "Servers downtime!",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633183456",
+      "is_external_url": true,
+      "author": "Brilett",
+      "contents": "Hello! We are aware of the current server issues. In an effort to minimize the effects and impact we are temporarily taking the servers offline. This downtime will be for a few hours while we investigate the issues and find a solution. Thank you for your understanding, we will do our best to keep you informed as we progress.Join SpiritVale Discord and stay tuned!",
+      "feedlabel": "Community Announcements",
+      "date": 1771447611,
+      "feedname": "steam_community_announcements",
+      "feed_type": 1,
+      "appid": 3918510
+    }
+  ]
+}

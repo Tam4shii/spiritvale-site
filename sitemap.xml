@@ -13,11 +13,12 @@
     <priority>0.9</priority>
   </url>
   <!-- Per-version patch viewer pages -->
+  <!-- v0.17.0 notes pending — set yearly/low-priority until content is filled -->
   <url>
     <loc>https://spiritvale.tama.sh/patch/?v=0.17.0</loc>
     <lastmod>2026-05-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://spiritvale.tama.sh/patch/?v=0.16.7</loc>
@@ -60,5 +61,12 @@
     <lastmod>2026-02-20</lastmod>
     <changefreq>never</changefreq>
     <priority>0.6</priority>
+  </url>
+  <!-- Machine-readable data endpoints -->
+  <url>
+    <loc>https://spiritvale.tama.sh/upstream/steam.json</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>

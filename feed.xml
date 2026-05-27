@@ -8,11 +8,84 @@
   <author>
     <name>SpiritVale Dev</name>
   </author>
+
+  <!-- v0.17.0 — current (patch content pending) -->
   <entry>
     <id>https://spiritvale.tama.sh/patches/v0.17.0.json</id>
     <title>v0.17.0 – The Echoing Spire</title>
-    <link href="https://spiritvale.tama.sh/patch/?v=0.17.0" />
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.17.0" />
     <updated>2026-05-25T00:00:00Z</updated>
     <summary type="text">SpiritVale v0.17.0 – The Echoing Spire. Full patch notes pending.</summary>
   </entry>
+
+  <!-- v0.16.7 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.16.7.json</id>
+    <title>v0.16.7 – Update 0.16.7</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.16.7" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1832700592795176" title="Steam Announcement" />
+    <updated>2026-05-16T22:02:53Z</updated>
+    <summary type="text">v0.16.7 – Update 0.16.7: 2 changed, 3 fixed, 1 removed. Vending Search: double-clicking an item now lets you buy it directly. Damage numbers now optimised (major source of lag reduced). Sell shops removed from maps.</summary>
+  </entry>
+
+  <!-- v0.16.3 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.16.3.json</id>
+    <title>v0.16.3 – Update 0.16.3</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.16.3" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1832700592786579" title="Steam Announcement" />
+    <updated>2026-05-13T14:44:08Z</updated>
+    <summary type="text">v0.16.3 – Update 0.16.3: 2 added, 2 fixed. Added 2 SEA servers (more EU / NA / SEA servers coming soon). Fixed Rage skill not working on Berserker. Vending list now auto-populates.</summary>
+  </entry>
+
+  <!-- v0.16.0 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.16.0.json</id>
+    <title>v0.16.0 – Rebalance Patch</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.16.0" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1830163047261470" title="Steam Announcement" />
+    <updated>2026-04-17T21:53:36Z</updated>
+    <summary type="text">v0.16.0 – Rebalance Patch: 2 added, 8 changed. Introduces Threat System and Spawner Boss KS protection. All class damage and sustain rebalanced; status effects revamped; armor sets overhauled. Monster damage reduced ~25%, boss regen removed.</summary>
+  </entry>
+
+  <!-- v0.15.0 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.15.0.json</id>
+    <title>v0.15.0 – PVP Systems and Status Immunities</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.15.0" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1827626365765818" title="Steam Announcement" />
+    <updated>2026-03-24T14:18:12Z</updated>
+    <summary type="text">v0.15.0 – PVP Systems and Status Immunities: 5 added, 12 changed, 2 fixed. Adds PVP Skirmish Mode, Arena 2v2/3v3, MMR leaderboard, autoattack hotkey (C), and Status Effect Immunity via Attributes. Extensive Gunslinger and balance changes.</summary>
+  </entry>
+
+  <!-- v0.14.0 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.14.0.json</id>
+    <title>v0.14.0 – Cosmetics Update</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.14.0" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1826992588599147" title="Steam Announcement" />
+    <updated>2026-03-15T07:15:44Z</updated>
+    <summary type="text">v0.14.0 – Cosmetics Update: 11 added, 5 changed, 2 fixed. Introduces Wardrobe and Cosmetics System, premium currency (p), dozens of gear/pet/mount cosmetics, Storage Expansion, Loot Filter, and character eye blinking animation.</summary>
+  </entry>
+
+  <!-- v0.13.5 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.5.json</id>
+    <title>v0.13.5 – Update 0.13.5</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.5" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633196404" title="Steam Announcement" />
+    <updated>2026-02-24T05:18:28Z</updated>
+    <summary type="text">v0.13.5 – Update 0.13.5: 10 changed, 3 fixed. Judgement Blade applies Slow; Divine Punishment applies Blind. Animation Delay now applied on cast. Minimum After Cast Delay 0.14s → 0.3s. Clones copy toggle buffs on spawn.</summary>
+  </entry>
+
+  <!-- v0.13.2 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.2.json</id>
+    <title>v0.13.2 – Update 0.13.2</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.2" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633187162" title="Steam Announcement" />
+    <updated>2026-02-20T08:04:11Z</updated>
+    <summary type="text">v0.13.2 – Update 0.13.2: 8 changed, 4 fixed. Crafting and Refine cooldown 0.7s → 0.1s. Execute Axe and Chaos Reaver damage reduced. Eclipse Kunai and Fuma Shuriken reworked. Fixed database issues and healing vs undead.</summary>
+  </entry>
+
 </feed>

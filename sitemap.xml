@@ -2,12 +2,63 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://spiritvale.tama.sh/</loc>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://spiritvale.tama.sh/patch/</loc>
+    <lastmod>2026-05-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <!-- Per-version patch viewer pages -->
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.17.0</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.16.7</loc>
+    <lastmod>2026-05-16</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.16.3</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.16.0</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.15.0</loc>
+    <lastmod>2026-03-24</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.14.0</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.13.5</loc>
+    <lastmod>2026-02-24</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.13.2</loc>
+    <lastmod>2026-02-20</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>

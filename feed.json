@@ -1,0 +1,74 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "SpiritVale Patch Notes",
+  "home_page_url": "https://spiritvale.tama.sh/",
+  "feed_url": "https://spiritvale.tama.sh/feed.json",
+  "description": "Official patch notes for SpiritVale, machine-readable JSON Feed 1.1",
+  "authors": [{ "name": "SpiritVale Dev" }],
+  "items": [
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.17.0.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.17.0",
+      "external_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1833334318576172",
+      "title": "v0.17.0 – The Echoing Spire",
+      "content_text": "13 added, 21 changed, 3 fixed, 1 removed. Introduces The Echoing Spire: a 100-floor dungeon (Lv100–200) requiring a Spire Key, with Umbral Fragments currency and Dark Disciple gear vendor. New Grimoires equip slot (class-locked passives from artifact sets). Autocast reduced board-wide (20%→10%, 30%→20%). Siphon reclassified as leech. Boss regen revamped to 10% HP/s out-of-combat. New Nevaris map and expanded Vending Search (stack buy Ctrl/Shift).",
+      "date_published": "2026-05-25T00:00:00Z"
+    },
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.16.7.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.16.7",
+      "external_url": "https://store.steampowered.com/news/app/3918510/view/1832700592795176",
+      "title": "v0.16.7",
+      "content_text": "2 changed, 3 fixed, 1 removed. Vending Search: double-clicking an item now lets you buy it directly. Damage numbers now optimised (major source of lag reduced). Sell shops removed from maps.",
+      "date_published": "2026-05-16T22:02:53Z"
+    },
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.16.3.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.16.3",
+      "external_url": "https://store.steampowered.com/news/app/3918510/view/1832700592786579",
+      "title": "v0.16.3",
+      "content_text": "2 added, 2 fixed. Added 2 SEA servers (more EU / NA / SEA servers coming soon). Fixed Rage skill not working on Berserker. Vending list now auto-populates.",
+      "date_published": "2026-05-13T14:44:08Z"
+    },
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.16.0.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.16.0",
+      "external_url": "https://store.steampowered.com/news/app/3918510/view/1830163047261470",
+      "title": "v0.16.0 – Rebalance Patch",
+      "content_text": "2 added, 8 changed. Introduces Threat System and Spawner Boss KS protection. All class damage and sustain rebalanced; status effects revamped; armor sets overhauled. Monster damage reduced ~25%, boss regen removed.",
+      "date_published": "2026-04-17T21:53:36Z"
+    },
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.15.0.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.15.0",
+      "external_url": "https://store.steampowered.com/news/app/3918510/view/1827626365765818",
+      "title": "v0.15.0 – PVP Systems and Status Immunities",
+      "content_text": "5 added, 12 changed, 2 fixed. Adds PVP Skirmish Mode, Arena 2v2/3v3, MMR leaderboard, autoattack hotkey (C), and Status Effect Immunity via Attributes. Extensive Gunslinger and balance changes.",
+      "date_published": "2026-03-24T14:18:12Z"
+    },
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.14.0.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.14.0",
+      "external_url": "https://store.steampowered.com/news/app/3918510/view/1826992588599147",
+      "title": "v0.14.0 – Cosmetics Update",
+      "content_text": "11 added, 5 changed, 2 fixed. Introduces Wardrobe and Cosmetics System, premium currency (p), dozens of gear/pet/mount cosmetics, Storage Expansion, Loot Filter, and character eye blinking animation.",
+      "date_published": "2026-03-15T07:15:44Z"
+    },
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.13.5.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.13.5",
+      "external_url": "https://store.steampowered.com/news/app/3918510/view/1825093633196404",
+      "title": "v0.13.5",
+      "content_text": "10 changed, 3 fixed. Judgement Blade applies Slow; Divine Punishment applies Blind. Animation Delay now applied on cast. Minimum After Cast Delay 0.14s → 0.3s. Clones copy toggle buffs on spawn.",
+      "date_published": "2026-02-24T05:18:28Z"
+    },
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.13.2.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.13.2",
+      "external_url": "https://store.steampowered.com/news/app/3918510/view/1825093633187162",
+      "title": "v0.13.2",
+      "content_text": "8 changed, 4 fixed. Crafting and Refine cooldown 0.7s → 0.1s. Execute Axe and Chaos Reaver damage reduced. Eclipse Kunai and Fuma Shuriken reworked. Fixed database issues and healing vs undead.",
+      "date_published": "2026-02-20T08:04:11Z"
+    }
+  ]
+}

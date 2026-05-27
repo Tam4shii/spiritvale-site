@@ -2,3 +2,4 @@
 /latest.json /patches/latest.json 302
 /manifest.json /patches/index.json 302
 /patches/manifest.json /patches/index.json 302
+/v1/* /:splat 200

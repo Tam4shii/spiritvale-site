@@ -28,6 +28,10 @@
   Content-Type: application/atom+xml; charset=utf-8
   Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
 
+/feed.json
+  Content-Type: application/feed+json; charset=utf-8
+  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
+
 /favicon.svg
   Content-Type: image/svg+xml
   Cache-Control: public, max-age=86400, s-maxage=86400

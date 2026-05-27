@@ -47,6 +47,7 @@
 - [x] HTML patch viewer ที่ `/patch/` (built 2026-05-26 — full archive + per-section rendering; **live only after CF Pages is connected** — see Phase 0 above)
 - [x] JSON Schema at `/schema/patch.json` (published 2026-05-26 — validates Added/Changed/Fixed/Removed contract; `$schema` wired into all `patches/*.json`)
 - [x] **Full patch archive** (2026-05-27) — 7 historical patches promoted from draft to versioned files (v0.13.2 → v0.16.7); all bullets classified into added/changed/fixed/removed; `patches/index.json` updated with all 8 versions; **committed + pushed to GitHub** (commit 2913165)
+- [x] **v0.13.4 gap filled** (2026-05-27) — patch present in upstream/steam.json but missing from archive; added `patches/v0.13.4.json` (Paladin Revamp: 1 added, 6 changed, 1 fixed); updated index/feed/sitemap/llms.txt/CHANGELOG; pushed (commit 0e1db96); archive now complete: 9 versions (v0.13.2 → v0.17.0)
 - [x] **v0.17.0 patch content** (2026-05-27) — parsed Steam announcement (gid 1833334318576172) into 13 added / 21 changed / 3 fixed / 1 removed; updated `v0.17.0.json`, `latest.json`, `patch.json`, `index.json`, `CHANGELOG.md`; pushed (commit fb95744)
 - Build guides / class info
 - Boss tracker / event calendar

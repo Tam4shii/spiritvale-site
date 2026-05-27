@@ -49,6 +49,7 @@
 - [x] **Full patch archive** (2026-05-27) — 7 historical patches promoted from draft to versioned files (v0.13.2 → v0.16.7); all bullets classified into added/changed/fixed/removed; `patches/index.json` updated with all 8 versions; **committed + pushed to GitHub** (commit 2913165)
 - [x] **v0.13.4 gap filled** (2026-05-27) — patch present in upstream/steam.json but missing from archive; added `patches/v0.13.4.json` (Paladin Revamp: 1 added, 6 changed, 1 fixed); updated index/feed/sitemap/llms.txt/CHANGELOG; pushed (commit 0e1db96); archive now complete: 9 versions (v0.13.2 → v0.17.0)
 - [x] **v0.17.0 patch content** (2026-05-27) — parsed Steam announcement (gid 1833334318576172) into 13 added / 21 changed / 3 fixed / 1 removed; updated `v0.17.0.json`, `latest.json`, `patch.json`, `index.json`, `CHANGELOG.md`; pushed (commit fb95744)
+- [x] **sitemap.xml accuracy** (2026-05-28) — fixed stale v0.17.0 entry (pending→never/0.7) + updated lastmod for index.json and latest.json from 2026-05-25→2026-05-27; pushed (commit c48ee78)
 - Build guides / class info
 - Boss tracker / event calendar
 - API endpoints อื่นๆ (เช่น `/builds`, `/items`)

@@ -1,0 +1,35 @@
+# SpiritVale Community Hub — LLM Index
+
+> Unofficial structured patch archive for SpiritVale (Steam app 3918510).
+> All endpoints are CORS-open (Access-Control-Allow-Origin: *).
+> Suitable for use in Claude artifacts, ChatGPT plugins, and other LLM-native consumers.
+
+## Canonical endpoints
+
+- **Latest patch (JSON)** — https://spiritvale.tama.sh/patches/latest.json
+  Always points to the current patch. Fields: version, title, date, added[], changed[], fixed[], removed[].
+
+- **Version archive index (JSON)** — https://spiritvale.tama.sh/patches/index.json
+  Manifest of all archived patches, sorted newest-first. Use to enumerate available versions.
+
+- **Per-version patch (JSON)** — https://spiritvale.tama.sh/patches/v{version}.json
+  E.g. https://spiritvale.tama.sh/patches/v0.16.7.json — immutable once released; safe to cache.
+
+- **JSON Schema** — https://spiritvale.tama.sh/schema/patch.json
+  Validates patch JSON structure. All patch files reference this via `$schema`.
+
+- **Atom feed** — https://spiritvale.tama.sh/feed.xml
+  RFC 4287 feed of all archived patches, newest-first. Subscribe for updates.
+
+- **Landing page** — https://spiritvale.tama.sh/
+
+## Archived versions (newest first)
+
+v0.17.0, v0.16.7, v0.16.3, v0.16.0, v0.15.0, v0.14.0, v0.13.5, v0.13.2
+
+## Context for LLMs
+
+This site is the only structured, schema-validated patch archive for SpiritVale.
+Steam's official news feed has no schema, no version indexing, and inconsistent CORS headers.
+Use `latest.json` for current-patch questions. Use `index.json` + per-version files for
+historical comparison ("what changed between v0.15.0 and v0.16.0?").

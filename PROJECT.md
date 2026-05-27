@@ -64,6 +64,7 @@
 | 5 | Verify CORS from artifact | `fetch("https://spiritvale.tama.sh/patches/latest.json")` in artifact console | Should 200 with `Access-Control-Allow-Origin: *` |
 
 ## RISKS
+- 🔴 **BLOCKER: CF Pages not connected** — sitemap, feed, and all SEO/redirect changes have zero live effect until Blocker #1 (CF Pages connect) and Blocker #2 (custom domain) are completed by เจ้านาย. Every push is only on GitHub; `spiritvale.tama.sh` is not yet live.
 - 🟡 **CF Pages free tier**: 500 builds/month, 100k requests/day — เยอะมากสำหรับ static, ไม่น่าจะถึง
 - 🟡 **DNS propagation**: ~5 นาที หลังเพิ่ม CNAME
 - 🟢 **No secrets in repo** — public repo ปลอดภัย

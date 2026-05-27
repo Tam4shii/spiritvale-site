@@ -12,7 +12,8 @@
       "external_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1833334318576172",
       "title": "v0.17.0 – The Echoing Spire",
       "content_text": "13 added, 21 changed, 3 fixed, 1 removed. Introduces The Echoing Spire: a 100-floor dungeon (Lv100–200) requiring a Spire Key, with Umbral Fragments currency and Dark Disciple gear vendor. New Grimoires equip slot (class-locked passives from artifact sets). Autocast reduced board-wide (20%→10%, 30%→20%). Siphon reclassified as leech. Boss regen revamped to 10% HP/s out-of-combat. New Nevaris map and expanded Vending Search (stack buy Ctrl/Shift).",
-      "date_published": "2026-05-25T00:00:00Z"
+      "date_published": "2026-05-25T00:00:00Z",
+      "date_modified": "2026-05-27T00:00:00Z"
     },
     {
       "id": "https://spiritvale.tama.sh/patches/v0.16.7.json",

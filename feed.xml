@@ -4,21 +4,19 @@
   <title>SpiritVale Patch Notes</title>
   <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/" />
   <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/feed.xml" />
-  <!-- updated = newest real released_at (v0.16.7); bumped to v0.17.0 timestamp when patch content lands -->
-  <updated>2026-05-16T22:02:53Z</updated>
+  <updated>2026-05-25T00:00:00Z</updated>
   <author>
     <name>SpiritVale Dev</name>
   </author>
 
-  <!-- v0.17.0 — stub; patch content pending -->
-  <!-- TODO: when released_at is set in patches/v0.17.0.json, bump <updated> below to match -->
-  <!--       Atom readers cache by <id> and will NOT re-fetch unless <updated> changes         -->
+  <!-- v0.17.0 -->
   <entry>
     <id>https://spiritvale.tama.sh/patches/v0.17.0.json</id>
     <title>v0.17.0 – The Echoing Spire</title>
     <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.17.0" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1833334318576172" title="Steam Announcement" />
     <updated>2026-05-25T00:00:00Z</updated>
-    <summary type="text">Full patch notes pending. Check back when released_at is populated.</summary>
+    <summary type="text">13 added, 21 changed, 3 fixed, 1 removed. Introduces The Echoing Spire: a 100-floor dungeon (Lv100–200) requiring a Spire Key, with Umbral Fragments currency and Dark Disciple gear vendor. New Grimoires equip slot (class-locked passives from artifact sets). Autocast reduced board-wide (20%→10%, 30%→20%). Siphon reclassified as leech. Boss regen revamped to 10% HP/s out-of-combat. New Nevaris map and expanded Vending Search (stack buy Ctrl/Shift).</summary>
   </entry>
 
   <!-- v0.16.7 -->

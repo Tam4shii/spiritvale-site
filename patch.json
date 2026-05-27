@@ -7,10 +7,54 @@
       "current": true,
       "url": null,
       "archive_url": "/patches/v0.17.0.json",
-      "added": [],
-      "changed": [],
-      "fixed": [],
-      "removed": []
+      "steam_news_id": "1833334318576172",
+      "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1833334318576172",
+      "added": [
+        "The Echoing Spire (ET): 100-floor dungeon (monsters Lv100–200) — requires a Spire Key to create or enter an instance",
+        "Spire Key crafting: 1 Resonance Core (0.1% drop from mobs / 1% from bosses) + 7 monster memories; memory cost increases per craft (7, 14, 21…) and resets weekly",
+        "Monster memories: obtained by dismantling Cards and Gems",
+        "Umbral Fragments: awarded to each party member per floor completed + extra drops from Spire bosses",
+        "Dark Disciple NPC: sells new gear for Umbral Fragments (significant grind; Rebirth Essence useful here)",
+        "~7 new weapons and ~4 new armor pieces obtainable in the Spire",
+        "Grimoires: new equip slot (up to 3 equipped at once), class-locked passives — trade in a full artifact set to receive one",
+        "Base Class Grimoires: trade in box of origin sets with base class masters in Nevaris",
+        "New Nevaris map: expanded, prettier, and more optimised (part of ongoing world map refresh by @Polliwagon)",
+        "Boss lure crafting: craftsman NPC can craft boss lures in exchange for monster memories",
+        "Vending Search: buy items in stacks of 10 or 100 (hold Ctrl or Shift respectively)",
+        "New Server Selection UI with region indicators",
+        "Click to Move toggle: disables the default click/hold-to-move character movement"
+      ],
+      "changed": [
+        "Essence rarity order changed to Flow > Growth > Destruction > Rebirth > Chaos (rebalances Chaos imbalance)",
+        "Chaos essence: implicit swap removed — higher chance for other options, much lower chance of nothing happening on non-weapons",
+        "Rebirth essence: can now lock a stat while randomising the others (additional use case alongside original re-roll)",
+        "Autocast reduced across the board: 20% → 10% and 30% → 20%; headgear autocast cards are now unique",
+        "Bolts / Meteor / Chain Lightning autocast damage unnerfed: 50% → 100%",
+        "Status damage reduced: divisor /8 → /10 (~20% reduction)",
+        "Scrap Fang: Slots 4 → 3, Multistrike 100% → 50%",
+        "Launcher: Slots 4 → 3",
+        "Siphon reclassified as leech — recovery over time, capped at 20% HP/MP (was instant)",
+        "Perfect Dodge: no longer scales with AGI, hard-capped at 95%",
+        "Auto attacks can no longer hit the same target multiple times (fixes Launcher/Shotgun splash + chain overlap)",
+        "Bosses recover 10% HP per second when out of combat (was 100% HP instantly)",
+        "Shadow Step: cooldown 2 → 7 seconds (−1 per skill level)",
+        "Sniper Shot: damage 150% → 200%",
+        "Bosses: faster cast times, adjusted cooldowns, more targeted attacks, now spawn giant minions",
+        "Shadow Step, Fireball, Ice Shard, Damnation, HolyWrath, Piercing Shot, and Sniper Shot can now be cast as either targeted or ground-targeted",
+        "Utility items: Def/MDef stats replaced with weight limit per refine",
+        "Monster flat Def scaling reduced: VIT/2 → VIT/5 (less impact on classes like Gunslinger)",
+        "Atk% is now a separate multiplier (slightly more effective than before)",
+        "Loot UI: moved and no longer clickable",
+        "Cursor is now frozen during drag-rotation"
+      ],
+      "fixed": [
+        "Skill mods not applying to summons",
+        "Sacred Aegis not being refreshed correctly",
+        "Several issues with monster leap attacks"
+      ],
+      "removed": [
+        "Hidden 100% Multistrike removed from Naga, Bat, and Wolf gear"
+      ]
     }
   ]
 }

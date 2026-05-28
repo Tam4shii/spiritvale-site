@@ -219,6 +219,7 @@ function renderPatch(p) {
   const footer = [];
   if (p.url) footer.push(`<a href="${esc(p.url)}" target="_blank" rel="noopener">📝 Full interactive notes →</a>`);
   footer.push(`<a href="/patches/v${esc(p.version)}.json">📦 Raw JSON →</a>`);
+  if (p.steam_url) footer.push(`<a href="${esc(p.steam_url)}" target="_blank" rel="noopener">🎮 View on Steam →</a>`);
 
   return `<div class="version-card${p.current ? ' current' : ''}" id="v-${esc(p.version)}">
     <div class="card-header">

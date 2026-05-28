@@ -18,6 +18,10 @@
 - **JSON Schema** — https://spiritvale.tama.sh/schema/patch.json
   Validates patch JSON structure. All patch files reference this via `$schema`.
 
+- **Version diff viewer** — https://spiritvale.tama.sh/diff/
+  Cumulative diff between any two versions. Params: `?from=X&to=Y` (e.g. `?from=0.14.0&to=0.17.0`).
+  Also accepts `/diff/v0.14.0...v0.17.0`. Aggregates added/changed/fixed/removed across all versions in range.
+
 - **Atom feed** — https://spiritvale.tama.sh/feed.xml
   RFC 4287 feed of all archived patches, newest-first. Subscribe for updates.
 

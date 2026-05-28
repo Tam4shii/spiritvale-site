@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale — Version Diff</title>
+<meta name="description" content="Compare changes between any two SpiritVale versions. Aggregates all patches in between.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://spiritvale.tama.sh/diff/">
+<meta property="og:title" content="SpiritVale Version Diff">
+<meta property="og:description" content="Compare changes between any two SpiritVale versions.">
+<meta property="og:url" content="https://spiritvale.tama.sh/diff/">
+<style>
+  :root {
+    --bg: #0a0612;
+    --fg: #e8e3f0;
+    --muted: #8b82a0;
+    --accent: #a78bfa;
+    --accent-2: #7c3aed;
+    --card: rgba(167, 139, 250, 0.08);
+    --border: rgba(167, 139, 250, 0.2);
+    --added: #34d399;
+    --changed: #fbbf24;
+    --fixed: #60a5fa;
+    --removed: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem;
+    background-image: radial-gradient(at 20% 30%, rgba(124, 58, 237, 0.15), transparent 50%),
+                      radial-gradient(at 80% 70%, rgba(167, 139, 250, 0.1), transparent 50%);
+  }
+  main { max-width: 800px; margin: 0 auto; }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .nav a { color: var(--accent); text-decoration: none; }
+  .nav a:hover { text-decoration: underline; }
+
+  .page-header { margin-bottom: 2rem; }
+  .page-header h1 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+  }
+  .page-header .sub { color: var(--muted); font-size: 0.95rem; }
+
+  /* Selector form */
+  .selector-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .selector-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .selector-row label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  select {
+    background: rgba(167, 139, 250, 0.06);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--fg);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.92rem;
+    cursor: pointer;
+    flex: 1;
+    min-width: 130px;
+  }
+  select:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sep { color: var(--muted); font-size: 1.1rem; font-weight: 700; padding: 0 0.1rem; }
+  .btn-compare {
+    background: linear-gradient(135deg, var(--accent-2), var(--accent));
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .btn-compare:hover { opacity: 0.85; }
+  .btn-compare:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Summary bar */
+  .summary-bar {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    align-items: center;
+  }
+  .summary-versions { color: var(--muted); flex: 1; min-width: 200px; }
+  .summary-counts { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .count-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.78rem;
+  }
+  .count-chip.added   { background: rgba(52,211,153,0.1); color: var(--added); }
+  .count-chip.changed { background: rgba(251,191,36,0.1); color: var(--changed); }
+  .count-chip.fixed   { background: rgba(96,165,250,0.1); color: var(--fixed); }
+  .count-chip.removed { background: rgba(248,113,113,0.1); color: var(--removed); }
+
+  /* Results */
+  .diff-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .section-heading.added   { color: var(--added); }
+  .section-heading.changed { color: var(--changed); }
+  .section-heading.fixed   { color: var(--fixed); }
+  .section-heading.removed { color: var(--removed); }
+  .section-block { margin-bottom: 1.1rem; }
+  .section-block:last-child { margin-bottom: 0; }
+  .patch-item {
+    padding: 0.3rem 0 0.3rem 0.75rem;
+    border-left: 2px solid rgba(167,139,250,0.12);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .patch-item + .patch-item { margin-top: 0.15rem; }
+
+  /* Version source badge on items */
+  .ver-badge {
+    display: inline-block;
+    margin-left: 0.4rem;
+    padding: 0 0.4rem;
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.18);
+    border-radius: 4px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* JSON export */
+  .export-bar {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .btn-copy {
+    background: rgba(167,139,250,0.1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    transition: background 0.12s;
+  }
+  .btn-copy:hover { background: rgba(167,139,250,0.18); }
+  .btn-share {
+    background: rgba(167,139,250,0.1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    transition: background 0.12s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-share:hover { background: rgba(167,139,250,0.18); }
+  .copy-confirm { font-size: 0.82rem; color: var(--added); }
+
+  .json-block {
+    background: rgba(0,0,0,0.35);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    font-size: 0.78rem;
+    white-space: pre;
+    overflow-x: auto;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    display: none;
+  }
+  .json-block.visible { display: block; }
+
+  /* States */
+  .state-msg {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .empty-note {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-style: italic;
+    padding: 0.5rem 0;
+  }
+
+  footer { color: var(--muted); margin-top: 2rem; font-size: 0.85rem; text-align: center; }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<main>
+  <nav class="nav">
+    <a href="/">SpiritVale</a>
+    <span>/</span>
+    <a href="/patch/">Patch Notes</a>
+    <span>/</span>
+    <span>Diff</span>
+  </nav>
+
+  <div class="page-header">
+    <h1>Version Diff</h1>
+    <p class="sub">Compare cumulative changes between any two versions</p>
+  </div>
+
+  <div class="selector-card">
+    <div class="selector-row">
+      <label for="sel-from">From</label>
+      <select id="sel-from"><option value="">Loading…</option></select>
+      <span class="sep">→</span>
+      <label for="sel-to">To</label>
+      <select id="sel-to"><option value="">Loading…</option></select>
+      <button class="btn-compare" id="btn-compare" disabled>Compare</button>
+    </div>
+  </div>
+
+  <div id="diff-root"></div>
+
+  <footer>
+    Made with 💜 by fans · Not affiliated with the developers<br>
+    <a href="https://store.steampowered.com/app/3918510/">Steam Page</a>
+  </footer>
+</main>
+<script>
+const SECTIONS = [
+  { key: 'added',   label: '🟢 Added',   cls: 'added' },
+  { key: 'changed', label: '🟡 Changed', cls: 'changed' },
+  { key: 'fixed',   label: '🔧 Fixed',   cls: 'fixed' },
+  { key: 'removed', label: '🔴 Removed', cls: 'removed' },
+];
+
+function normVer(v) { return String(v).replace(/^v/, ''); }
+
+function semverCmp(a, b) {
+  const pa = normVer(a).split('.').map(Number);
+  const pb = normVer(b).split('.').map(Number);
+  for (let i = 0; i < 3; i++) {
+    const d = (pa[i] || 0) - (pb[i] || 0);
+    if (d !== 0) return d;
+  }
+  return 0;
+}
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Parse from/to from URL: ?from=X&to=Y or /diff/vX...vY in pathname
+function parseParams() {
+  const sp = new URLSearchParams(location.search);
+  let from = normVer(sp.get('from') || '');
+  let to   = normVer(sp.get('to')   || '');
+  // Also handle /diff/v0.16.7...v0.17.0 notation in pathname
+  const m = location.pathname.match(/diff\/v?([^.]+\.\d+(?:\.\d+)?)\.\.\.v?([^/]+)/);
+  if (m) { from = normVer(m[1]); to = normVer(m[2]); }
+  return { from, to };
+}
+
+function buildShareURL(from, to) {
+  const u = new URL(location.href);
+  u.pathname = '/diff/';
+  u.search = `?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+  return u.toString();
+}
+
+let allVersions = [];   // [{version, title, date, archive_url}] sorted asc
+let diffResult = null;  // cached last diff for JSON export
+let jsonVisible = false;
+
+async function loadIndex() {
+  const res = await fetch('/patches/index.json');
+  if (!res.ok) throw new Error('index fetch failed');
+  const data = await res.json();
+  return (data.versions || []).slice().sort((a, b) => semverCmp(a.version, b.version));
+}
+
+function populateSelectors(versions, params) {
+  const selFrom = document.getElementById('sel-from');
+  const selTo   = document.getElementById('sel-to');
+
+  // "From" = "any version except latest" + a "(before all)" sentinel
+  selFrom.innerHTML = '<option value="">Select base version…</option>' +
+    versions.map(v => `<option value="${esc(v.version)}">${esc('v' + v.version + ' — ' + v.title)}</option>`).join('');
+  selTo.innerHTML = '<option value="">Select target version…</option>' +
+    versions.map(v => `<option value="${esc(v.version)}">${esc('v' + v.version + ' — ' + v.title)}</option>`).join('');
+
+  if (params.from) selFrom.value = params.from;
+  if (params.to)   selTo.value   = params.to;
+
+  // Default to: from = second-to-last, to = last
+  if (!params.from && versions.length >= 2) selFrom.value = versions[versions.length - 2].version;
+  if (!params.to   && versions.length >= 1) selTo.value   = versions[versions.length - 1].version;
+
+  document.getElementById('btn-compare').disabled = false;
+}
+
+async function computeDiff(fromVer, toVer) {
+  // Versions strictly after fromVer, up to and including toVer
+  const range = allVersions.filter(v =>
+    semverCmp(v.version, fromVer) > 0 && semverCmp(v.version, toVer) <= 0
+  );
+  if (!range.length) return null;
+
+  const patches = await Promise.all(
+    range.map(v =>
+      v.archive_url
+        ? fetch(v.archive_url).then(r => r.ok ? r.json() : null).catch(() => null)
+        : Promise.resolve(null)
+    )
+  );
+
+  const agg = { added: [], changed: [], fixed: [], removed: [] };
+  for (let i = 0; i < patches.length; i++) {
+    const p = patches[i];
+    if (!p) continue;
+    const ver = range[i].version;
+    for (const sec of ['added', 'changed', 'fixed', 'removed']) {
+      const items = Array.isArray(p[sec]) ? p[sec] : [];
+      for (const item of items) agg[sec].push({ text: item, version: ver });
+    }
+  }
+
+  return { fromVer, toVer, range, agg };
+}
+
+function renderDiff(result) {
+  const { fromVer, toVer, range, agg } = result;
+  const root = document.getElementById('diff-root');
+
+  const counts = {};
+  for (const sec of ['added', 'changed', 'fixed', 'removed']) counts[sec] = agg[sec].length;
+  const total = Object.values(counts).reduce((s, n) => s + n, 0);
+
+  const versionList = range.map(v => `v${v.version}`).join(', ');
+  const summaryHtml = `
+    <div class="summary-bar">
+      <span class="summary-versions">
+        ${range.length} version${range.length !== 1 ? 's' : ''} between v${esc(fromVer)} and v${esc(toVer)}:
+        <strong>${esc(versionList)}</strong>
+      </span>
+      <span class="summary-counts">
+        ${counts.added   ? `<span class="count-chip added">+${counts.added} added</span>`     : ''}
+        ${counts.changed ? `<span class="count-chip changed">~${counts.changed} changed</span>` : ''}
+        ${counts.fixed   ? `<span class="count-chip fixed">🔧${counts.fixed} fixed</span>`    : ''}
+        ${counts.removed ? `<span class="count-chip removed">-${counts.removed} removed</span>` : ''}
+      </span>
+    </div>`;
+
+  const sectionsHtml = SECTIONS
+    .filter(s => agg[s.key].length > 0)
+    .map(s => `
+      <div class="section-block">
+        <div class="section-heading ${s.cls}">${s.label} (${agg[s.key].length})</div>
+        ${agg[s.key].map(item => `
+          <div class="patch-item">${esc(item.text)}<span class="ver-badge">v${esc(item.version)}</span></div>
+        `).join('')}
+      </div>`)
+    .join('');
+
+  const shareURL = buildShareURL(fromVer, toVer);
+
+  root.innerHTML = summaryHtml + `
+    <div class="export-bar">
+      <button class="btn-copy" id="btn-json-toggle">{ } View JSON</button>
+      <button class="btn-copy" id="btn-copy-json">Copy JSON</button>
+      <a class="btn-share" href="${esc(shareURL)}" id="btn-share">🔗 Share link</a>
+      <span class="copy-confirm" id="copy-confirm" style="display:none">Copied!</span>
+    </div>
+    <div class="json-block" id="json-block"></div>
+    <div class="diff-card">
+      ${sectionsHtml || '<p class="empty-note">No changes found in this range.</p>'}
+    </div>`;
+
+  // Wire up JSON toggle
+  const jsonBlock = document.getElementById('json-block');
+  const jsonPayload = buildJsonPayload(result);
+  jsonBlock.textContent = jsonPayload;
+
+  document.getElementById('btn-json-toggle').addEventListener('click', () => {
+    jsonVisible = !jsonVisible;
+    jsonBlock.classList.toggle('visible', jsonVisible);
+    document.getElementById('btn-json-toggle').textContent = jsonVisible ? '{ } Hide JSON' : '{ } View JSON';
+  });
+
+  document.getElementById('btn-copy-json').addEventListener('click', async () => {
+    await navigator.clipboard.writeText(jsonPayload);
+    const confirm = document.getElementById('copy-confirm');
+    confirm.style.display = '';
+    setTimeout(() => { confirm.style.display = 'none'; }, 2000);
+  });
+
+  // Update page title + meta
+  document.title = `SpiritVale Diff: v${fromVer} → v${toVer}`;
+  history.replaceState(null, '', buildShareURL(fromVer, toVer));
+}
+
+function buildJsonPayload(result) {
+  const { fromVer, toVer, range, agg } = result;
+  const out = {
+    from: fromVer,
+    to: toVer,
+    versions_included: range.map(v => v.version),
+    added:   agg.added.map(i => i.text),
+    changed: agg.changed.map(i => i.text),
+    fixed:   agg.fixed.map(i => i.text),
+    removed: agg.removed.map(i => i.text),
+  };
+  return JSON.stringify(out, null, 2);
+}
+
+async function runCompare() {
+  const fromVer = normVer(document.getElementById('sel-from').value);
+  const toVer   = normVer(document.getElementById('sel-to').value);
+  const root = document.getElementById('diff-root');
+
+  if (!fromVer || !toVer) {
+    root.innerHTML = '<p class="state-msg">Select both versions to compare.</p>';
+    return;
+  }
+  if (semverCmp(fromVer, toVer) >= 0) {
+    root.innerHTML = '<p class="state-msg">⚠️ "From" version must be older than "To" version.</p>';
+    return;
+  }
+
+  root.innerHTML = '<p class="state-msg">Loading patches…</p>';
+  const result = await computeDiff(fromVer, toVer);
+  if (!result || !result.range.length) {
+    root.innerHTML = '<p class="state-msg">No versions found in that range.</p>';
+    return;
+  }
+  diffResult = result;
+  renderDiff(result);
+}
+
+async function init() {
+  const root = document.getElementById('diff-root');
+  const params = parseParams();
+
+  try {
+    allVersions = await loadIndex();
+  } catch (e) {
+    root.innerHTML = '<p class="state-msg">Could not load version index. Try refreshing.</p>';
+    return;
+  }
+
+  populateSelectors(allVersions, params);
+  document.getElementById('btn-compare').addEventListener('click', runCompare);
+
+  // Auto-run if both params present in URL
+  if (params.from && params.to) {
+    await runCompare();
+  } else if (allVersions.length >= 2) {
+    // Auto-run with defaults (second-to-last → last)
+    await runCompare();
+  }
+}
+
+init();
+</script>
+</body>
+</html>

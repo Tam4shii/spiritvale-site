@@ -57,6 +57,7 @@
 - [x] **patch viewer: "View on Steam →" link** (2026-05-28) — each patch card in `/patch/` now shows a direct link to the original Steam announcement (`steam_url` field was already in all 9 `patches/v*.json` files but was never surfaced in the UI); 1-line change to `renderPatch()` footer
 - [x] **scripts/validate-patches.py committed + README expanded** (2026-05-28) — `scripts/validate-patches.py` was referenced in README but never tracked by git; committed + pushed (commit 4fdd062). README endpoint table expanded from 2→11 rows covering all live routes; "Add a new patch" section rewritten as 5-step checklist matching current process.
 - [x] **feed.json discoverability** (2026-05-28) — `feed.json` (JSON Feed 1.1) existed with proper Content-Type headers but was missing from sitemap, llms.txt, and HTML `<link rel="alternate">` tags; `/diff/` was the only page with no feed discovery tags at all. Added to all 5 locations (commit bac3627).
+- [x] **full-text search at `/search/`** (2026-05-29) — client-side search page across all 128 patch entries; `scripts/build-search-index.py` generates `search-index.json` (flattened bullets: id/version/type/text/url); sitemap + llms.txt + homepage nav updated; feed.json enriched with `language`, `icon`, per-item `tags[]` + `_steam_gid`; absolute hrefs on all `<link rel="alternate">` tags; 404.html head polished. Committed + pushed (commit fedfaef).
 - Build guides / class info
 - Boss tracker / event calendar
 - API endpoints อื่นๆ (เช่น `/builds`, `/items`)

@@ -25,6 +25,9 @@
 - **Atom feed** — https://spiritvale.tama.sh/feed.xml
   RFC 4287 feed of all archived patches, newest-first. Subscribe for updates.
 
+- **JSON Feed 1.1** — https://spiritvale.tama.sh/feed.json
+  JSON-native alternative to the Atom feed. Fields per item: id, url, title, content_text, date_published.
+
 - **Landing page** — https://spiritvale.tama.sh/
 
 ## Archived versions (newest first)

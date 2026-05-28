@@ -53,6 +53,7 @@
 - [x] **index.json steam_news_id** (2026-05-28) — added `steam_news_id` to all 9 version entries in `patches/index.json`; GH Actions deduplication now uses both GID + version-string matching; pushed (commit abe0c01). **Key alignment verified**: `pull-steam-news.py:54` reads `v["steam_news_id"]` — exact match to field name; deduplication is wired correctly.
 - [x] **diff viewer at `/diff/`** (2026-05-28) — client-side cumulative diff between any two versions; fetches `patches/index.json` + individual patch files, aggregates added/changed/fixed/removed across all versions in range, renders with per-entry version badge; includes JSON export + clipboard copy + shareable URL (`?from=X&to=Y`); also handles `/diff/vX...vY` pathname notation for LLM-friendly linking; matches existing design system
 - [x] **sitemap.xml lastmod audit** (2026-05-28) — all 9 patch entries verified accurate (match `index.json` release dates); added missing `/diff/` entry (lastmod 2026-05-28, priority 0.8) and `/schema/patch.json` entry (lastmod 2026-05-26, priority 0.4); committed + pushed
+- [x] **homepage + llms.txt discoverability fix** (2026-05-28) — `/diff/` card added to landing page nav links (was missing after diff viewer shipped); `llms.txt` updated with `?from=X&to=Y` URL param docs for LLM consumers; pushed (commit c06080a)
 - Build guides / class info
 - Boss tracker / event calendar
 - API endpoints อื่นๆ (เช่น `/builds`, `/items`)

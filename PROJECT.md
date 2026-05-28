@@ -52,7 +52,7 @@
 - [x] **sitemap.xml accuracy** (2026-05-28) — fixed stale v0.17.0 entry (pending→never/0.7) + updated lastmod for index.json and latest.json from 2026-05-25→2026-05-27; pushed (commit c48ee78)
 - [x] **index.json steam_news_id** (2026-05-28) — added `steam_news_id` to all 9 version entries in `patches/index.json`; GH Actions deduplication now uses both GID + version-string matching; pushed (commit abe0c01). **Key alignment verified**: `pull-steam-news.py:54` reads `v["steam_news_id"]` — exact match to field name; deduplication is wired correctly.
 - [x] **diff viewer at `/diff/`** (2026-05-28) — client-side cumulative diff between any two versions; fetches `patches/index.json` + individual patch files, aggregates added/changed/fixed/removed across all versions in range, renders with per-entry version badge; includes JSON export + clipboard copy + shareable URL (`?from=X&to=Y`); also handles `/diff/vX...vY` pathname notation for LLM-friendly linking; matches existing design system
-- [ ] **sitemap.xml lastmod audit** (pending) — verify that all 9 patch entries have accurate `lastmod` dates; v0.17.0 was patched 2026-05-28 but earlier entries may still carry placeholder dates from initial scaffolding
+- [x] **sitemap.xml lastmod audit** (2026-05-28) — all 9 patch entries verified accurate (match `index.json` release dates); added missing `/diff/` entry (lastmod 2026-05-28, priority 0.8) and `/schema/patch.json` entry (lastmod 2026-05-26, priority 0.4); committed + pushed
 - Build guides / class info
 - Boss tracker / event calendar
 - API endpoints อื่นๆ (เช่น `/builds`, `/items`)

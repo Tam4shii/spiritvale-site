@@ -3,6 +3,13 @@
 All notable changes to SpiritVale are documented here.
 Follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 Machine-readable source: [`patches/index.json`](patches/index.json)
+Schema validation: `python3 scripts/validate-patches.py`
+
+## [Unreleased]
+
+> Changes merged to `main` but not yet shipped as a versioned patch.
+
+<!-- Add entries here as work lands; move the whole block down when a patch ships. -->
 
 ## [0.17.0] — The Echoing Spire  `2026-05-25`  *(current)*
 

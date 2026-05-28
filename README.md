@@ -18,3 +18,12 @@ Auto-deployed via Cloudflare Pages on push to `main`.
 ## Add a new patch
 
 Edit `patch.json` → commit → push. Live in ~1 min (CF Pages build).
+
+## Validate patch files
+
+```
+pip install jsonschema   # once
+python3 scripts/validate-patches.py
+```
+
+Runs `jsonschema.validate` against `schema/patch.json` for every `patches/v*.json` and `patches/latest.json`. Exit code 0 = all pass.

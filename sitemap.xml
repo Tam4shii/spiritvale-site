@@ -88,4 +88,18 @@
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <!-- Cumulative diff viewer — compare any two versions side-by-side -->
+    <loc>https://spiritvale.tama.sh/diff/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <!-- JSON Schema for patch files — developer / LLM tooling reference -->
+    <loc>https://spiritvale.tama.sh/schema/patch.json</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
 </urlset>

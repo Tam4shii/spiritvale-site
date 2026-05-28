@@ -92,8 +92,22 @@
     <!-- Cumulative diff viewer — compare any two versions side-by-side -->
     <loc>https://spiritvale.tama.sh/diff/</loc>
     <lastmod>2026-05-28</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <!-- Primary machine-readable endpoint — root patch manifest consumed by Claude artifacts -->
+    <loc>https://spiritvale.tama.sh/patch.json</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <!-- Atom feed — patch release RSS for subscribers and crawlers -->
+    <loc>https://spiritvale.tama.sh/feed.xml</loc>
+    <lastmod>2026-05-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <!-- JSON Schema for patch files — developer / LLM tooling reference -->

@@ -55,6 +55,7 @@
 - [x] **sitemap.xml lastmod audit** (2026-05-28) — all 9 patch entries verified accurate (match `index.json` release dates); added missing `/diff/` entry (lastmod 2026-05-28, priority 0.8) and `/schema/patch.json` entry (lastmod 2026-05-26, priority 0.4); committed + pushed
 - [x] **homepage + llms.txt discoverability fix** (2026-05-28) — `/diff/` card added to landing page nav links (was missing after diff viewer shipped); `llms.txt` updated with `?from=X&to=Y` URL param docs for LLM consumers; pushed (commit c06080a)
 - [x] **patch viewer: "View on Steam →" link** (2026-05-28) — each patch card in `/patch/` now shows a direct link to the original Steam announcement (`steam_url` field was already in all 9 `patches/v*.json` files but was never surfaced in the UI); 1-line change to `renderPatch()` footer
+- [x] **scripts/validate-patches.py committed + README expanded** (2026-05-28) — `scripts/validate-patches.py` was referenced in README but never tracked by git; committed + pushed (commit 4fdd062). README endpoint table expanded from 2→11 rows covering all live routes; "Add a new patch" section rewritten as 5-step checklist matching current process.
 - Build guides / class info
 - Boss tracker / event calendar
 - API endpoints อื่นๆ (เช่น `/builds`, `/items`)

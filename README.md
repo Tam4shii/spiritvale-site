@@ -10,6 +10,15 @@ Live: https://spiritvale.tama.sh
 |---|---|---|
 | `/` | Landing page | — |
 | `/patch.json` | Patch notes manifest (consumed by Claude artifact) | `*` |
+| `/patches/index.json` | All versions index with metadata | `*` |
+| `/patches/latest.json` | Current version full patch data | `*` |
+| `/patches/v{x.y.z}.json` | Individual version data (9 versions archived) | `*` |
+| `/patch/` | HTML patch viewer — browse full archive | — |
+| `/diff/` | Cumulative diff viewer between any two versions | — |
+| `/feed.xml` | Atom feed of patch releases | — |
+| `/schema/patch.json` | JSON Schema for `patches/v*.json` | `*` |
+| `/llms.txt` | LLM-readable API guide | — |
+| `/sitemap.xml` | Sitemap | — |
 
 ## Deploy
 
@@ -17,7 +26,11 @@ Auto-deployed via Cloudflare Pages on push to `main`.
 
 ## Add a new patch
 
-Edit `patch.json` → commit → push. Live in ~1 min (CF Pages build).
+1. Create `patches/v{x.y.z}.json` from the schema template
+2. Update `patches/index.json` (add entry, bump `latest_version`)
+3. Update `patches/latest.json` and `patch.json`
+4. Update `feed.xml`, `sitemap.xml`, `CHANGELOG.md`
+5. Commit + push → CF Pages auto-deploys in ~1 min
 
 ## Validate patch files
 

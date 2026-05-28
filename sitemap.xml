@@ -123,4 +123,18 @@
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
+  <url>
+    <!-- Full-text search across all patch history — client-side, zero backend -->
+    <loc>https://spiritvale.tama.sh/search/</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <!-- Search index — flattened bullet entries powering /search/ -->
+    <loc>https://spiritvale.tama.sh/search-index.json</loc>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
 </urlset>

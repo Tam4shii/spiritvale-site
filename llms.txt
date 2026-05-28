@@ -28,6 +28,14 @@
 - **JSON Feed 1.1** — https://spiritvale.tama.sh/feed.json
   JSON-native alternative to the Atom feed. Fields per item: id, url, title, content_text, date_published.
 
+- **Full-text search** — https://spiritvale.tama.sh/search/
+  Client-side search across all patch history. Also accepts `?q=term` for direct deep-linking.
+
+- **Search index (JSON)** — https://spiritvale.tama.sh/search-index.json
+  Machine-readable flat array of all change entries: {id, version, patch_title, date, type, text, url}.
+  128 entries (9 patches × added/changed/fixed/removed bullets). Regenerated on each patch release.
+  LLM consumers: fetch this once to answer queries like "when was Shadow Step nerfed?" without fetching 9 separate patch files.
+
 - **Landing page** — https://spiritvale.tama.sh/
 
 ## Archived versions (newest first)

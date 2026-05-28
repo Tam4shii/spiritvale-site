@@ -1,0 +1,14 @@
+#!/bin/bash
+# Auto-regenerates search-index.json when patches change.
+# Install: make install-hooks
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+if git diff --cached --name-only | grep -qE '(^patches/v.*\.json$|^scripts/build-search-index\.py$)'; then
+  echo "→ patches changed, regenerating search-index.json …"
+  python3 "$REPO_ROOT/scripts/build-search-index.py"
+  git add "$REPO_ROOT/search-index.json"
+  echo "→ search-index.json updated and staged."
+fi

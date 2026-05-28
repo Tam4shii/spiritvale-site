@@ -130,7 +130,7 @@
 <main>
   <a class="back" href="/">← Home</a>
   <h1>Patch Search</h1>
-  <p class="subtitle">Search across <span id="total">…</span> change entries from 9 patches</p>
+  <p class="subtitle">Search across <span id="total">…</span> change entries from <span id="patch-count">…</span> patches</p>
 
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
@@ -221,6 +221,7 @@ async function init() {
     const data = await fetch('/search-index.json').then(r => r.json());
     allEntries = data.entries;
     document.getElementById('total').textContent = data.total;
+    document.getElementById('patch-count').textContent = data.patch_count || '?';
   } catch(_) {
     document.getElementById('results').innerHTML = '<p class="hint">Could not load search index. Try refreshing.</p>';
     return;

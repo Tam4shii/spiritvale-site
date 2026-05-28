@@ -1,0 +1,38 @@
+name: Validate search index freshness
+
+on:
+  push:
+    paths:
+      - 'patches/**.json'
+      - 'scripts/build-search-index.py'
+      - 'search-index.json'
+  pull_request:
+    paths:
+      - 'patches/**.json'
+      - 'scripts/build-search-index.py'
+      - 'search-index.json'
+
+jobs:
+  check-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check index freshness
+        run: |
+          python3 -c "
+          import json
+          with open('search-index.json') as f: d = json.load(f)
+          d.pop('generated_at', None)
+          with open('/tmp/idx-before.json', 'w') as f: json.dump(d, f, sort_keys=True)
+          "
+          python3 scripts/build-search-index.py
+          python3 -c "
+          import json
+          with open('search-index.json') as f: d = json.load(f)
+          d.pop('generated_at', None)
+          with open('/tmp/idx-after.json', 'w') as f: json.dump(d, f, sort_keys=True)
+          "
+          diff /tmp/idx-before.json /tmp/idx-after.json \
+            || (echo 'ERROR: search-index.json is stale — run make index and commit' && exit 1)
+          echo 'search-index.json is fresh ✓'

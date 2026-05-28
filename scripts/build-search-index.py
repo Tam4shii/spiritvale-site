@@ -30,6 +30,7 @@ for path in patch_files:
 output = {
     'generated_at': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
     'total': len(entries),
+    'patch_count': len(patch_files),
     'entries': entries
 }
 with open(OUTPUT, 'w') as f:

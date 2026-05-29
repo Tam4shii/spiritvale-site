@@ -1,12 +1,17 @@
-.PHONY: build index validate og install-hooks check-steam help
+.PHONY: build index tags validate og install-hooks check-steam help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index validate
+build: index tags validate
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
 index:
 	python3 scripts/build-search-index.py
+
+# Generate /tag/<slug>/ static pages from search-index.json.
+# Run after `make index` to reflect latest tag data.
+tags:
+	python3 scripts/build-tag-pages.py
 
 # Validate all patch files against schema/patch.json.
 validate:
@@ -33,5 +38,6 @@ help:
 	@echo "  make index         — rebuild search-index.json"
 	@echo "  make validate      — validate all patches against schema"
 	@echo "  make og            — generate OG preview images (requires pillow)"
+	@echo "  make tags          — generate /tag/<slug>/ static pages"
 	@echo "  make install-hooks — install git pre-commit hook"
 	@echo "  make check-steam   — check Steam API for new patch notes (local dry-run)"

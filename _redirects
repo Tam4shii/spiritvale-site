@@ -4,3 +4,6 @@
 /patches/manifest.json /patches/index.json 302
 /v1/* /:splat 200
 /diff /diff/ 301
+/releases.atom /feed.xml 302
+/releases.json /feed.json 302
+/releases /patch/ 302

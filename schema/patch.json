@@ -57,6 +57,16 @@
       "items": { "type": "string", "minLength": 1 },
       "description": "Features or content removed in this patch"
     },
+    "deprecated": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Features marked for future removal — still present but no longer recommended"
+    },
+    "security": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Security-related fixes or hardening changes"
+    },
     "steam_news_id": {
       "type": "string",
       "description": "Steam AppNews GID — stable unique ID for the upstream Steam news item"

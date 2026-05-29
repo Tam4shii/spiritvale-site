@@ -10,15 +10,15 @@
 <meta property="og:description" content="Unofficial patch notes & community resources for SpiritVale (Steam app 3918510).">
 <meta property="og:url" content="https://spiritvale.tama.sh/">
 <meta property="og:site_name" content="SpiritVale Community Hub">
-<meta property="og:image" content="https://spiritvale.tama.sh/og/v0.17.0.png">
+<meta property="og:image" content="https://spiritvale.tama.sh/og/latest.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="SpiritVale v0.17.0 — Balance Update — patch notes social preview">
+<meta property="og:image:alt" content="SpiritVale Community Hub — unofficial patch notes archive">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SpiritVale — Community Hub">
 <meta name="twitter:description" content="Unofficial patch notes & community resources for SpiritVale (Steam app 3918510).">
-<meta name="twitter:image" content="https://spiritvale.tama.sh/og/v0.17.0.png">
-<meta name="twitter:image:alt" content="SpiritVale v0.17.0 — Balance Update — patch notes social preview">
+<meta name="twitter:image" content="https://spiritvale.tama.sh/og/latest.png">
+<meta name="twitter:image:alt" content="SpiritVale Community Hub — unofficial patch notes archive">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#7c3aed">
@@ -35,6 +35,12 @@
     --accent-2: #7c3aed;
     --card: rgba(167, 139, 250, 0.08);
     --border: rgba(167, 139, 250, 0.2);
+    --added: #34d399;
+    --changed: #fbbf24;
+    --deprecated: #f97316;
+    --fixed: #60a5fa;
+    --removed: #f87171;
+    --security: #a3e635;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -117,11 +123,17 @@
     margin-bottom: 0.4rem;
   }
   .patch-item {
-    padding: 0.3rem 0;
-    border-bottom: 1px solid rgba(167,139,250,0.07);
+    padding: 0.3rem 0 0.3rem 0.75rem;
+    border-left: 2px solid rgba(167,139,250,0.15);
     font-size: 0.93rem;
   }
-  .patch-item:last-child { border-bottom: none; }
+  .patch-item + .patch-item { margin-top: 0.1rem; }
+  .patch-item--added      { border-left-color: var(--added); }
+  .patch-item--changed    { border-left-color: var(--changed); }
+  .patch-item--deprecated { border-left-color: var(--deprecated); }
+  .patch-item--removed    { border-left-color: var(--removed); }
+  .patch-item--fixed      { border-left-color: var(--fixed); }
+  .patch-item--security   { border-left-color: var(--security); }
   .patch-empty { color: var(--muted); font-size: 0.88rem; font-style: italic; text-align: center; padding: 0.5rem 0; }
   .patch-view-link {
     display: inline-block;
@@ -179,10 +191,12 @@
 </main>
 <script>
   const GROUPS = [
-    { key: 'added',   label: '🟢 Added' },
-    { key: 'changed', label: '🟡 Changed' },
-    { key: 'fixed',   label: '🔧 Fixed' },
-    { key: 'removed', label: '🔴 Removed' },
+    { key: 'added',      label: '🟢 Added' },
+    { key: 'changed',    label: '🟡 Changed' },
+    { key: 'deprecated', label: '🟠 Deprecated' },
+    { key: 'removed',    label: '🔴 Removed' },
+    { key: 'fixed',      label: '🔧 Fixed' },
+    { key: 'security',   label: '🛡️ Security' },
   ];
 
   function esc(s) {
@@ -203,7 +217,7 @@
         .filter(g => Array.isArray(patch[g.key]) && patch[g.key].length > 0)
         .map(g => `<div class="patch-group">
           <div class="group-label">${g.label}</div>
-          ${patch[g.key].map(item => `<div class="patch-item">${esc(item)}</div>`).join('')}
+          ${patch[g.key].map(item => `<div class="patch-item patch-item--${g.key}">${esc(item)}</div>`).join('')}
         </div>`)
         .join('');
 

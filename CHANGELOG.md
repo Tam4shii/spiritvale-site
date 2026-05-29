@@ -289,3 +289,15 @@ Schema validation: `python3 scripts/validate-patches.py`
 
 ---
 *Generated from structured JSON — edit [`patches/v*.json`](patches/) to update.*
+
+[Unreleased]: https://github.com/Tam4shii/spiritvale-site/compare/v0.17.0...HEAD
+[0.17.0]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1833334318576172
+[0.16.7]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1832700592795176
+[0.16.3]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1832700592786579
+[0.16.0]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1830163047261470
+[0.15.0]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1827626365765818
+[0.14.0]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1826992588599147
+[0.13.5]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633196404
+[0.13.4]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633189958
+[0.13.2]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633187162
+[0.13.0]: https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633181983

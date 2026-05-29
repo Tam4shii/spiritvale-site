@@ -37,8 +37,10 @@
     --border: rgba(167, 139, 250, 0.2);
     --added: #34d399;
     --changed: #fbbf24;
+    --deprecated: #f97316;
     --fixed: #60a5fa;
     --removed: #f87171;
+    --security: #a3e635;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -135,10 +137,12 @@
     text-transform: uppercase;
     margin-bottom: 0.35rem;
   }
-  .section-heading.added   { color: var(--added); }
-  .section-heading.changed { color: var(--changed); }
-  .section-heading.fixed   { color: var(--fixed); }
-  .section-heading.removed { color: var(--removed); }
+  .section-heading.added      { color: var(--added); }
+  .section-heading.changed    { color: var(--changed); }
+  .section-heading.deprecated { color: var(--deprecated); }
+  .section-heading.fixed      { color: var(--fixed); }
+  .section-heading.removed    { color: var(--removed); }
+  .section-heading.security   { color: var(--security); }
   .section-block { margin-bottom: 0.9rem; }
   .section-block:last-child { margin-bottom: 0; }
   .patch-item {
@@ -207,6 +211,26 @@
     vertical-align: middle;
   }
 
+  /* Version jump nav */
+  .version-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 2rem;
+  }
+  .version-chip {
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-family: ui-monospace, "SF Mono", monospace;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .version-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .version-chip.current { border-color: rgba(167,139,250,0.5); color: var(--accent); font-weight: 600; }
+
   /* Loading / error */
   .state-msg {
     text-align: center;
@@ -232,6 +256,7 @@
     <p class="sub">Full archive of all SpiritVale updates</p>
   </div>
 
+  <div id="version-nav" class="version-nav"></div>
   <div id="patches-root"></div>
 
   <footer>
@@ -242,10 +267,12 @@
 </main>
 <script>
 const SECTIONS = [
-  { key: 'added',   label: '🟢 Added',   cls: 'added' },
-  { key: 'changed', label: '🟡 Changed', cls: 'changed' },
-  { key: 'fixed',   label: '🔧 Fixed',   cls: 'fixed' },
-  { key: 'removed', label: '🔴 Removed', cls: 'removed' },
+  { key: 'added',      label: '🟢 Added',      cls: 'added' },
+  { key: 'changed',    label: '🟡 Changed',    cls: 'changed' },
+  { key: 'deprecated', label: '🟠 Deprecated', cls: 'deprecated' },
+  { key: 'removed',    label: '🔴 Removed',    cls: 'removed' },
+  { key: 'fixed',      label: '🔧 Fixed',      cls: 'fixed' },
+  { key: 'security',   label: '🛡️ Security',   cls: 'security' },
 ];
 
 function esc(s) {
@@ -311,6 +338,13 @@ async function loadAll() {
     if (!entries.length) {
       root.innerHTML = '<p class="state-msg">No patch notes yet.</p>';
       return;
+    }
+
+    const nav = document.getElementById('version-nav');
+    if (nav) {
+      nav.innerHTML = entries.map(v =>
+        `<a class="version-chip${v.current ? ' current' : ''}" href="#v-${esc(v.version)}">v${esc(v.version)}</a>`
+      ).join('');
     }
 
     // Fetch full data for each version via its immutable archive URL.

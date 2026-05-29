@@ -15,7 +15,7 @@ for path in patch_files:
     version = p['version']
     patch_title = p.get('title', f'v{version}')
     date = p.get('date', '')
-    for change_type in ('added', 'changed', 'fixed', 'removed'):
+    for change_type in ('added', 'changed', 'deprecated', 'removed', 'fixed', 'security'):
         for i, text in enumerate(p.get(change_type) or []):
             entries.append({
                 'id': f'v{version}-{change_type}-{i}',

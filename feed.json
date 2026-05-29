@@ -98,6 +98,16 @@
       "date_published": "2026-02-20T08:04:11Z",
       "tags": ["bugfix", "balance"],
       "_steam_gid": "1825093633187162"
+    },
+    {
+      "id": "https://spiritvale.tama.sh/patches/v0.13.0.json",
+      "url": "https://spiritvale.tama.sh/patch/?v=0.13.0",
+      "external_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633181983",
+      "title": "v0.13.0 – Shinobi Revamp",
+      "content_text": "8 added, 30 changed, 16 fixed. Major Shinobi class expansion: 7 new skills, improved clone behaviour, new Flame Burst Kunai. Multi-class weapon and skill rebalancing (Berserker, Mage, Paladin, Necromancer). New Crafter NPC in Forgotten Depths 2. Spider Queen Boss gains Smoke Screen and Execute. Gear level restriction gates reduced to 2 (Lv50, Lv100).",
+      "date_published": "2026-02-18T12:02:07Z",
+      "tags": ["content", "class-revamp", "balance"],
+      "_steam_gid": "1825093633181983"
     }
   ]
 }

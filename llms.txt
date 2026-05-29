@@ -33,14 +33,14 @@
 
 - **Search index (JSON)** — https://spiritvale.tama.sh/search-index.json
   Machine-readable flat array of all change entries: {id, version, patch_title, date, type, text, url}.
-  128 entries (9 patches × added/changed/fixed/removed bullets). Regenerated on each patch release.
-  LLM consumers: fetch this once to answer queries like "when was Shadow Step nerfed?" without fetching 9 separate patch files.
+  182 entries (10 patches × added/changed/fixed/removed bullets). Regenerated on each patch release.
+  LLM consumers: fetch this once to answer queries like "when was Shadow Step nerfed?" without fetching 10 separate patch files.
 
 - **Landing page** — https://spiritvale.tama.sh/
 
 ## Archived versions (newest first)
 
-v0.17.0, v0.16.7, v0.16.3, v0.16.0, v0.15.0, v0.14.0, v0.13.5, v0.13.4, v0.13.2
+v0.17.0, v0.16.7, v0.16.3, v0.16.0, v0.15.0, v0.14.0, v0.13.5, v0.13.4, v0.13.2, v0.13.0
 
 ## Context for LLMs
 

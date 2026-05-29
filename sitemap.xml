@@ -67,6 +67,12 @@
     <changefreq>never</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://spiritvale.tama.sh/patch/?v=0.13.0</loc>
+    <lastmod>2026-02-18</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
+  </url>
   <!-- Machine-readable data endpoints (Vintage Story / aion-patch-notes API pattern) -->
   <url>
     <!-- Version manifest — enumerate all available patches; updates each release -->
@@ -133,7 +139,7 @@
   <url>
     <!-- Search index — flattened bullet entries powering /search/ -->
     <loc>https://spiritvale.tama.sh/search-index.json</loc>
-    <lastmod>2026-05-28</lastmod>
+    <lastmod>2026-05-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

@@ -13,11 +13,15 @@
 <meta property="og:image" content="https://spiritvale.tama.sh/og/v0.17.0.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="SpiritVale v0.17.0 — Balance Update — patch search social preview">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SpiritVale — Patch Search">
 <meta name="twitter:description" content="Full-text search across all SpiritVale patch history. Find any buff, nerf, or feature by keyword.">
 <meta name="twitter:image" content="https://spiritvale.tama.sh/og/v0.17.0.png">
+<meta name="twitter:image:alt" content="SpiritVale v0.17.0 — Balance Update — patch search social preview">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#7c3aed">
 <link rel="canonical" href="https://spiritvale.tama.sh/search/">
 <link rel="alternate" type="application/atom+xml" href="https://spiritvale.tama.sh/feed.xml" title="SpiritVale Patch Notes Feed">
 <link rel="alternate" type="application/feed+json" href="https://spiritvale.tama.sh/feed.json" title="SpiritVale Patch Notes (JSON Feed)">
@@ -247,5 +251,6 @@ async function init() {
 
 init();
 </script>
+<script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

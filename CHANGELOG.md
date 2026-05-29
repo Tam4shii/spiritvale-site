@@ -223,5 +223,69 @@ Schema validation: `python3 scripts/validate-patches.py`
 - Cooldown recovery stat not applying correctly
 - Summon behaviour improved
 
+## [0.13.0] — Shinobi Revamp  `2026-02-18`
+
+> Steam announcement: <https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633181983>
+
+### Added
+- Shinobi: 7 new skills
+- Kunai: Flame Burst Kunai available at Forge
+- New Gems added
+- Crafter NPC added to Forgotten Depths 2
+- Stagger debuff icon added to UI
+- Character poses added to UI screens
+- Spider Queen Boss: Smoke Screen and Execute skills
+- Gear Level Restrictions reduced — only 2 gates now at Lv.50 and Lv.100
+
+### Changed
+- Shinobi: new skill modifiers distributed to existing Kunais
+- Shinobi: removed −50% MP cost per active clone; clone skill casts now cost caster's mana
+- Shinobi: Releases now convert weapon element
+- Shinobi: overall Clone behaviour improved
+- Berserker — Blood Frenzy: Aspd 50% → 30%, Siphon 100 → 50
+- Berserker — Berserk: added anti-flinch
+- Berserker — Shouts: now exclusive
+- Berserker — Rage: no longer drains from skill use; now stacks on skill use; shorter Enrage buff; reduced Rage gained from Enrage
+- Thunderstorm: Cooldown 2 → 1
+- Consecration: now heals for 2% hp/s
+- Smoke Screen: now applies cloaking to allies
+- Chaos Reaver: Cyclone Damage 35% → 50%
+- Red Maw: Crit 20% → 10%, Multi 100% → 50%
+- Serpent Fang: Crit 20% → 10%, Multi 100% → 50%, Slots 4 → 3
+- Flintlock Pistol: added 30% Aspd, 10% Crit, 50% Multi
+- Frost Mark: Crit 20% → 30%, removed Multi
+- Scalpel: Status Damage 25% → 10%, Slots 3 → 2
+- Hexbrand/Gravemarrow: Status Damage 50% → 40%
+- Binding Spirits/Holy Staff/Skybreaker Staff: Cast Time −2 → −1
+- Luxspire: Cast Time +3 → +2
+- Luxbane: Cast Time +3 → +2, Damage +150% → +200%
+- Elemental Swords: now include 10% + 1%/refine extra damage and resistance to element
+- Blade of Eclipse / Wraith of Dawn: increased Atk; Codex of Revelation: increased Matk
+- Plasma Helm/Set: replaced 1% hp/mp per second with 25% hp/mp regen
+- Ragebound Fury: replaced 1% hp per second with 50% hp regen
+- Necromancer Reanimate — Goblin King: STR 100→150, INT 100→50, Stomp→Earth Splitter, Earthquake→Cyclone
+- Necromancer Reanimate — Worm Creep: STR/AGI 100→150, INT/VIT 100→50, skills swapped to Smoke Screen and Poison Grenade
+- Necromancer Reanimate — Warchief: Stomp→Chain Lightning, WW→Execute
+- Necromancer Reanimate — Cosmic Entity: Shadow Release→Dark Exorcism
+- Necromancer Reanimate — Wraith: STR 150→100, VIT 50→100, Unholy Aura reduced to +5% undead/shadow
+
+### Fixed
+- Auto attack and skill casting can no longer occur simultaneously
+- Clicking a skill in the toolbar now auto-casts on yourself (e.g., Benediction)
+- Fixed getting stuck on corners when using mouse-to-move
+- Fixed corpse explosion not working
+- Fixed autocasts (e.g., Heal) incorrectly targeting enemies
+- Disabled damage numbers for clones
+- Decay no longer affects boss regen
+- Fixed nav issues in Forgotten Depths 2 and Night Garden
+- Fixed getting stuck on loading screen when warping to same map
+- Fixed enchant poison not being exclusive
+- Improved skill tooltips
+- Fixed cooldown recovery rate stat not applying correctly
+- Fixed toggles not applying when invisible
+- Fixed inability to cast on yourself after changing maps
+- Optimised stacking status effects
+- Summons/Clones now teleport to player if too far away
+
 ---
 *Generated from structured JSON — edit [`patches/v*.json`](patches/) to update.*

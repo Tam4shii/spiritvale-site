@@ -100,4 +100,14 @@
     <summary type="text">8 changed, 4 fixed. Crafting and Refine cooldown 0.7s → 0.1s. Execute Axe and Chaos Reaver damage reduced. Eclipse Kunai and Fuma Shuriken reworked. Fixed database issues and healing vs undead.</summary>
   </entry>
 
+  <!-- v0.13.0 -->
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.0.json</id>
+    <title>v0.13.0 – Shinobi Revamp</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.0" />
+    <link rel="related" href="https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1825093633181983" title="Steam Announcement" />
+    <updated>2026-02-18T12:02:07Z</updated>
+    <summary type="text">8 added, 30 changed, 16 fixed. Major Shinobi class expansion: 7 new skills, improved clone behaviour, new Flame Burst Kunai. Multi-class weapon and skill rebalancing (Berserker, Mage, Paladin, Necromancer). New Crafter NPC in Forgotten Depths 2. Spider Queen Boss gains Smoke Screen and Execute. Gear level restriction gates reduced to 2 (Lv50, Lv100).</summary>
+  </entry>
+
 </feed>

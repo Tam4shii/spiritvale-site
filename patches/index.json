@@ -81,6 +81,15 @@
       "archive_url": "/patches/v0.13.2.json",
       "steam_news_id": "1825093633187162",
       "change_counts": { "added": 0, "changed": 8, "fixed": 4, "removed": 0 }
+    },
+    {
+      "version": "0.13.0",
+      "title": "Shinobi Revamp",
+      "date": "2026-02-18",
+      "current": false,
+      "archive_url": "/patches/v0.13.0.json",
+      "steam_news_id": "1825093633181983",
+      "change_counts": { "added": 8, "changed": 30, "fixed": 16, "removed": 0 }
     }
   ]
 }

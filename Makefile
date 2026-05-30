@@ -1,7 +1,7 @@
-.PHONY: build index tags validate og install-hooks check-steam help
+.PHONY: build index tags validate mirror check og install-hooks check-steam help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index tags validate
+build: index tags validate mirror
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
@@ -16,6 +16,20 @@ tags:
 # Validate all patch files against schema/patch.json.
 validate:
 	python3 scripts/validate-patches.py
+
+# Generate dated markdown mirror of each patch (archive/YYYY-MM-DD-vX.Y.Z.md).
+mirror:
+	python3 scripts/build-md-mirror.py
+
+# Validate XML and JSON derived artifacts for crawler correctness.
+check:
+	@echo "--- sitemap.xml ---" && xmllint --noout sitemap.xml && echo "sitemap.xml: OK"
+	@echo "--- tag/index.json ---" && python3 -m json.tool tag/index.json > /dev/null && echo "tag/index.json: OK"
+	@echo "--- patches/index.json ---" && python3 -m json.tool patches/index.json > /dev/null && echo "patches/index.json: OK"
+	@echo "--- search-index.json ---" && python3 -m json.tool search-index.json > /dev/null && echo "search-index.json: OK"
+	@echo "--- feed.json ---" && python3 -m json.tool feed.json > /dev/null && echo "feed.json: OK"
+	@echo "--- feed.xml ---" && xmllint --noout feed.xml && echo "feed.xml: OK"
+	@echo "All checks passed."
 
 # Generate per-patch OG social-preview images to og/*.png.
 # Run: make og  (requires: pip install pillow)
@@ -39,5 +53,7 @@ help:
 	@echo "  make validate      — validate all patches against schema"
 	@echo "  make og            — generate OG preview images (requires pillow)"
 	@echo "  make tags          — generate /tag/<slug>/ static pages"
+	@echo "  make mirror        — generate archive/YYYY-MM-DD-vX.Y.Z.md for each patch"
+	@echo "  make check         — validate sitemap.xml + JSON artifacts (xmllint + json.tool)"
 	@echo "  make install-hooks — install git pre-commit hook"
 	@echo "  make check-steam   — check Steam API for new patch notes (local dry-run)"

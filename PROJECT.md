@@ -89,8 +89,8 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 6. Run `make build og check` — confirm exit 0
 7. Commit + push → CF Pages auto-deploys; Discord green embed fires on merge
 
-**Last `make check` run**: 2026-05-30 (post embed commit d9bdd01) — ✅ exit 0 (all 6 artifacts valid)
-**Last Steam check**: 2026-05-30 — no new patch (latest: v0.17.0 "The Echoing Spire")
+**Last `make check` run**: 2026-05-31 (idle-loop audit) — ✅ exit 0 (all 6 artifacts valid)
+**Last Steam check**: 2026-05-31 — no new patch (latest: v0.17.0 "The Echoing Spire")
 
 ## BLOCKERS (Boss Actions Required)
 | # | Action | Where | Notes |

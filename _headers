@@ -54,6 +54,13 @@
   Content-Type: text/markdown; charset=utf-8
   Cache-Control: public, max-age=3600, s-maxage=3600
 
+/openapi.json
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=3600, s-maxage=3600
+
 /embed/*
+  # Relaxed vs global rule: frame-ancestors 'self' → frame-ancestors * (any origin may iframe this)
+  # connect-src added https://spiritvale.tama.sh (embed JS fetches /patches/latest.json cross-origin)
+  # X-Frame-Options ALLOWALL mirrors frame-ancestors * for older browsers
   X-Frame-Options: ALLOWALL
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://spiritvale.tama.sh; frame-ancestors *

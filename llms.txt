@@ -51,6 +51,10 @@
   The page doubles as a standalone embeddable iframe (detects `window.self !== window.top`, hides snippet UI).
   CORS-open: `Access-Control-Allow-Origin: *` on all JSON endpoints.
 
+- **OpenAPI spec** — https://spiritvale.tama.sh/openapi.json
+  OpenAPI 3.1 machine-readable API contract. Versioned alias: https://spiritvale.tama.sh/v1/openapi.json.
+  Use to auto-generate typed clients or validate integration assumptions.
+
 - **Landing page** — https://spiritvale.tama.sh/
 
 ## Archived versions (newest first)

@@ -162,7 +162,11 @@ def main():
         new_drafts.append({"slug": slug, "title": title})
 
     polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    stamp_index(polled_at)
+    try:
+        stamp_index(polled_at)
+    except Exception as e:
+        # Non-fatal: audit trail write failure must not abort a successful poll
+        print(f"WARN: could not update last_polled_at in index: {e}", file=sys.stderr)
 
     if new_drafts:
         first = new_drafts[0]

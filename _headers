@@ -14,7 +14,7 @@
 
 /patch.json
   Content-Type: application/json; charset=utf-8
-  Cache-Control: public, max-age=60, s-maxage=60, must-revalidate
+  Cache-Control: public, max-age=60, s-maxage=60, stale-while-revalidate=300
 
 /patches/v*.json
   Content-Type: application/json; charset=utf-8
@@ -22,19 +22,19 @@
 
 /patches/latest.json
   Content-Type: application/json; charset=utf-8
-  Cache-Control: public, max-age=60, s-maxage=60, must-revalidate
+  Cache-Control: public, max-age=60, s-maxage=60, stale-while-revalidate=300
 
 /patches/index.json
   Content-Type: application/json; charset=utf-8
-  Cache-Control: public, max-age=60, s-maxage=60, must-revalidate
+  Cache-Control: public, max-age=60, s-maxage=60, stale-while-revalidate=300
 
 /feed.xml
   Content-Type: application/atom+xml; charset=utf-8
-  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600
 
 /feed.json
   Content-Type: application/feed+json; charset=utf-8
-  Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
+  Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600
 
 /og/latest.png
   Cache-Control: public, max-age=300, s-maxage=300, must-revalidate
@@ -59,8 +59,18 @@
   Cache-Control: public, max-age=3600, s-maxage=3600
 
 /embed/*
-  # Relaxed vs global rule: frame-ancestors 'self' → frame-ancestors * (any origin may iframe this)
-  # connect-src added https://spiritvale.tama.sh (embed JS fetches /patches/latest.json cross-origin)
-  # X-Frame-Options ALLOWALL mirrors frame-ancestors * for older browsers
+  # ── Security decision log (embed-specific CSP divergences from global rule) ──
+  # CHANGED frame-ancestors: 'self' → *
+  #   Reason: embed/index.html is explicitly designed to be iframed by third-party sites
+  #           (Claude artifacts, fan wikis, Discord bots). 'self'-only would break the
+  #           primary use-case. Scope is limited to /embed/* only.
+  # CHANGED connect-src: 'self' → 'self' https://spiritvale.tama.sh
+  #   Reason: when /embed/ is served from a third-party origin inside an iframe, the
+  #           fetch() call to /patches/latest.json is cross-origin. Must be explicit.
+  # CHANGED X-Frame-Options: SAMEORIGIN → ALLOWALL
+  #   Reason: legacy browsers (pre-CSP3) fall back to X-Frame-Options. ALLOWALL mirrors
+  #           the frame-ancestors * intent for those browsers.
+  # UNCHANGED default-src, script-src, style-src, img-src — same as global rule.
+  #   No additional attack surface opened on those dimensions.
   X-Frame-Options: ALLOWALL
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://spiritvale.tama.sh; frame-ancestors *

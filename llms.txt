@@ -60,6 +60,10 @@
   OpenAPI 3.1 machine-readable API contract. Versioned alias: https://spiritvale.tama.sh/v1/openapi.json.
   Use to auto-generate typed clients or validate integration assumptions.
 
+- **JS client SDK** — https://spiritvale.tama.sh/clients/spiritvale.js
+  Zero-dependency ES module. `import { getLatest, getIndex, getPatch, getDiff } from '...spiritvale.js'`.
+  Works in browser (fetch) and Node ≥18. Source: `clients/spiritvale.js` in the repo.
+
 - **Landing page** — https://spiritvale.tama.sh/
 
 ## Archived versions (newest first)

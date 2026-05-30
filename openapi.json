@@ -28,13 +28,17 @@
         "operationId": "getLatestPatch",
         "summary": "Latest patch note",
         "description": "Returns the most recently released patch note. Alias: /latest.json, /v1/patches/latest.json.",
-        "tags": ["Patches"],
+        "tags": [
+          "Patches"
+        ],
         "responses": {
           "200": {
             "description": "Latest patch",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Patch" }
+                "schema": {
+                  "$ref": "#/components/schemas/Patch"
+                }
               }
             }
           }
@@ -46,13 +50,17 @@
         "operationId": "getPatchIndex",
         "summary": "All versions index",
         "description": "Returns version list with change counts and archive URLs. Alias: /manifest.json, /patches/manifest.json.",
-        "tags": ["Patches"],
+        "tags": [
+          "Patches"
+        ],
         "responses": {
           "200": {
             "description": "Version index",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/PatchIndex" }
+                "schema": {
+                  "$ref": "#/components/schemas/PatchIndex"
+                }
               }
             }
           }
@@ -64,14 +72,19 @@
         "operationId": "getPatchByVersion",
         "summary": "Specific patch by version",
         "description": "Returns a single patch note. Versioned files are immutable (Cache-Control: immutable, 1 year).",
-        "tags": ["Patches"],
+        "tags": [
+          "Patches"
+        ],
         "parameters": [
           {
             "name": "version",
             "in": "path",
             "required": true,
             "description": "Version string prefixed with 'v', e.g. v0.17.0",
-            "schema": { "type": "string", "example": "v0.17.0" }
+            "schema": {
+              "type": "string",
+              "example": "v0.17.0"
+            }
           }
         ],
         "responses": {
@@ -79,11 +92,15 @@
             "description": "Patch note",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Patch" }
+                "schema": {
+                  "$ref": "#/components/schemas/Patch"
+                }
               }
             }
           },
-          "404": { "description": "Version not found" }
+          "404": {
+            "description": "Version not found"
+          }
         }
       }
     },
@@ -92,7 +109,9 @@
         "operationId": "getSearchIndex",
         "summary": "Full-text search index",
         "description": "Flat array of all 182+ patch entries for client-side full-text search at /search/.",
-        "tags": ["Discovery"],
+        "tags": [
+          "Discovery"
+        ],
         "responses": {
           "200": {
             "description": "Search index",
@@ -101,11 +120,18 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "generated_at": { "type": "string", "format": "date-time" },
-                    "patch_count": { "type": "integer" },
+                    "generated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "patch_count": {
+                      "type": "integer"
+                    },
                     "entries": {
                       "type": "array",
-                      "items": { "$ref": "#/components/schemas/SearchEntry" }
+                      "items": {
+                        "$ref": "#/components/schemas/SearchEntry"
+                      }
                     }
                   }
                 }
@@ -120,7 +146,9 @@
         "operationId": "getTagIndex",
         "summary": "Tag list",
         "description": "Returns all change-type tags (added, changed, fixed, removed) with entry counts.",
-        "tags": ["Discovery"],
+        "tags": [
+          "Discovery"
+        ],
         "responses": {
           "200": {
             "description": "Tag index",
@@ -134,9 +162,15 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "tag": { "type": "string" },
-                          "count": { "type": "integer" },
-                          "url": { "type": "string" }
+                          "tag": {
+                            "type": "string"
+                          },
+                          "count": {
+                            "type": "integer"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
                         }
                       }
                     }
@@ -153,7 +187,9 @@
         "operationId": "getPatchSchema",
         "summary": "JSON Schema for patch files",
         "description": "JSON Schema (draft-07) defining the structure of every patches/v*.json file. Use for client-side validation or auto-generating typed clients.",
-        "tags": ["Meta"],
+        "tags": [
+          "Meta"
+        ],
         "responses": {
           "200": {
             "description": "Patch JSON Schema",
@@ -169,7 +205,9 @@
         "operationId": "getOpenApiSpec",
         "summary": "This OpenAPI spec",
         "description": "OpenAPI 3.1 spec for the SpiritVale Community Hub API.",
-        "tags": ["Meta"],
+        "tags": [
+          "Meta"
+        ],
         "responses": {
           "200": {
             "description": "OpenAPI document",
@@ -185,7 +223,9 @@
         "operationId": "getAtomFeed",
         "summary": "Atom feed of patch releases",
         "description": "RFC 4287 Atom feed. Alias: /releases.atom.",
-        "tags": ["Feeds"],
+        "tags": [
+          "Feeds"
+        ],
         "responses": {
           "200": {
             "description": "Atom feed",
@@ -201,7 +241,9 @@
         "operationId": "getJsonFeed",
         "summary": "JSON Feed 1.1 of patch releases",
         "description": "JSON Feed 1.1 (jsonfeed.org). Alias: /releases.json.",
-        "tags": ["Feeds"],
+        "tags": [
+          "Feeds"
+        ],
         "responses": {
           "200": {
             "description": "JSON Feed",
@@ -218,68 +260,191 @@
       "Patch": {
         "type": "object",
         "description": "A single SpiritVale patch note. Full schema: /schema/patch.json.",
-        "required": ["version", "title", "date", "added", "changed", "fixed", "removed"],
+        "required": [
+          "version",
+          "title",
+          "date",
+          "added",
+          "changed",
+          "fixed",
+          "removed"
+        ],
         "properties": {
-          "version": { "type": "string", "example": "0.17.0" },
-          "title": { "type": "string", "example": "The Echoing Spire" },
-          "date": { "type": "string", "format": "date", "example": "2026-05-25" },
-          "current": { "type": "boolean" },
-          "url": { "type": ["string", "null"], "format": "uri" },
-          "steam_url": { "type": ["string", "null"], "format": "uri" },
-          "steam_news_id": { "type": "string" },
-          "released_at": { "type": "string", "format": "date-time" },
-          "added": { "type": "array", "items": { "type": "string" } },
-          "changed": { "type": "array", "items": { "type": "string" } },
-          "fixed": { "type": "array", "items": { "type": "string" } },
-          "removed": { "type": "array", "items": { "type": "string" } }
+          "version": {
+            "type": "string",
+            "example": "0.17.0"
+          },
+          "title": {
+            "type": "string",
+            "example": "The Echoing Spire"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-05-25"
+          },
+          "current": {
+            "type": "boolean"
+          },
+          "url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "steam_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "steam_news_id": {
+            "type": "string"
+          },
+          "released_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "added": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "changed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fixed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "removed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         }
       },
       "PatchIndex": {
         "type": "object",
         "properties": {
-          "latest_version": { "type": "string", "example": "0.17.0" },
-          "last_polled_at": { "type": ["string", "null"], "format": "date-time" },
+          "latest_version": {
+            "type": "string",
+            "example": "0.17.0"
+          },
+          "last_polled_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "UTC ISO-8601 timestamp of the most recent Steam poll. Always UTC regardless of server local timezone; see poll_tz. A date gap vs. wall-clock date is normal when the server is in UTC+N."
+          },
           "versions": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "version": { "type": "string" },
-                "title": { "type": "string" },
-                "date": { "type": "string", "format": "date" },
-                "current": { "type": "boolean" },
-                "archive_url": { "type": "string" },
-                "steam_news_id": { "type": "string" },
+                "version": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "current": {
+                  "type": "boolean"
+                },
+                "archive_url": {
+                  "type": "string"
+                },
+                "steam_news_id": {
+                  "type": "string"
+                },
                 "change_counts": {
                   "type": "object",
                   "properties": {
-                    "added": { "type": "integer" },
-                    "changed": { "type": "integer" },
-                    "fixed": { "type": "integer" },
-                    "removed": { "type": "integer" }
+                    "added": {
+                      "type": "integer"
+                    },
+                    "changed": {
+                      "type": "integer"
+                    },
+                    "fixed": {
+                      "type": "integer"
+                    },
+                    "removed": {
+                      "type": "integer"
+                    }
                   }
                 }
               }
             }
+          },
+          "poll_tz": {
+            "type": "string",
+            "enum": [
+              "UTC"
+            ],
+            "description": "Timezone of last_polled_at. Always \"UTC\"; included to make the timestamp self-documenting."
           }
         }
       },
       "SearchEntry": {
         "type": "object",
         "properties": {
-          "id": { "type": "string" },
-          "version": { "type": "string" },
-          "type": { "type": "string", "enum": ["added", "changed", "fixed", "removed"] },
-          "text": { "type": "string" },
-          "url": { "type": "string" }
+          "id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "added",
+              "changed",
+              "fixed",
+              "removed"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
         }
       }
     }
   },
   "tags": [
-    { "name": "Patches", "description": "Patch note data endpoints" },
-    { "name": "Discovery", "description": "Search and tag indexes" },
-    { "name": "Feeds", "description": "Syndication feeds (Atom, JSON Feed)" },
-    { "name": "Meta", "description": "Schema and API docs" }
+    {
+      "name": "Patches",
+      "description": "Patch note data endpoints"
+    },
+    {
+      "name": "Discovery",
+      "description": "Search and tag indexes"
+    },
+    {
+      "name": "Feeds",
+      "description": "Syndication feeds (Atom, JSON Feed)"
+    },
+    {
+      "name": "Meta",
+      "description": "Schema and API docs"
+    }
   ]
 }

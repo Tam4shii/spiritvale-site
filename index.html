@@ -213,6 +213,34 @@
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  const LS_KEY = 'sv_lastSeenVersion';
+
+  function showDeltaBanner(currentVersion, lastVersion) {
+    const banner = document.createElement('div');
+    banner.id = 'delta-banner';
+    banner.style.cssText = [
+      'background:rgba(167,139,250,0.12)',
+      'border:1px solid rgba(167,139,250,0.35)',
+      'border-radius:10px',
+      'padding:0.65rem 1rem',
+      'margin-bottom:1.25rem',
+      'display:flex',
+      'align-items:center',
+      'justify-content:space-between',
+      'gap:0.75rem',
+      'font-size:0.9rem',
+    ].join(';');
+
+    const diffUrl = `/diff/?from=${encodeURIComponent(lastVersion)}&to=${encodeURIComponent(currentVersion)}`;
+    banner.innerHTML = `
+      <span>🆕 New update since <strong>v${esc(lastVersion)}</strong> — <a href="${diffUrl}" style="color:var(--accent)">view what changed →</a></span>
+      <button onclick="document.getElementById('delta-banner').remove()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;padding:0 0.25rem" aria-label="Dismiss">✕</button>
+    `;
+
+    const hero = document.querySelector('.hero');
+    if (hero) hero.insertAdjacentElement('afterend', banner);
+  }
+
   async function loadPatch() {
     const el = document.getElementById('latest-patch');
     try {
@@ -220,6 +248,12 @@
       if (!res.ok) return;
       const patch = await res.json();
       if (!patch || !patch.version) return;
+
+      const lastSeen = localStorage.getItem(LS_KEY);
+      if (lastSeen && lastSeen !== patch.version) {
+        showDeltaBanner(patch.version, lastSeen);
+      }
+      localStorage.setItem(LS_KEY, patch.version);
 
       const groups = GROUPS
         .filter(g => Array.isArray(patch[g.key]) && patch[g.key].length > 0)

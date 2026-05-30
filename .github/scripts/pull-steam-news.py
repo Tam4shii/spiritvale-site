@@ -40,7 +40,12 @@ BB_TAGS = re.compile(r"\[/?(?:\*|[a-z][a-z0-9]*)(?:=[^\]]+)?\]", re.IGNORECASE)
 def fetch_news():
     req = urllib.request.Request(API_URL, headers={"User-Agent": "spiritvale-site/1.0"})
     with urllib.request.urlopen(req, timeout=20) as r:
-        return json.loads(r.read())
+        status = r.status
+        body = r.read()
+        data = json.loads(body)
+        item_count = len(data.get("appnews", {}).get("newsitems", []))
+        print(f"[steam-api] HTTP {status}, newsitems={item_count}")
+        return data
 
 
 def load_index():

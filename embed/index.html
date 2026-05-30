@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale — Embed Widget</title>
+<meta name="description" content="Embed the latest SpiritVale patch card in Claude artifacts, Discord bots, or fan sites. CORS-open API, copy-paste snippets.">
+<meta property="og:title" content="SpiritVale — Embed Widget">
+<meta property="og:description" content="Drop the latest patch card into any Claude artifact or fan site. Two options: JS snippet or iframe.">
+<meta property="og:url" content="https://spiritvale.tama.sh/embed/">
+<meta property="og:site_name" content="SpiritVale Community Hub">
+<meta property="og:image" content="https://spiritvale.tama.sh/og/v0.17.0.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#7c3aed">
+<link rel="canonical" href="https://spiritvale.tama.sh/embed/">
+<link rel="alternate" type="application/json" href="https://spiritvale.tama.sh/patches/latest.json" title="Latest SpiritVale Patch">
+<style>
+  :root {
+    --bg: #0a0612; --fg: #e8e3f0; --muted: #8b82a0;
+    --accent: #a78bfa; --accent-2: #7c3aed;
+    --card: rgba(167,139,250,0.08); --border: rgba(167,139,250,0.2);
+    --added: #34d399; --changed: #fbbf24; --fixed: #60a5fa; --removed: #f87171;
+    --code-bg: rgba(0,0,0,0.45);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Noto Sans Thai", sans-serif;
+    background: var(--bg); color: var(--fg); line-height: 1.6;
+    min-height: 100vh; padding: 2rem;
+    background-image:
+      radial-gradient(at 20% 30%, rgba(124,58,237,0.15), transparent 50%),
+      radial-gradient(at 80% 70%, rgba(167,139,250,0.1), transparent 50%);
+  }
+  main { max-width: 680px; margin: 0 auto; }
+  .back { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; display: block; }
+  .back a { color: var(--accent); text-decoration: none; }
+  h1 {
+    font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 2rem; }
+  /* Patch card */
+  .patch-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 1.25rem; margin-bottom: 2rem;
+  }
+  .patch-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;
+  }
+  .patch-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+  .patch-date { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+  .patch-group { margin-bottom: 0.7rem; }
+  .group-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .patch-item {
+    padding: 0.22rem 0 0.22rem 0.65rem;
+    border-left: 2px solid rgba(167,139,250,0.15); font-size: 0.88rem;
+  }
+  .patch-item + .patch-item { margin-top: 0.08rem; }
+  .patch-item--added   { border-left-color: var(--added); }
+  .patch-item--changed { border-left-color: var(--changed); }
+  .patch-item--fixed   { border-left-color: var(--fixed); }
+  .patch-item--removed { border-left-color: var(--removed); }
+  .patch-more { color: var(--muted); font-size: 0.82rem; font-style: italic; padding-left: 0.65rem; margin-top: 0.1rem; }
+  .patch-links { margin-top: 0.85rem; display: flex; gap: 1.1rem; font-size: 0.82rem; }
+  .patch-links a { color: var(--accent); text-decoration: none; }
+  .patch-links a:hover { text-decoration: underline; }
+  /* Snippets */
+  .snippets { display: none; }
+  .section-label {
+    font-size: 0.95rem; font-weight: 700; color: var(--accent);
+    margin-top: 2rem; margin-bottom: 0.4rem;
+  }
+  .section-desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.6rem; }
+  .code-wrap { position: relative; margin-bottom: 2rem; }
+  pre.code-block {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem 3.5rem 1rem 1rem;
+    font-family: ui-monospace, "SF Mono", "Cascadia Code", monospace; font-size: 0.73rem;
+    line-height: 1.6; white-space: pre; overflow-x: auto; color: #d8d0f0;
+    tab-size: 2;
+  }
+  .copy-btn {
+    position: absolute; top: 0.55rem; right: 0.6rem;
+    background: var(--card); border: 1px solid var(--border); border-radius: 6px;
+    color: var(--accent); font-size: 0.7rem; padding: 0.2rem 0.55rem;
+    cursor: pointer; font-family: inherit; transition: background 0.12s;
+  }
+  .copy-btn:hover { background: rgba(167,139,250,0.18); }
+  footer { color: var(--muted); font-size: 0.82rem; text-align: center; margin-top: 2rem; }
+  footer a { color: var(--accent); text-decoration: none; }
+  /* Embedded (iframe) mode — hide everything except the card */
+  body.embedded {
+    padding: 0.65rem;
+    background-image: none;
+    background: var(--bg);
+  }
+  body.embedded .back,
+  body.embedded h1,
+  body.embedded .subtitle,
+  body.embedded .snippets,
+  body.embedded footer { display: none !important; }
+  body.embedded .patch-card { margin-bottom: 0; }
+</style>
+</head>
+<body>
+<main>
+  <span class="back"><a href="/">← SpiritVale Hub</a></span>
+  <h1>Embed Widget</h1>
+  <p class="subtitle">Drop the latest patch card anywhere. All endpoints are CORS-open — no API key needed.</p>
+
+  <div id="patch-card">
+    <div class="patch-card" style="color:var(--muted);font-style:italic;text-align:center;padding:2rem">
+      Loading patch data…
+    </div>
+  </div>
+
+  <div class="snippets" id="snippets">
+    <p class="section-label">Option A — JS snippet (Claude artifacts &amp; fan sites)</p>
+    <p class="section-desc">Fetches live data directly. No iframe needed — works anywhere <code>fetch()</code> is allowed, including Claude artifacts.</p>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode('js-code')">Copy</button>
+      <pre class="code-block" id="js-code"></pre>
+    </div>
+
+    <p class="section-label">Option B — iframe embed</p>
+    <p class="section-desc">One tag, self-contained. Works without JavaScript on the host page. Renders this live card.</p>
+    <div class="code-wrap">
+      <button class="copy-btn" onclick="copyCode('iframe-code')">Copy</button>
+      <pre class="code-block" id="iframe-code"></pre>
+    </div>
+  </div>
+
+  <footer>
+    <a href="/">SpiritVale Community Hub</a> ·
+    <a href="/patches/latest.json">latest.json</a> ·
+    Not affiliated with the developers
+  </footer>
+</main>
+<script>
+const BASE = 'https://spiritvale.tama.sh';
+const MAX_PER_GROUP = 5;
+const GROUPS = [
+  { key: 'added',   label: '🟢 Added',   cls: 'added'   },
+  { key: 'changed', label: '🟡 Changed', cls: 'changed' },
+  { key: 'fixed',   label: '🔧 Fixed',   cls: 'fixed'   },
+  { key: 'removed', label: '🔴 Removed', cls: 'removed' },
+];
+
+function esc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function renderCard(p) {
+  const groups = GROUPS.filter(g => p[g.key]?.length).map(g => {
+    const visible = p[g.key].slice(0, MAX_PER_GROUP);
+    const overflow = p[g.key].length > MAX_PER_GROUP
+      ? `<div class="patch-more">+${p[g.key].length - MAX_PER_GROUP} more…</div>` : '';
+    return `<div class="patch-group">
+      <div class="group-label">${g.label}</div>
+      ${visible.map(t => `<div class="patch-item patch-item--${g.cls}">${esc(t)}</div>`).join('')}
+      ${overflow}</div>`;
+  }).join('');
+
+  const steamLink = p.steam_url
+    ? `<a href="${esc(p.steam_url)}" target="_blank" rel="noopener">Steam →</a>` : '';
+
+  document.getElementById('patch-card').innerHTML = `<div class="patch-card">
+    <div class="patch-header">
+      <span class="patch-title">v${esc(p.version)} — ${esc(p.title)}</span>
+      <span class="patch-date">${esc(p.date)}</span>
+    </div>
+    ${groups || '<p style="color:var(--muted);font-style:italic">Patch notes coming soon…</p>'}
+    <div class="patch-links">
+      <a href="${BASE}/patch/?v=${esc(p.version)}">Full notes →</a>
+      <a href="${BASE}/diff/">Version diff →</a>
+      ${steamLink}
+    </div>
+  </div>`;
+}
+
+function populateSnippets() {
+  document.getElementById('js-code').textContent =
+`<!-- SpiritVale latest patch — paste into any Claude artifact or page -->
+<div id="sv-patch"></div>
+<script>
+(async () => {
+  const res = await fetch('${BASE}/patches/latest.json');
+  const p = await res.json();
+  const e = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const icons = {added:'✅',changed:'🔄',fixed:'🔧',removed:'❌'};
+  let html = \`<strong>v\${e(p.version)} — \${e(p.title)}</strong> <small>(\${e(p.date)})</small>\`;
+  for (const t of ['added','changed','fixed','removed'])
+    if (p[t]?.length)
+      html += \`<p>\${icons[t]} <b>\${t}</b>: \${p[t].map(e).join(' · ')}</p>\`;
+  document.getElementById('sv-patch').innerHTML = html;
+})();
+<\/script>`;
+
+  document.getElementById('iframe-code').textContent =
+`<iframe
+  src="${BASE}/embed/"
+  width="640"
+  height="380"
+  frameborder="0"
+  loading="lazy"
+  title="SpiritVale latest patch"
+  style="border:none;border-radius:14px;width:100%;max-width:640px">
+</iframe>`;
+}
+
+function copyCode(id) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(() => {
+    const btn = document.getElementById(id).closest('.code-wrap').querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => (btn.textContent = orig), 1500);
+  });
+}
+
+async function init() {
+  if (window.self !== window.top) {
+    document.body.classList.add('embedded');
+  } else {
+    document.getElementById('snippets').style.display = 'block';
+    populateSnippets();
+  }
+
+  try {
+    const res = await fetch(BASE + '/patches/latest.json');
+    if (!res.ok) throw new Error(res.status);
+    renderCard(await res.json());
+  } catch (_) {
+    document.getElementById('patch-card').innerHTML =
+      '<p style="color:var(--muted);font-style:italic;text-align:center;padding:1rem">Could not load patch data.</p>';
+  }
+}
+
+init();
+</script>
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
+</body>
+</html>

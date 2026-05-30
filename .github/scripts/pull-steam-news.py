@@ -91,6 +91,15 @@ def set_output(key, value):
         print(f"[output] {key}={value}")
 
 
+def stamp_index(polled_at: str) -> None:
+    """Persist the exact poll timestamp into patches/index.json for audit trail."""
+    if not INDEX_PATH.exists():
+        return
+    data = json.loads(INDEX_PATH.read_text())
+    data["last_polled_at"] = polled_at
+    INDEX_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+
+
 def main():
     try:
         news_data = fetch_news()
@@ -152,6 +161,9 @@ def main():
         print(f"Created: {draft_path}")
         new_drafts.append({"slug": slug, "title": title})
 
+    polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    stamp_index(polled_at)
+
     if new_drafts:
         first = new_drafts[0]
         set_output("new_draft", "true")
@@ -159,10 +171,10 @@ def main():
         # Strip newlines so the output line stays single-line
         safe_title = first["title"].replace("\n", " ").replace("\r", "")
         set_output("title", safe_title)
-        print(f"{len(new_drafts)} new draft(s) created.")
+        print(f"[{polled_at}] {len(new_drafts)} new draft(s) created.")
     else:
         set_output("new_draft", "false")
-        print("No new patch notes found.")
+        print(f"[{polled_at}] No new patch notes found. Latest indexed: {index.get('latest_version', 'unknown')}")
 
 
 if __name__ == "__main__":

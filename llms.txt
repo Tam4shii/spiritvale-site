@@ -46,6 +46,11 @@
 - **Tag index (JSON)** — https://spiritvale.tama.sh/tag/index.json
   Machine-readable tag manifest: {tags: {slug: {count, url}}}. Use to enumerate available tags.
 
+- **Embed widget** — https://spiritvale.tama.sh/embed/
+  Copy-paste JS snippet or `<iframe>` code to drop the latest patch card into any Claude artifact or fan site.
+  The page doubles as a standalone embeddable iframe (detects `window.self !== window.top`, hides snippet UI).
+  CORS-open: `Access-Control-Allow-Origin: *` on all JSON endpoints.
+
 - **Landing page** — https://spiritvale.tama.sh/
 
 ## Archived versions (newest first)

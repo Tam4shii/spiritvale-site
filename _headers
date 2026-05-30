@@ -53,3 +53,7 @@
 /llms.txt
   Content-Type: text/markdown; charset=utf-8
   Cache-Control: public, max-age=3600, s-maxage=3600
+
+/embed/*
+  X-Frame-Options: ALLOWALL
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://spiritvale.tama.sh; frame-ancestors *

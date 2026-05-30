@@ -22,6 +22,7 @@ jobs:
           STEAM_APPID: '3918510'
 
       - name: Open PR if draft created
+        id: pr
         if: steps.draft.outputs.new_draft == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
@@ -41,3 +42,23 @@ jobs:
             6. Merge PR → CF Pages auto-deploys
           labels: patch-draft
           commit-message: "patch: steam draft — ${{ steps.draft.outputs.title }}"
+
+      - name: Discord — draft review needed
+        if: steps.draft.outputs.new_draft == 'true'
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_PATCH_WEBHOOK }}
+          VERSION: ${{ steps.draft.outputs.slug }}
+          TITLE: ${{ steps.draft.outputs.title }}
+          PR_URL: ${{ steps.pr.outputs.pull-request-url }}
+        run: |
+          curl -s -X POST "$WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"🔍 SpiritVale draft ready — ${TITLE}\",
+                \"url\": \"${PR_URL}\",
+                \"color\": 16753920,
+                \"description\": \"Steam patch detected. Classify bullets → merge → live.\\n\\n[Open PR](${PR_URL})\",
+                \"footer\": { \"text\": \"spiritvale-site · pull-steam-news.yml\" }
+              }]
+            }"

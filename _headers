@@ -32,6 +32,10 @@
   Content-Type: application/atom+xml; charset=utf-8
   Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600
 
+/tag/*/feed.xml
+  Content-Type: application/atom+xml; charset=utf-8
+  Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600
+
 /feed.json
   Content-Type: application/feed+json; charset=utf-8
   Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/shinobi/feed.xml</id>
+  <title>SpiritVale — Shinobi Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/shinobi/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/shinobi/feed.xml" />
+  <updated>2026-03-24T00:00:00Z</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.15.0.json#tag-shinobi</id>
+    <title>v0.15.0 – PVP Systems and Status Immunities [Shinobi]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.15.0" />
+    <updated>2026-03-24T00:00:00Z</updated>
+    <summary type="text">Shinobi Fan of Knives now lands at cursor position (like Stomp)</summary>
+  </entry>
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.0.json#tag-shinobi</id>
+    <title>v0.13.0 – Shinobi Revamp [Shinobi]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.0" />
+    <updated>2026-02-18T00:00:00Z</updated>
+    <summary type="text">Shinobi: 7 new skills; Shinobi: new skill modifiers distributed to existing Kunais; Shinobi: removed −50% MP cost per active clone; clone skill casts now cost caster's mana; Shinobi: Releases now convert weapon element; Shinobi: overall Clone behaviour improved</summary>
+  </entry>
+</feed>

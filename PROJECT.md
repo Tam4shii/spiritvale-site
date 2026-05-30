@@ -70,6 +70,8 @@
 - [x] **Hardening iteration** (2026-05-30) — `stamp_index()` wrapped in try/except (audit-trail failure is non-fatal to poll run); CSP diff for `/embed/*` documented in `_headers`; `embed/index.html` gets `noindex,nofollow` (iframe consumer, not search target); `openapi.json` (OpenAPI 3.1) added covering 9 endpoints — already accessible via `/v1/openapi.json` through existing `_redirects` rewrite; llms.txt wired. `make check` exits 0. Pushed (commit 15b9b01).
 - [x] **`_headers` security audit trail + CDN stale-while-revalidate** (2026-05-30) — `/embed/*` CSP comment expanded into explicit 4-point audit log (changed vs. unchanged directives + rationale for each); `stale-while-revalidate` added to all mutable endpoints (`/patch.json`, `/patches/latest.json`, `/patches/index.json` → 300s; `/feed.*` → 600s) — CDN serves cached response instantly while re-fetching in background (warframestat.us CDN pattern). Immutable `/patches/v*.json` unchanged.
 
+- [x] **Per-tag Atom feeds** (2026-05-31) — `build-tag-pages.py` extended to emit `tag/<slug>/feed.xml` (Atom RFC 4287) for all 9 tags; entries grouped by patch version, newest-first; `<link rel="alternate" type="application/atom+xml">` auto-discovery added to per-tag HTML; `_headers` wired with `application/atom+xml; charset=utf-8` + stale-while-revalidate=600; sitemap.xml +9 entries; llms.txt documented. SteamDB pattern: fans subscribe to "Shinobi only" or "Boss only" changes. Pushed (commit Step 4).
+
 ## FUTURE IDEAS (ถ้าจะขยาย)
 - Build guides / class info
 - Boss tracker / event calendar
@@ -91,6 +93,8 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 
 **Last `make check` run**: 2026-05-31 (idle-loop audit) — ✅ exit 0 (all 6 artifacts valid)
 **Last Steam check**: 2026-05-31 — no new patch (latest: v0.17.0 "The Echoing Spire")
+**Push/CI status**: commit `6958450` (idle-loop audit 2026-05-31) pushed to `origin/main` on 2026-05-31. CF Pages NOT connected (Blocker #1 open) → push does **not** trigger a deployment; no CI pipeline triggered.
+**`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 
 ## BLOCKERS (Boss Actions Required)
 | # | Action | Where | Notes |

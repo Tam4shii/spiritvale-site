@@ -166,4 +166,14 @@
   <url><loc>https://spiritvale.tama.sh/tag/arena/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url><loc>https://spiritvale.tama.sh/tag/forgotten-depths/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url><loc>https://spiritvale.tama.sh/tag/echoing-spire/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <!-- Per-tag Atom feeds — one per tag, subscribers get class/system-specific patch stream -->
+  <url><loc>https://spiritvale.tama.sh/tag/shinobi/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/berserker/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/necromancer/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/boss/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/crafting/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/pvp/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/arena/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/forgotten-depths/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/echoing-spire/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
 </urlset>

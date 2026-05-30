@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/necromancer/feed.xml</id>
+  <title>SpiritVale — Necromancer Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/necromancer/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/necromancer/feed.xml" />
+  <updated>2026-02-18T00:00:00Z</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.0.json#tag-necromancer</id>
+    <title>v0.13.0 – Shinobi Revamp [Necromancer]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.0" />
+    <updated>2026-02-18T00:00:00Z</updated>
+    <summary type="text">Necromancer Reanimate — Goblin King: STR 100→150, INT 100→50, Stomp→Earth Splitter, Earthquake→Cyclone; Necromancer Reanimate — Worm Creep: STR/AGI 100→150, INT/VIT 100→50, skills swapped to Smoke Screen and Poison Grenade; Necromancer Reanimate — Warchief: Stomp→Chain Lightning, WW→Execute; Necromancer Reanimate — Cosmic Entity: Shadow Release→Dark Exorcism; Necromancer Reanimate — Wraith: STR 150→100, VIT 50→100, Unholy Aura reduced to +5% undead/shadow</summary>
+  </entry>
+</feed>

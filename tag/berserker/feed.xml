@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/berserker/feed.xml</id>
+  <title>SpiritVale — Berserker Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/berserker/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/berserker/feed.xml" />
+  <updated>2026-05-13T00:00:00Z</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.16.3.json#tag-berserker</id>
+    <title>v0.16.3 – Update 0.16.3 [Berserker]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.16.3" />
+    <updated>2026-05-13T00:00:00Z</updated>
+    <summary type="text">Rage skill not working on Berserker</summary>
+  </entry>
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.0.json#tag-berserker</id>
+    <title>v0.13.0 – Shinobi Revamp [Berserker]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.0" />
+    <updated>2026-02-18T00:00:00Z</updated>
+    <summary type="text">Berserker — Blood Frenzy: Aspd 50% → 30%, Siphon 100 → 50; Berserker — Berserk: added anti-flinch; Berserker — Shouts: now exclusive; Berserker — Rage: no longer drains from skill use; now stacks on skill use; shorter Enrage buff; reduced Rage gained from Enrage</summary>
+  </entry>
+</feed>

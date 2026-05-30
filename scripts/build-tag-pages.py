@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate static /tag/<slug>/index.html pages + /tag/index.json from search-index.json."""
+"""Generate static /tag/<slug>/index.html + feed.xml pages + /tag/index.json from search-index.json."""
 import json, os, re, sys
 from collections import defaultdict
 
@@ -78,6 +78,7 @@ def page_html(slug, entries):
 <meta property="og:image" content="https://spiritvale.tama.sh/og/latest.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="https://spiritvale.tama.sh/tag/{slug}/">
+<link rel="alternate" type="application/atom+xml" title="SpiritVale — {name} Changes" href="/tag/{slug}/feed.xml">
 <style>{CSS}</style>
 </head>
 <body>
@@ -124,6 +125,47 @@ def tag_index_html(tag_counts):
 </body>
 </html>"""
 
+def _esc(s):
+    return s.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;').replace('"', '&quot;')
+
+def tag_feed_xml(slug, entries):
+    name = DISPLAY_NAME.get(slug, slug.replace('-', ' ').title())
+    by_version = {}
+    for e in entries:
+        v = e['version']
+        if v not in by_version:
+            by_version[v] = {'date': e['date'], 'patch_title': e['patch_title'], 'items': []}
+        by_version[v]['items'].append(e)
+    sorted_v = sorted(by_version.items(), key=lambda x: x[1]['date'], reverse=True)
+    updated = (sorted_v[0][1]['date'] if sorted_v else '2026-01-01') + 'T00:00:00Z'
+    entries_xml = []
+    for version, vd in sorted_v:
+        items = vd['items']
+        summary = '; '.join(_esc(i['text']) for i in items[:5])
+        if len(items) > 5:
+            summary += f' … ({len(items) - 5} more)'
+        patch_title = vd['patch_title']
+        display = f'v{version}' + (f' – {_esc(patch_title)}' if patch_title else '')
+        entries_xml.append(f"""  <entry>
+    <id>https://spiritvale.tama.sh/patches/v{version}.json#tag-{slug}</id>
+    <title>{display} [{_esc(name)}]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v={version}" />
+    <updated>{vd['date']}T00:00:00Z</updated>
+    <summary type="text">{summary}</summary>
+  </entry>""")
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/{slug}/feed.xml</id>
+  <title>SpiritVale — {_esc(name)} Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/{slug}/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/{slug}/feed.xml" />
+  <updated>{updated}</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+{"".join(chr(10) + e for e in entries_xml)}
+</feed>"""
+
+
 with open(INDEX) as f:
     data = json.load(f)
 
@@ -139,6 +181,8 @@ for slug, entries in by_tag.items():
     os.makedirs(slug_dir, exist_ok=True)
     with open(os.path.join(slug_dir, 'index.html'), 'w') as f:
         f.write(page_html(slug, entries))
+    with open(os.path.join(slug_dir, 'feed.xml'), 'w') as f:
+        f.write(tag_feed_xml(slug, entries))
 
 with open(os.path.join(TAG_DIR, 'index.html'), 'w') as f:
     f.write(tag_index_html({slug: len(entries) for slug, entries in by_tag.items()}))

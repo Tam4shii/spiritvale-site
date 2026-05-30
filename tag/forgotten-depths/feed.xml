@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/forgotten-depths/feed.xml</id>
+  <title>SpiritVale — Forgotten Depths Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/forgotten-depths/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/forgotten-depths/feed.xml" />
+  <updated>2026-02-18T00:00:00Z</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.0.json#tag-forgotten-depths</id>
+    <title>v0.13.0 – Shinobi Revamp [Forgotten Depths]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.0" />
+    <updated>2026-02-18T00:00:00Z</updated>
+    <summary type="text">Crafter NPC added to Forgotten Depths 2; Fixed nav issues in Forgotten Depths 2 and Night Garden</summary>
+  </entry>
+</feed>

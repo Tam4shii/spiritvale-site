@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/crafting/feed.xml</id>
+  <title>SpiritVale — Crafting Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/crafting/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/crafting/feed.xml" />
+  <updated>2026-05-25T00:00:00Z</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.17.0.json#tag-crafting</id>
+    <title>v0.17.0 – The Echoing Spire [Crafting]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.17.0" />
+    <updated>2026-05-25T00:00:00Z</updated>
+    <summary type="text">Spire Key crafting: 1 Resonance Core (0.1% drop from mobs / 1% from bosses) + 7 monster memories; memory cost increases per craft (7, 14, 21…) and resets weekly; Boss lure crafting: craftsman NPC can craft boss lures in exchange for monster memories</summary>
+  </entry>
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.13.2.json#tag-crafting</id>
+    <title>v0.13.2 – Update 0.13.2 [Crafting]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.13.2" />
+    <updated>2026-02-20T00:00:00Z</updated>
+    <summary type="text">Crafting and Refine cooldown: 0.7s → 0.1s</summary>
+  </entry>
+</feed>

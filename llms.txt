@@ -43,6 +43,11 @@
   E.g. https://spiritvale.tama.sh/tag/shinobi/ — all patch changes tagged "shinobi" across every version.
   Available tags: shinobi, berserker, necromancer, boss, crafting, pvp, arena, forgotten-depths, echoing-spire.
 
+- **Per-tag Atom feed** — https://spiritvale.tama.sh/tag/{slug}/feed.xml
+  E.g. https://spiritvale.tama.sh/tag/shinobi/feed.xml — subscribe to Shinobi-only patch changes.
+  One Atom entry per patch that contains tagged changes; grouped by version, sorted newest-first.
+  Auto-discoverable via `<link rel="alternate" type="application/atom+xml">` on each tag page.
+
 - **Tag index (JSON)** — https://spiritvale.tama.sh/tag/index.json
   Machine-readable tag manifest: {tags: {slug: {count, url}}}. Use to enumerate available tags.
 

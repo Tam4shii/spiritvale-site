@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/arena/feed.xml</id>
+  <title>SpiritVale — Arena Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/arena/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/arena/feed.xml" />
+  <updated>2026-03-24T00:00:00Z</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.15.0.json#tag-arena</id>
+    <title>v0.15.0 – PVP Systems and Status Immunities [Arena]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.15.0" />
+    <updated>2026-03-24T00:00:00Z</updated>
+    <summary type="text">Arena 2v2 and Arena 3v3 instanced modes (new map by Polliwagon); Arena rewards per match (more for wins), MMR calculation, and leaderboard</summary>
+  </entry>
+</feed>

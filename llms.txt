@@ -32,9 +32,19 @@
   Client-side search across all patch history. Also accepts `?q=term` for direct deep-linking.
 
 - **Search index (JSON)** — https://spiritvale.tama.sh/search-index.json
-  Machine-readable flat array of all change entries: {id, version, patch_title, date, type, text, url}.
+  Machine-readable flat array of all change entries: {id, version, patch_title, date, type, text, url, tags[]}.
   182 entries (10 patches × added/changed/fixed/removed bullets). Regenerated on each patch release.
   LLM consumers: fetch this once to answer queries like "when was Shadow Step nerfed?" without fetching 10 separate patch files.
+
+- **Tag index** — https://spiritvale.tama.sh/tag/
+  Browse patch changes grouped by class (shinobi, berserker, necromancer), system (crafting, pvp, arena), or area (echoing-spire, forgotten-depths, boss).
+
+- **Per-tag page** — https://spiritvale.tama.sh/tag/{slug}/
+  E.g. https://spiritvale.tama.sh/tag/shinobi/ — all patch changes tagged "shinobi" across every version.
+  Available tags: shinobi, berserker, necromancer, boss, crafting, pvp, arena, forgotten-depths, echoing-spire.
+
+- **Tag index (JSON)** — https://spiritvale.tama.sh/tag/index.json
+  Machine-readable tag manifest: {tags: {slug: {count, url}}}. Use to enumerate available tags.
 
 - **Landing page** — https://spiritvale.tama.sh/
 

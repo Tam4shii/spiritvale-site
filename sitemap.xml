@@ -143,4 +143,20 @@
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
+  <url>
+    <!-- Tag index — browse patch changes by class, system, or area -->
+    <loc>https://spiritvale.tama.sh/tag/</loc>
+    <lastmod>2026-05-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url><loc>https://spiritvale.tama.sh/tag/shinobi/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/berserker/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/necromancer/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/boss/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/crafting/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/pvp/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/arena/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/forgotten-depths/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/tag/echoing-spire/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
 </urlset>

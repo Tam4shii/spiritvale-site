@@ -66,6 +66,8 @@
 - [x] **Markdown mirror archive + `make check` validation gate** (2026-05-30) — `scripts/build-md-mirror.py` generates `archive/YYYY-MM-DD-vX.Y.Z.md` for every patch JSON (GitHub-native readable, AI/fork-scrapable surface); 10 dated markdown files committed (v0.13.0 → v0.17.0). `make check` added: xmllint sitemap.xml + json.tool on all JSON artifacts — canonical pre-commit validation gate. `mirror` target wired into `build` dep chain. Pushed (commit bba8261). **Verified 2026-05-30: `make check` exits 0 — all 6 artifacts (sitemap.xml, tag/index.json, patches/index.json, search-index.json, feed.json, feed.xml) pass.**
 - [x] **Discord draft-detection notification** (2026-05-30) — added step to `pull-steam-news.yml`: when GH Actions detects a new Steam patch and opens a PR, a Discord embed (amber, "Review needed") fires to `DISCORD_PATCH_WEBHOOK`. Distinct from existing `discord-notify.yml` (green embed, fires on merge to main). Two-stage push loop: detect → amber notify → boss classifies → merge → green notify.
 - [x] **CONTRIBUTING.md** (2026-05-30) — community contribution guide: patch submission workflow, schema contract, PR checklist, `make build check` gate; modelled on warframestat.us / wago.tools open-data contribution patterns.
+- [x] **Embed widget + poll timestamp** (2026-05-30) — `embed/index.html`: JS snippet + iframe widget for dropping latest patch card into Claude artifacts/fan sites; auto-detects embedded mode; `_headers` updated with frame-ancestors * for `/embed/*`; `pull-steam-news.py` stamps `last_polled_at` into `patches/index.json` after every GH Actions run; homepage nav + sitemap + llms.txt updated. Committed + pushed (commit d9bdd01).
+- [x] **Hardening iteration** (2026-05-30) — `stamp_index()` wrapped in try/except (audit-trail failure is non-fatal to poll run); CSP diff for `/embed/*` documented in `_headers`; `embed/index.html` gets `noindex,nofollow` (iframe consumer, not search target); `openapi.json` (OpenAPI 3.1) added covering 9 endpoints — already accessible via `/v1/openapi.json` through existing `_redirects` rewrite; llms.txt wired. `make check` exits 0. Pushed (commit 15b9b01).
 
 ## FUTURE IDEAS (ถ้าจะขยาย)
 - Build guides / class info
@@ -86,7 +88,7 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 6. Run `make build og check` — confirm exit 0
 7. Commit + push → CF Pages auto-deploys; Discord green embed fires on merge
 
-**Last `make check` run**: 2026-05-30 — ✅ exit 0 (all 6 artifacts valid)
+**Last `make check` run**: 2026-05-30 (post embed commit d9bdd01) — ✅ exit 0 (all 6 artifacts valid)
 **Last Steam check**: 2026-05-30 — no new patch (latest: v0.17.0 "The Echoing Spire")
 
 ## BLOCKERS (Boss Actions Required)

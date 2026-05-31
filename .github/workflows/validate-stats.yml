@@ -1,0 +1,44 @@
+name: Validate stats.json freshness
+
+on:
+  push:
+    paths:
+      - 'patches/index.json'
+      - 'tag/index.json'
+      - 'search-index.json'
+      - 'scripts/build-stats.py'
+      - 'stats.json'
+  pull_request:
+    paths:
+      - 'patches/index.json'
+      - 'tag/index.json'
+      - 'search-index.json'
+      - 'scripts/build-stats.py'
+      - 'stats.json'
+
+jobs:
+  check-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check stats.json freshness
+        run: |
+          python3 -c "
+          import json
+          with open('stats.json') as f: d = json.load(f)
+          d.pop('generated_at', None)
+          d.pop('last_polled_at', None)
+          with open('/tmp/stats-before.json', 'w') as f: json.dump(d, f, sort_keys=True)
+          "
+          python3 scripts/build-stats.py
+          python3 -c "
+          import json
+          with open('stats.json') as f: d = json.load(f)
+          d.pop('generated_at', None)
+          d.pop('last_polled_at', None)
+          with open('/tmp/stats-after.json', 'w') as f: json.dump(d, f, sort_keys=True)
+          "
+          diff /tmp/stats-before.json /tmp/stats-after.json \
+            || (echo 'ERROR: stats.json is stale — run make stats and commit' && exit 1)
+          echo 'stats.json is fresh ✓'

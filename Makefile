@@ -1,4 +1,4 @@
-.PHONY: build index tags validate mirror stats check check-ci check-types og install-hooks check-steam help
+.PHONY: build index tags validate mirror stats check check-ci check-types check-stats og install-hooks check-steam help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags validate mirror stats
@@ -42,6 +42,24 @@ check:
 check-types:
 	python3 scripts/check-types-vs-schema.py
 
+# Verify stats.json is not stale relative to its inputs (patches/index.json, tag/index.json, search-index.json).
+# Mirrors validate-stats.yml CI gate for local pre-commit use.
+check-stats:
+	@python3 -c "\
+import json, subprocess, sys, tempfile, os; \
+d = json.load(open('stats.json')); \
+[d.pop(k, None) for k in ('generated_at', 'last_polled_at')]; \
+json.dump(d, open('/tmp/stats-before.json', 'w'), sort_keys=True)"
+	@python3 scripts/build-stats.py > /dev/null
+	@python3 -c "\
+import json; \
+d = json.load(open('stats.json')); \
+[d.pop(k, None) for k in ('generated_at', 'last_polled_at')]; \
+json.dump(d, open('/tmp/stats-after.json', 'w'), sort_keys=True)"
+	@diff /tmp/stats-before.json /tmp/stats-after.json \
+	  && echo "stats.json is fresh ✓" \
+	  || (echo "ERROR: stats.json is stale — run make stats and commit" && exit 1)
+
 # Generate per-patch OG social-preview images to og/*.png.
 # Run: make og  (requires: pip install pillow)
 og:
@@ -76,6 +94,7 @@ help:
 	@echo "  make mirror        — generate archive/YYYY-MM-DD-vX.Y.Z.md for each patch"
 	@echo "  make check         — validate sitemap.xml + JSON artifacts (xmllint + json.tool)"
 	@echo "  make check-types   — validate .d.ts + openapi.json in sync with schema/patch.json"
+	@echo "  make check-stats   — verify stats.json is not stale relative to its inputs"
 	@echo "  make install-hooks — install git pre-commit hook"
 	@echo "  make check-steam   — check Steam API for new patch notes (local dry-run)"
 	@echo "  make check-ci      — verify GH Actions cron is firing (requires gh CLI)"

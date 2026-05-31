@@ -96,9 +96,9 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 6. Run `make build og check` — confirm exit 0
 7. Commit + push → CF Pages auto-deploys; Discord green embed fires on merge
 
-**Last `make check` run**: 2026-05-31 (idle-loop Forge Step 9) — ✅ exit 0 (all 6 artifacts valid); `make check-types` also ✅
-**Last Steam check**: 2026-05-31 (`make check-steam` run 2026-05-31T06:11:24Z) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
-**Push/CI status**: commit `a5779e4` (.gitignore Python bytecode) is HEAD on local `main`; not yet pushed to `origin/main`. CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Last `make check` run**: 2026-05-31 (idle-loop Forge Step 10) — ✅ exit 0 (all 6 artifacts valid)
+**Last Steam check**: 2026-05-31 (`make check-steam` run 2026-05-31T10:55:24Z) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
+**Push/CI status**: 6 accumulated commits (Steps 7–9: clients/README.md, Python SDK, .gitignore) pushed to `origin/main` (cb02b0c→916908f, 2026-05-31 Step 10). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 
 ## BLOCKERS (Boss Actions Required)

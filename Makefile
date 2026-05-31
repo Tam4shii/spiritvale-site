@@ -1,4 +1,4 @@
-.PHONY: build index tags validate mirror check og install-hooks check-steam help
+.PHONY: build index tags validate mirror check check-types og install-hooks check-steam help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags validate mirror
@@ -31,6 +31,11 @@ check:
 	@echo "--- feed.xml ---" && xmllint --noout feed.xml && echo "feed.xml: OK"
 	@echo "All checks passed."
 
+# Validate clients/spiritvale.d.ts and openapi.json are in sync with schema/patch.json.
+# Add to CI alongside `make check` to catch type drift before publish.
+check-types:
+	python3 scripts/check-types-vs-schema.py
+
 # Generate per-patch OG social-preview images to og/*.png.
 # Run: make og  (requires: pip install pillow)
 og:
@@ -55,5 +60,6 @@ help:
 	@echo "  make tags          — generate /tag/<slug>/ static pages"
 	@echo "  make mirror        — generate archive/YYYY-MM-DD-vX.Y.Z.md for each patch"
 	@echo "  make check         — validate sitemap.xml + JSON artifacts (xmllint + json.tool)"
+	@echo "  make check-types   — validate .d.ts + openapi.json in sync with schema/patch.json"
 	@echo "  make install-hooks — install git pre-commit hook"
 	@echo "  make check-steam   — check Steam API for new patch notes (local dry-run)"

@@ -1,11 +1,9 @@
 /**
  * spiritvale.d.ts — TypeScript declarations for spiritvale.js
  *
- * Usage:
- *   import type { PatchNote, PatchIndex } from './spiritvale.d.ts';
- *
- * Or alongside the JS module:
+ * Usage (TypeScript resolves this file automatically from spiritvale.js):
  *   import { getLatest } from './spiritvale.js';
+ *   import type { PatchNote, PatchIndex } from './spiritvale.js';
  */
 
 /** A single classified change entry within getDiff results */
@@ -21,6 +19,10 @@ export interface DiffResult {
   changed: DiffEntry[];
   fixed: DiffEntry[];
   removed: DiffEntry[];
+  /** Present when patches in the range have deprecated entries */
+  deprecated?: DiffEntry[];
+  /** Present when patches in the range have security entries */
+  security?: DiffEntry[];
 }
 
 /** Counts of change entries in a patch, as stored in PatchIndex */
@@ -70,6 +72,7 @@ export interface PatchNote {
   steam_news_id?: string;
   steam_url?: string | null;
   released_at?: string;
+  /** Systems, classes, or content areas affected — e.g. ['Paladin', 'crafting', 'UI'] */
   affects?: string[];
   breaking?: boolean;
   /** Only present in auto-generated drafts — remove before merging */
@@ -83,7 +86,7 @@ export interface SearchEntry {
   patch_title: string;
   /** YYYY-MM-DD */
   date: string;
-  type: "added" | "changed" | "fixed" | "removed";
+  type: "added" | "changed" | "fixed" | "removed" | "deprecated" | "security";
   text: string;
   tags: string[];
   url: string;
@@ -117,5 +120,6 @@ export function getSearchIndex(): Promise<SearchIndex>;
  *
  * @param fromVersion  base version, e.g. "0.13.0"
  * @param toVersion    target version, e.g. "0.17.0"
+ * @remarks fromVersion must be chronologically earlier than toVersion; reversed order throws "unknown version".
  */
 export function getDiff(fromVersion: string, toVersion: string): Promise<DiffResult>;

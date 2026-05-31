@@ -416,7 +416,9 @@
               "added",
               "changed",
               "fixed",
-              "removed"
+              "removed",
+              "deprecated",
+              "security"
             ]
           },
           "text": {

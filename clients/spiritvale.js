@@ -59,11 +59,12 @@ export async function getDiff(fromVersion, toVersion) {
 
   // index is newest-first; slice from toIdx to fromIdx (exclusive upper bound)
   const slice = versions.slice(toIdx, fromIdx).reverse();
-  const result = { added: [], changed: [], fixed: [], removed: [] };
+  const CHANGE_KEYS = ['added', 'changed', 'fixed', 'removed', 'deprecated', 'security'];
+  const result = Object.fromEntries(CHANGE_KEYS.map(k => [k, []]));
 
   for (const v of slice) {
     const patch = await getPatch(v);
-    for (const key of ['added', 'changed', 'fixed', 'removed']) {
+    for (const key of CHANGE_KEYS) {
       for (const entry of patch[key] ?? []) {
         result[key].push({ text: entry, _version: v });
       }

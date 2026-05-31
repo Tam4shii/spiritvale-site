@@ -104,3 +104,84 @@ try {
 
 All endpoints on `spiritvale.tama.sh` respond with `Access-Control-Allow-Origin: *`.
 No proxy needed — call directly from browser context.
+
+---
+
+# spiritvale.py — Python Client SDK
+
+Zero-dependency Python module (stdlib `urllib.request` only). Works on Python ≥ 3.8.
+
+## Install
+
+No install required — copy `clients/spiritvale.py` into your project:
+
+```bash
+curl -O https://spiritvale.tama.sh/clients/spiritvale.py
+```
+
+## Functions
+
+| Function | Returns | Description |
+|---|---|---|
+| `get_latest()` | `dict` | Latest patch note (`/patches/latest.json`) |
+| `get_index()` | `dict` | Version list + poll metadata (`/patches/index.json`) |
+| `get_patch(version)` | `dict` | Single patch by version string, e.g. `"0.17.0"` |
+| `get_search_index()` | `dict` | All classified bullet entries (`/search-index.json`) |
+| `get_diff(from, to)` | `dict` | Cumulative change diff across a version range |
+
+## Usage examples
+
+### Show the latest patch
+
+```python
+from spiritvale import get_latest
+
+patch = get_latest()
+print(f"{patch['version']} — {patch['title']}")
+print(f"Added: {len(patch['added'])}, Changed: {len(patch['changed'])}")
+```
+
+### List all versions
+
+```python
+from spiritvale import get_index
+
+index = get_index()
+for v in index['versions']:
+    print(f"{v['version']}  {v['title']}  ({v['date']})")
+```
+
+### Diff between two versions
+
+```python
+from spiritvale import get_diff
+
+diff = get_diff('0.13.0', '0.17.0')
+print(f"{len(diff['added'])} added, {len(diff['changed'])} changed")
+for entry in diff['added']:
+    print(f"  [{entry['_version']}] {entry['text']}")
+```
+
+### Search all bullets
+
+```python
+from spiritvale import get_search_index
+
+index = get_search_index()
+shinobi = [e for e in index['entries'] if 'shinobi' in e.get('tags', [])]
+print(f"{len(shinobi)} Shinobi-related changes")
+```
+
+## Error handling
+
+Functions raise `urllib.error.HTTPError` on non-2xx responses:
+
+```python
+from urllib.error import HTTPError
+from spiritvale import get_patch
+
+try:
+    patch = get_patch('99.0.0')  # doesn't exist
+except HTTPError as e:
+    print(e.code)  # 404
+```

@@ -75,6 +75,7 @@
 - [x] **TypeScript declarations for JS SDK** (2026-05-31) — `clients/spiritvale.d.ts` added: full type coverage for all 5 exported functions + 8 shared interfaces (PatchNote, PatchIndex, PatchVersionEntry, ChangeCounts, SearchIndex, SearchEntry, DiffResult, DiffEntry); types derived from schema/patch.json and live index.json shape. JSDoc stale "128+" count removed (count grows with patches). `make check` ✅. Pushed (commit 719a457).
 - [x] **Type-sync guard + SearchEntry fix** (2026-05-31) — `scripts/check-types-vs-schema.py` added as `make check-types` gate; `SearchEntry.type` union updated to include `deprecated | security` (was drifting from schema); `getDiff()` accumulates deprecated/security keys; pushed (commit cb02b0c).
 - [x] **`clients/README.md`** (2026-05-31) — SDK usage documentation with browser + Node examples, function table, TypeScript import guide, error handling pattern, and CORS note; wired into GitHub directory rendering for discoverability.
+- [x] **Python SDK `clients/spiritvale.py`** (2026-05-31) — zero-dependency Python client (stdlib `urllib.request`, Python ≥ 3.8); 5 functions matching JS SDK surface: `get_latest`, `get_index`, `get_patch`, `get_search_index`, `get_diff`; diff logic smoke-tested against local JSON (34 added, 72 changed across v0.13.0→v0.17.0); README expanded with Python section (examples, function table, error handling). Competitive pattern: warframestat.us Python SDK is the primary driver of Discord-bot adoption — Python ecosystem = discord.py bots + data scrapers.
 
 ## FUTURE IDEAS (ถ้าจะขยาย)
 - Build guides / class info
@@ -95,9 +96,9 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 6. Run `make build og check` — confirm exit 0
 7. Commit + push → CF Pages auto-deploys; Discord green embed fires on merge
 
-**Last `make check` run**: 2026-05-31 (idle-loop Forge Step 7) — ✅ exit 0 (all 6 artifacts valid); `make check-types` also ✅
-**Last Steam check**: 2026-05-31 (`last_polled_at` 2026-05-30T20:31:30Z UTC) — no new patch (latest: v0.17.0 "The Echoing Spire")
-**Push/CI status**: commit `2129915` (`clients/README.md` SDK docs) is HEAD on `origin/main`. CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Last `make check` run**: 2026-05-31 (idle-loop Forge Step 8) — ✅ exit 0 (all 6 artifacts valid); `make check-types` also ✅
+**Last Steam check**: 2026-05-31 (`make check-steam` run 2026-05-31T06:11:24Z) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
+**Push/CI status**: commit `6cf0cba` (PROJECT.md idle-loop Forge Step 7 log) is HEAD on `origin/main`. CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 
 ## BLOCKERS (Boss Actions Required)

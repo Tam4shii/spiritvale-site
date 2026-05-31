@@ -98,7 +98,7 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 
 **Last `make check` run**: 2026-05-31 (idle-loop Forge Step 8) — ✅ exit 0 (all 6 artifacts valid); `make check-types` also ✅
 **Last Steam check**: 2026-05-31 (`make check-steam` run 2026-05-31T06:11:24Z) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
-**Push/CI status**: commit `6cf0cba` (PROJECT.md idle-loop Forge Step 7 log) is HEAD on `origin/main`. CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Push/CI status**: commit `f39f320` (Python SDK + HEAD hash fix + Steam stamp) is HEAD on local `main`; not yet pushed to `origin/main`. CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 
 ## BLOCKERS (Boss Actions Required)

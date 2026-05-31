@@ -26,8 +26,7 @@ jobs:
 
       - name: Validate patch files against schema
         run: |
-          ajv validate \
-            -s schema/patch.json \
-            --spec=draft7 \
-            -c ajv-formats \
-            patches/latest.json patches/v*.json
+          for f in patches/latest.json patches/v*.json; do
+            echo "Validating $f..."
+            ajv validate -s schema/patch.json --spec=draft7 -c ajv-formats -d "$f"
+          done

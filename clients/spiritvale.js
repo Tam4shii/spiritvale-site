@@ -37,7 +37,7 @@ export function getPatch(version) {
   return _get(`/patches/v${version}.json`);
 }
 
-/** Flat search index (all 128+ bullet entries) */
+/** Flat search index (all bullet entries across all patches) */
 export function getSearchIndex() {
   return _get('/search-index.json');
 }

@@ -1,7 +1,7 @@
-.PHONY: build index tags validate mirror check check-types og install-hooks check-steam help
+.PHONY: build index tags validate mirror stats check check-ci check-types og install-hooks check-steam help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index tags validate mirror
+build: index tags validate mirror stats
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
@@ -21,6 +21,11 @@ validate:
 mirror:
 	python3 scripts/build-md-mirror.py
 
+# Generate stats.json — patch cadence, change totals, top tags (OpenDota pattern).
+# Run after `make index` so search-index.json is current.
+stats:
+	python3 scripts/build-stats.py
+
 # Validate XML and JSON derived artifacts for crawler correctness.
 check:
 	@echo "--- sitemap.xml ---" && xmllint --noout sitemap.xml && echo "sitemap.xml: OK"
@@ -29,6 +34,7 @@ check:
 	@echo "--- search-index.json ---" && python3 -m json.tool search-index.json > /dev/null && echo "search-index.json: OK"
 	@echo "--- feed.json ---" && python3 -m json.tool feed.json > /dev/null && echo "feed.json: OK"
 	@echo "--- feed.xml ---" && xmllint --noout feed.xml && echo "feed.xml: OK"
+	@echo "--- stats.json ---" && python3 -m json.tool stats.json > /dev/null && echo "stats.json: OK"
 	@echo "All checks passed."
 
 # Validate clients/spiritvale.d.ts and openapi.json are in sync with schema/patch.json.
@@ -44,6 +50,15 @@ og:
 # Check Steam AppNews for new patch notes (mirrors what GH Actions runs daily).
 check-steam:
 	python3 .github/scripts/pull-steam-news.py
+
+# Verify GH Actions cron (pull-steam-news.yml) has been firing successfully.
+# Requires: gh CLI authenticated. Run periodically to confirm monitoring is alive.
+check-ci:
+	@echo "--- GH Actions: pull-steam-news (last 7 runs) ---"
+	gh run list --workflow=pull-steam-news.yml --limit=7
+	@echo ""
+	@echo "--- GH Actions: validate-schema (last 3 runs) ---"
+	gh run list --workflow=validate-schema.yml --limit=3
 
 # Install the pre-commit hook that auto-regenerates search-index.json.
 install-hooks:
@@ -63,3 +78,5 @@ help:
 	@echo "  make check-types   — validate .d.ts + openapi.json in sync with schema/patch.json"
 	@echo "  make install-hooks — install git pre-commit hook"
 	@echo "  make check-steam   — check Steam API for new patch notes (local dry-run)"
+	@echo "  make check-ci      — verify GH Actions cron is firing (requires gh CLI)"
+	@echo "  make stats         — generate stats.json (cadence, change totals, top tags)"

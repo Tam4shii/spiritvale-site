@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-05-31T13:21:18Z",
+  "latest_version": "0.17.0",
+  "last_polled_at": "2026-05-31T10:55:24Z",
+  "total_patches": 10,
+  "total_entries": 182,
+  "change_totals": {
+    "added": 42,
+    "changed": 102,
+    "fixed": 36,
+    "removed": 2
+  },
+  "avg_days_between_patches": 10.7,
+  "top_tags": [
+    {
+      "tag": "shinobi",
+      "count": 6,
+      "url": "/tag/shinobi/"
+    },
+    {
+      "tag": "boss",
+      "count": 6,
+      "url": "/tag/boss/"
+    },
+    {
+      "tag": "berserker",
+      "count": 5,
+      "url": "/tag/berserker/"
+    },
+    {
+      "tag": "necromancer",
+      "count": 5,
+      "url": "/tag/necromancer/"
+    },
+    {
+      "tag": "crafting",
+      "count": 3,
+      "url": "/tag/crafting/"
+    },
+    {
+      "tag": "pvp",
+      "count": 3,
+      "url": "/tag/pvp/"
+    },
+    {
+      "tag": "forgotten-depths",
+      "count": 2,
+      "url": "/tag/forgotten-depths/"
+    },
+    {
+      "tag": "arena",
+      "count": 2,
+      "url": "/tag/arena/"
+    },
+    {
+      "tag": "echoing-spire",
+      "count": 1,
+      "url": "/tag/echoing-spire/"
+    }
+  ],
+  "patch_cadence": [
+    {
+      "version": "0.17.0",
+      "date": "2026-05-25",
+      "days_since_prev": 9
+    },
+    {
+      "version": "0.16.7",
+      "date": "2026-05-16",
+      "days_since_prev": 3
+    },
+    {
+      "version": "0.16.3",
+      "date": "2026-05-13",
+      "days_since_prev": 26
+    },
+    {
+      "version": "0.16.0",
+      "date": "2026-04-17",
+      "days_since_prev": 24
+    },
+    {
+      "version": "0.15.0",
+      "date": "2026-03-24",
+      "days_since_prev": 9
+    },
+    {
+      "version": "0.14.0",
+      "date": "2026-03-15",
+      "days_since_prev": 19
+    },
+    {
+      "version": "0.13.5",
+      "date": "2026-02-24",
+      "days_since_prev": 3
+    },
+    {
+      "version": "0.13.4",
+      "date": "2026-02-21",
+      "days_since_prev": 1
+    },
+    {
+      "version": "0.13.2",
+      "date": "2026-02-20",
+      "days_since_prev": 2
+    },
+    {
+      "version": "0.13.0",
+      "date": "2026-02-18",
+      "days_since_prev": null
+    }
+  ]
+}

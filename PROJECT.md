@@ -100,7 +100,7 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 **Last `make check` run**: 2026-05-31 (idle-loop Forge Step 12) — ✅ exit 0 (all 7 artifacts valid incl. stats.json)
 **Last `make check-stats` run**: 2026-05-31 (idle-loop Forge Step 12) — ✅ fresh (index↔stats timestamps in sync)
 **Last Steam check**: 2026-05-31 (`make check-steam` run 2026-05-31T18:09:52Z) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
-**Push/CI status**: commit to be pushed (Step 12 — poll timestamp + stats sync). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Push/CI status**: commit 6a794c1 pushed to `origin/main` (2026-05-31 Step 12 — poll timestamp + stats sync). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 
 ## BLOCKERS (Boss Actions Required)

@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-06-01T13:25:19Z",
+  "generated_at": "2026-06-01T15:44:22Z",
   "stale": false,
-  "hours_since_poll": 7.3,
+  "hours_since_poll": 0.0,
   "severity": "ok",
-  "message": "polled 7.3h ago",
+  "message": "polled 0.0h ago",
   "latest_version": "0.17.0",
   "total_patches": 10
 }

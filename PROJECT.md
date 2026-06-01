@@ -97,10 +97,10 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 6. Run `make build og check` — confirm exit 0
 7. Commit + push → CF Pages auto-deploys; Discord green embed fires on merge
 
-**Last `make check` run**: 2026-06-01 (idle-loop Forge Step 14) — ✅ exit 0 (all 7 artifacts valid)
-**Last `make check-stats` run**: 2026-06-01 (idle-loop Forge Step 14) — ✅ fresh (last_polled_at 2026-05-31T22:57:15Z synced)
-**Last Steam check**: 2026-06-01 (idle-loop Forge Step 14, Steam API) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
-**Push/CI status**: commit 87ec0be pushed to `origin/main` (2026-06-01 Step 13 — CI fix). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Last `make check` run**: 2026-06-01 (idle-loop Forge Step 16) — ✅ exit 0 (all 7 artifacts valid)
+**Last `make check-stats` run**: 2026-06-01 (idle-loop Forge Step 16) — ✅ fresh (last_polled_at 2026-06-01T06:07:09Z)
+**Last Steam check**: 2026-06-01 (idle-loop Forge Step 16, Steam API) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
+**Push/CI status**: commit c860a7d pushed to `origin/main` (2026-06-01 Step 16 — validate-types CI workflow). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 

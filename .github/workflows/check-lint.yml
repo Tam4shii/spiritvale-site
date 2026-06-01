@@ -1,0 +1,33 @@
+name: Validate XML and JSON artifacts
+
+on:
+  push:
+    paths:
+      - 'sitemap.xml'
+      - 'feed.xml'
+      - 'feed.json'
+      - 'patches/index.json'
+      - 'tag/index.json'
+      - 'search-index.json'
+      - 'stats.json'
+  pull_request:
+    paths:
+      - 'sitemap.xml'
+      - 'feed.xml'
+      - 'feed.json'
+      - 'patches/index.json'
+      - 'tag/index.json'
+      - 'search-index.json'
+      - 'stats.json'
+
+jobs:
+  check-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install xmllint
+        run: sudo apt-get install -y libxml2-utils
+
+      - name: Validate sitemap.xml, feed.xml, feed.json, and derived JSON artifacts
+        run: make check

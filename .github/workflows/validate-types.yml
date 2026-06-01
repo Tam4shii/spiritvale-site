@@ -13,6 +13,7 @@ on:
       - 'openapi.json'
       - 'schema/patch.json'
       - 'scripts/check-types-vs-schema.py'
+  workflow_dispatch:
 
 jobs:
   check-types:

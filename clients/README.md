@@ -185,3 +185,33 @@ try:
 except HTTPError as e:
     print(e.code)  # 404
 ```
+
+---
+
+# Discord Bot Example
+
+`clients/bots/discord-example.py` is a ready-to-fork Discord bot built on the Python SDK above.
+
+## Requirements
+
+```bash
+pip install discord.py
+```
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `!patch` | Embed showing the latest patch summary |
+| `!patch <version>` | Embed for a specific version, e.g. `!patch 0.17.0` |
+| `!diff <from> <to>` | Cumulative changes between two versions |
+| `!versions` | List all tracked patch versions |
+
+## Run
+
+```bash
+export DISCORD_BOT_TOKEN=your_token_here
+python clients/bots/discord-example.py
+```
+
+The bot imports `spiritvale.py` from the parent directory — no additional configuration needed.

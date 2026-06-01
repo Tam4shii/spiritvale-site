@@ -1,0 +1,41 @@
+name: Validate tag pages freshness
+
+on:
+  push:
+    paths:
+      - 'patches/**.json'
+      - 'search-index.json'
+      - 'scripts/build-tag-pages.py'
+      - 'tag/index.json'
+  pull_request:
+    paths:
+      - 'patches/**.json'
+      - 'search-index.json'
+      - 'scripts/build-tag-pages.py'
+      - 'tag/index.json'
+  workflow_dispatch:
+
+jobs:
+  check-tags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check tag/index.json freshness
+        run: |
+          python3 -c "
+          import json
+          with open('tag/index.json') as f: d = json.load(f)
+          d.pop('generated_at', None)
+          with open('/tmp/tags-before.json', 'w') as f: json.dump(d, f, sort_keys=True)
+          "
+          python3 scripts/build-tag-pages.py
+          python3 -c "
+          import json
+          with open('tag/index.json') as f: d = json.load(f)
+          d.pop('generated_at', None)
+          with open('/tmp/tags-after.json', 'w') as f: json.dump(d, f, sort_keys=True)
+          "
+          diff /tmp/tags-before.json /tmp/tags-after.json \
+            || (echo 'ERROR: tag/index.json is stale — run make tags and commit' && exit 1)
+          echo 'tag/index.json is fresh ✓'

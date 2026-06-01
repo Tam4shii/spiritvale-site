@@ -241,6 +241,7 @@
 
   footer { color: var(--muted); margin-top: 2rem; font-size: 0.85rem; text-align: center; }
   footer a { color: var(--accent); text-decoration: none; }
+  .permalink-link { cursor: pointer; user-select: none; }
 </style>
 </head>
 <body>
@@ -295,6 +296,7 @@ function renderPatch(p) {
   if (p.url && String(p.url).trim()) footer.push(`<a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer">📝 Full interactive notes →</a>`);
   footer.push(`<a href="/patches/v${esc(p.version)}.json">📦 Raw JSON →</a>`);
   if (p.steam_url && String(p.steam_url).trim()) footer.push(`<a href="${esc(p.steam_url)}" target="_blank" rel="noopener noreferrer">🎮 View on Steam →</a>`);
+  footer.push(`<a href="/patch/${esc(p.version)}" class="permalink-link" data-version="${esc(p.version)}" title="Copy link to this patch">🔗 Share</a>`);
 
   const affectsHtml = Array.isArray(p.affects) && p.affects.length
     ? `<div class="affects-bar">${p.affects.map(tag => `<span class="affect-chip">🏷 ${esc(tag)}</span>`).join('')}</div>`
@@ -368,6 +370,21 @@ async function loadAll() {
 }
 
 loadAll();
+
+document.addEventListener('click', function(e) {
+  const a = e.target.closest('.permalink-link');
+  if (!a) return;
+  const v = a.dataset.version;
+  const url = location.origin + '/patch/' + v;
+  if (navigator.clipboard) {
+    e.preventDefault();
+    navigator.clipboard.writeText(url).then(() => {
+      const orig = a.textContent;
+      a.textContent = '✓ Copied!';
+      setTimeout(() => { a.textContent = orig; }, 1800);
+    });
+  }
+});
 </script>
 <script>if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js');</script>
 </body>

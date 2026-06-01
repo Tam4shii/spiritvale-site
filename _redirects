@@ -7,3 +7,15 @@
 /releases.atom /feed.xml 302
 /releases.json /feed.json 302
 /releases /patch/ 302
+
+# Clean version permalinks — /patch/<version> → /patch/?v=<version>
+/patch/0.17.0 /patch/?v=0.17.0 301
+/patch/0.16.7 /patch/?v=0.16.7 301
+/patch/0.16.3 /patch/?v=0.16.3 301
+/patch/0.16.0 /patch/?v=0.16.0 301
+/patch/0.15.0 /patch/?v=0.15.0 301
+/patch/0.14.0 /patch/?v=0.14.0 301
+/patch/0.13.5 /patch/?v=0.13.5 301
+/patch/0.13.4 /patch/?v=0.13.4 301
+/patch/0.13.2 /patch/?v=0.13.2 301
+/patch/0.13.0 /patch/?v=0.13.0 301

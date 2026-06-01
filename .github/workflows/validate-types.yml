@@ -1,0 +1,24 @@
+name: Validate type sync
+
+on:
+  push:
+    paths:
+      - 'clients/spiritvale.d.ts'
+      - 'openapi.json'
+      - 'schema/patch.json'
+      - 'scripts/check-types-vs-schema.py'
+  pull_request:
+    paths:
+      - 'clients/spiritvale.d.ts'
+      - 'openapi.json'
+      - 'schema/patch.json'
+      - 'scripts/check-types-vs-schema.py'
+
+jobs:
+  check-types:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate .d.ts and openapi.json in sync with schema/patch.json
+        run: python3 scripts/check-types-vs-schema.py

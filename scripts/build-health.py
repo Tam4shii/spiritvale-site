@@ -17,6 +17,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
+STEAM_BASELINE_PATH = ROOT / "state" / "steam-last-count.txt"
+
+
+def _read_steam_baseline() -> int | None:
+    """Return the last-recorded Steam newsitems count, or None if not set."""
+    try:
+        return int(STEAM_BASELINE_PATH.read_text().strip())
+    except (FileNotFoundError, ValueError):
+        return None
 
 
 def main():
@@ -63,17 +72,26 @@ def main():
         stale = True
         message = f"poll is {hours_since}h old (>72h — Steam check may be broken)"
 
+    steam_baseline = _read_steam_baseline()
+    total_patches = stats.get("total_patches")
+
+    # hours_since_poll semantics: 0.0 is the expected value immediately after a poll run.
+    # Non-zero values reflect drift since the last Steam check — anything >24h triggers warn.
     health = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "stale": stale,
         "hours_since_poll": hours_since,
+        "hours_since_poll_note": "0.0 = measured immediately after a poll; non-zero = drift since last Steam check",
         "severity": severity,
         "message": message,
         "latest_version": stats.get("latest_version"),
-        "total_patches": stats.get("total_patches"),
+        "total_patches": total_patches,
+        "steam_newsitems_baseline": steam_baseline,
+        "steam_baseline_match": (total_patches == steam_baseline) if (total_patches is not None and steam_baseline is not None) else None,
     }
     _write(out_dir / "health.json", health)
-    print(f"api/health.json written — severity={severity}, hours_since_poll={hours_since}")
+    baseline_note = f", baseline={steam_baseline}, match={health['steam_baseline_match']}" if steam_baseline else ""
+    print(f"api/health.json written — severity={severity}, hours_since_poll={hours_since}{baseline_note}")
 
 
 def _write(path: Path, data: dict):

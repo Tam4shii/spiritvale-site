@@ -22,6 +22,23 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check tag/index.json freshness
+        # Staleness detection mechanism:
+        #
+        #   "Stale" means: the tag/index.json committed in the repo no longer matches
+        #   what scripts/build-tag-pages.py would produce from the current patch data.
+        #
+        #   Detection algorithm (3 steps):
+        #   1. Snapshot — read the current tag/index.json, strip generated_at (timestamp
+        #      changes every run and is not content-relevant), write to /tmp/tags-before.json.
+        #   2. Regenerate — run build-tag-pages.py in-place, which overwrites tag/index.json
+        #      from the live patches/ and search-index.json inputs.
+        #   3. Diff — read the regenerated tag/index.json (strip generated_at again),
+        #      write to /tmp/tags-after.json, then diff before vs after.
+        #
+        #   Pass: before == after → committed index matches what the generator produces today.
+        #   Fail: before != after → a patch was added/edited but `make tags` was not run.
+        #
+        #   Fix: run `make tags` locally and commit the updated tag/index.json.
         run: |
           python3 -c "
           import json

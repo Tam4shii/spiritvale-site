@@ -1,7 +1,7 @@
-.PHONY: build index tags validate mirror stats check check-ci check-types check-stats og install-hooks check-steam help
+.PHONY: build index tags validate mirror stats health check check-ci check-types check-stats og install-hooks check-steam help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index tags validate mirror stats
+build: index tags validate mirror stats health
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
@@ -25,6 +25,12 @@ mirror:
 # Run after `make index` so search-index.json is current.
 stats:
 	python3 scripts/build-stats.py
+
+# Generate api/health.json — structured freshness endpoint.
+# Derives stale/warn/critical from stats.json last_polled_at.
+# Consumable by Grafana, uptime monitors, Discord bots without client-side math.
+health:
+	python3 scripts/build-health.py
 
 # Validate XML and JSON derived artifacts for crawler correctness.
 check:
@@ -99,3 +105,4 @@ help:
 	@echo "  make check-steam   — check Steam API for new patch notes (local dry-run)"
 	@echo "  make check-ci      — verify GH Actions cron is firing (requires gh CLI)"
 	@echo "  make stats         — generate stats.json (cadence, change totals, top tags)"
+	@echo "  make health        — generate api/health.json (structured freshness endpoint)"

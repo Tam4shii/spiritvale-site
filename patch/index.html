@@ -150,8 +150,28 @@
     border-left: 2px solid rgba(167,139,250,0.12);
     font-size: 0.92rem;
     line-height: 1.5;
+    position: relative;
+    scroll-margin-top: 1rem;
   }
   .patch-item + .patch-item { margin-top: 0.15rem; }
+  .patch-item:target, .patch-item.focused {
+    border-left-color: var(--accent);
+    background: rgba(167,139,250,0.08);
+    border-radius: 0 4px 4px 0;
+  }
+  .entry-anchor {
+    position: absolute;
+    right: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .patch-item:hover .entry-anchor { opacity: 1; }
+  .entry-anchor:hover { color: var(--accent); }
 
   /* Empty state */
   .empty-note {
@@ -282,13 +302,35 @@ function esc(s) {
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function renderEntry(item, entryId) {
+  if (entryId) {
+    return `<div class="patch-item" id="${esc(entryId)}">${esc(item)}<a class="entry-anchor" href="#${esc(entryId)}" title="Link to this entry" onclick="copyEntryLink(event,'${esc(entryId)}')">#</a></div>`;
+  }
+  return `<div class="patch-item">${esc(item)}</div>`;
+}
+
+function copyEntryLink(e, id) {
+  e.preventDefault();
+  const url = location.origin + location.pathname + '?focus=' + id;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      const a = e.currentTarget;
+      a.textContent = '✓';
+      setTimeout(() => { a.textContent = '#'; }, 1500);
+    });
+  } else {
+    location.hash = id;
+  }
+}
+
 function renderPatch(p) {
+  const ids = p.entry_ids || {};
   const sections = SECTIONS
     .filter(s => Array.isArray(p[s.key]) && p[s.key].length > 0)
     .map(s => `
       <div class="section-block">
         <div class="section-heading ${s.cls}">${s.label}</div>
-        ${p[s.key].map(item => `<div class="patch-item">${esc(item)}</div>`).join('')}
+        ${p[s.key].map((item, i) => renderEntry(item, (ids[s.key] || [])[i])).join('')}
       </div>`)
     .join('');
 
@@ -362,8 +404,18 @@ async function loadAll() {
 
     root.innerHTML = patches.map(renderPatch).join('');
 
-    const vParam = new URLSearchParams(location.search).get('v');
+    const params = new URLSearchParams(location.search);
+    const vParam = params.get('v');
+    const focusParam = params.get('focus');
     if (vParam) scrollToVersion(vParam);
+    if (focusParam) {
+      const el = document.getElementById(focusParam);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('focused');
+        setTimeout(() => el.classList.remove('focused'), 2500);
+      }
+    }
   } catch (e) {
     root.innerHTML = '<p class="state-msg">Could not load patch notes. Try refreshing.</p>';
   }

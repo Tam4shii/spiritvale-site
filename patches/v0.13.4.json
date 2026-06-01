@@ -22,5 +22,21 @@
   "fixed": [
     "Removed AA aftercast delay from Summons (broken after previous patch)"
   ],
-  "removed": []
+  "removed": [],
+  "entry_ids": {
+    "added": [
+      "v0.13.4-added-0"
+    ],
+    "changed": [
+      "v0.13.4-changed-0",
+      "v0.13.4-changed-1",
+      "v0.13.4-changed-2",
+      "v0.13.4-changed-3",
+      "v0.13.4-changed-4",
+      "v0.13.4-changed-5"
+    ],
+    "fixed": [
+      "v0.13.4-fixed-0"
+    ]
+  }
 }

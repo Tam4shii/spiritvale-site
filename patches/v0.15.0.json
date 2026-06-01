@@ -33,5 +33,32 @@
     "Multiple PVP-related bug fixes",
     "Increased see-through-wall radius in most maps"
   ],
-  "removed": []
+  "removed": [],
+  "entry_ids": {
+    "added": [
+      "v0.15.0-added-0",
+      "v0.15.0-added-1",
+      "v0.15.0-added-2",
+      "v0.15.0-added-3",
+      "v0.15.0-added-4"
+    ],
+    "changed": [
+      "v0.15.0-changed-0",
+      "v0.15.0-changed-1",
+      "v0.15.0-changed-2",
+      "v0.15.0-changed-3",
+      "v0.15.0-changed-4",
+      "v0.15.0-changed-5",
+      "v0.15.0-changed-6",
+      "v0.15.0-changed-7",
+      "v0.15.0-changed-8",
+      "v0.15.0-changed-9",
+      "v0.15.0-changed-10",
+      "v0.15.0-changed-11"
+    ],
+    "fixed": [
+      "v0.15.0-fixed-0",
+      "v0.15.0-fixed-1"
+    ]
+  }
 }

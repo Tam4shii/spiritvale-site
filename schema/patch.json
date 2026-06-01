@@ -94,6 +94,19 @@
     "raw_body": {
       "type": "string",
       "description": "Plain-text Steam news body — present in auto-generated drafts only; remove before merging to production"
+    },
+    "entry_ids": {
+      "type": "object",
+      "description": "Stable anchor IDs for each bullet entry, keyed by section name. Each ID follows the pattern '{version}-{type}-{index}' (e.g. 'v0.17.0-added-2'). Used for deep-linking to specific changes via /patch/{version}#{id} or ?focus={id}.",
+      "properties": {
+        "added":      { "type": "array", "items": { "type": "string" } },
+        "changed":    { "type": "array", "items": { "type": "string" } },
+        "fixed":      { "type": "array", "items": { "type": "string" } },
+        "removed":    { "type": "array", "items": { "type": "string" } },
+        "deprecated": { "type": "array", "items": { "type": "string" } },
+        "security":   { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
     }
   }
 }

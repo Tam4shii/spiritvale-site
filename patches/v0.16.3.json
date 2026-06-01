@@ -17,5 +17,15 @@
     "Rage skill not working on Berserker",
     "Vending list now automatically populates when opened"
   ],
-  "removed": []
+  "removed": [],
+  "entry_ids": {
+    "added": [
+      "v0.16.3-added-0",
+      "v0.16.3-added-1"
+    ],
+    "fixed": [
+      "v0.16.3-fixed-0",
+      "v0.16.3-fixed-1"
+    ]
+  }
 }

@@ -25,5 +25,23 @@
     "Cooldown recovery stat not applying correctly",
     "Summon behaviour improved"
   ],
-  "removed": []
+  "removed": [],
+  "entry_ids": {
+    "changed": [
+      "v0.13.2-changed-0",
+      "v0.13.2-changed-1",
+      "v0.13.2-changed-2",
+      "v0.13.2-changed-3",
+      "v0.13.2-changed-4",
+      "v0.13.2-changed-5",
+      "v0.13.2-changed-6",
+      "v0.13.2-changed-7"
+    ],
+    "fixed": [
+      "v0.13.2-fixed-0",
+      "v0.13.2-fixed-1",
+      "v0.13.2-fixed-2",
+      "v0.13.2-fixed-3"
+    ]
+  }
 }

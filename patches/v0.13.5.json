@@ -26,5 +26,24 @@
     "Gold not deducted when setting up a purchase shop",
     "Toggles resetting summon skills"
   ],
-  "removed": []
+  "removed": [],
+  "entry_ids": {
+    "changed": [
+      "v0.13.5-changed-0",
+      "v0.13.5-changed-1",
+      "v0.13.5-changed-2",
+      "v0.13.5-changed-3",
+      "v0.13.5-changed-4",
+      "v0.13.5-changed-5",
+      "v0.13.5-changed-6",
+      "v0.13.5-changed-7",
+      "v0.13.5-changed-8",
+      "v0.13.5-changed-9"
+    ],
+    "fixed": [
+      "v0.13.5-fixed-0",
+      "v0.13.5-fixed-1",
+      "v0.13.5-fixed-2"
+    ]
+  }
 }

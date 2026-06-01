@@ -23,5 +23,21 @@
     "Random boss casting and extra cast range removed"
   ],
   "fixed": [],
-  "removed": []
+  "removed": [],
+  "entry_ids": {
+    "added": [
+      "v0.16.0-added-0",
+      "v0.16.0-added-1"
+    ],
+    "changed": [
+      "v0.16.0-changed-0",
+      "v0.16.0-changed-1",
+      "v0.16.0-changed-2",
+      "v0.16.0-changed-3",
+      "v0.16.0-changed-4",
+      "v0.16.0-changed-5",
+      "v0.16.0-changed-6",
+      "v0.16.0-changed-7"
+    ]
+  }
 }

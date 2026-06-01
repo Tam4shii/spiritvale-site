@@ -20,5 +20,19 @@
   ],
   "removed": [
     "Sell shops no longer visible on maps (purchase shops remain; sell shops may return in future)"
-  ]
+  ],
+  "entry_ids": {
+    "changed": [
+      "v0.16.7-changed-0",
+      "v0.16.7-changed-1"
+    ],
+    "fixed": [
+      "v0.16.7-fixed-0",
+      "v0.16.7-fixed-1",
+      "v0.16.7-fixed-2"
+    ],
+    "removed": [
+      "v0.16.7-removed-0"
+    ]
+  }
 }

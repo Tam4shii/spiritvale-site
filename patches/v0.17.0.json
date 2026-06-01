@@ -53,5 +53,53 @@
   ],
   "removed": [
     "Hidden 100% Multistrike removed from Naga, Bat, and Wolf gear"
-  ]
+  ],
+  "entry_ids": {
+    "added": [
+      "v0.17.0-added-0",
+      "v0.17.0-added-1",
+      "v0.17.0-added-2",
+      "v0.17.0-added-3",
+      "v0.17.0-added-4",
+      "v0.17.0-added-5",
+      "v0.17.0-added-6",
+      "v0.17.0-added-7",
+      "v0.17.0-added-8",
+      "v0.17.0-added-9",
+      "v0.17.0-added-10",
+      "v0.17.0-added-11",
+      "v0.17.0-added-12"
+    ],
+    "changed": [
+      "v0.17.0-changed-0",
+      "v0.17.0-changed-1",
+      "v0.17.0-changed-2",
+      "v0.17.0-changed-3",
+      "v0.17.0-changed-4",
+      "v0.17.0-changed-5",
+      "v0.17.0-changed-6",
+      "v0.17.0-changed-7",
+      "v0.17.0-changed-8",
+      "v0.17.0-changed-9",
+      "v0.17.0-changed-10",
+      "v0.17.0-changed-11",
+      "v0.17.0-changed-12",
+      "v0.17.0-changed-13",
+      "v0.17.0-changed-14",
+      "v0.17.0-changed-15",
+      "v0.17.0-changed-16",
+      "v0.17.0-changed-17",
+      "v0.17.0-changed-18",
+      "v0.17.0-changed-19",
+      "v0.17.0-changed-20"
+    ],
+    "fixed": [
+      "v0.17.0-fixed-0",
+      "v0.17.0-fixed-1",
+      "v0.17.0-fixed-2"
+    ],
+    "removed": [
+      "v0.17.0-removed-0"
+    ]
+  }
 }

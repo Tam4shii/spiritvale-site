@@ -32,5 +32,31 @@
     "Hair clipping through headgear greatly reduced",
     "Feet no longer clip through shoes"
   ],
-  "removed": []
+  "removed": [],
+  "entry_ids": {
+    "added": [
+      "v0.14.0-added-0",
+      "v0.14.0-added-1",
+      "v0.14.0-added-2",
+      "v0.14.0-added-3",
+      "v0.14.0-added-4",
+      "v0.14.0-added-5",
+      "v0.14.0-added-6",
+      "v0.14.0-added-7",
+      "v0.14.0-added-8",
+      "v0.14.0-added-9",
+      "v0.14.0-added-10"
+    ],
+    "changed": [
+      "v0.14.0-changed-0",
+      "v0.14.0-changed-1",
+      "v0.14.0-changed-2",
+      "v0.14.0-changed-3",
+      "v0.14.0-changed-4"
+    ],
+    "fixed": [
+      "v0.14.0-fixed-0",
+      "v0.14.0-fixed-1"
+    ]
+  }
 }

@@ -68,5 +68,67 @@
     "Optimised stacking status effects",
     "Summons/Clones now teleport to player if too far away"
   ],
-  "removed": []
+  "removed": [],
+  "entry_ids": {
+    "added": [
+      "v0.13.0-added-0",
+      "v0.13.0-added-1",
+      "v0.13.0-added-2",
+      "v0.13.0-added-3",
+      "v0.13.0-added-4",
+      "v0.13.0-added-5",
+      "v0.13.0-added-6",
+      "v0.13.0-added-7"
+    ],
+    "changed": [
+      "v0.13.0-changed-0",
+      "v0.13.0-changed-1",
+      "v0.13.0-changed-2",
+      "v0.13.0-changed-3",
+      "v0.13.0-changed-4",
+      "v0.13.0-changed-5",
+      "v0.13.0-changed-6",
+      "v0.13.0-changed-7",
+      "v0.13.0-changed-8",
+      "v0.13.0-changed-9",
+      "v0.13.0-changed-10",
+      "v0.13.0-changed-11",
+      "v0.13.0-changed-12",
+      "v0.13.0-changed-13",
+      "v0.13.0-changed-14",
+      "v0.13.0-changed-15",
+      "v0.13.0-changed-16",
+      "v0.13.0-changed-17",
+      "v0.13.0-changed-18",
+      "v0.13.0-changed-19",
+      "v0.13.0-changed-20",
+      "v0.13.0-changed-21",
+      "v0.13.0-changed-22",
+      "v0.13.0-changed-23",
+      "v0.13.0-changed-24",
+      "v0.13.0-changed-25",
+      "v0.13.0-changed-26",
+      "v0.13.0-changed-27",
+      "v0.13.0-changed-28",
+      "v0.13.0-changed-29"
+    ],
+    "fixed": [
+      "v0.13.0-fixed-0",
+      "v0.13.0-fixed-1",
+      "v0.13.0-fixed-2",
+      "v0.13.0-fixed-3",
+      "v0.13.0-fixed-4",
+      "v0.13.0-fixed-5",
+      "v0.13.0-fixed-6",
+      "v0.13.0-fixed-7",
+      "v0.13.0-fixed-8",
+      "v0.13.0-fixed-9",
+      "v0.13.0-fixed-10",
+      "v0.13.0-fixed-11",
+      "v0.13.0-fixed-12",
+      "v0.13.0-fixed-13",
+      "v0.13.0-fixed-14",
+      "v0.13.0-fixed-15"
+    ]
+  }
 }

@@ -97,9 +97,11 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 6. Run `make build og check` — confirm exit 0
 7. Commit + push → CF Pages auto-deploys; Discord green embed fires on merge
 
-**Last `make check` run**: 2026-06-02 (idle-loop Forge Step 20) — ✅ exit 0 (all 7 artifacts valid)
-**Last `make check-stats` run**: 2026-06-02 (idle-loop Forge Step 20) — ✅ fresh (last_polled_at 2026-06-01T20:33:36Z)
-**Last Steam check**: 2026-06-02 (idle-loop Forge Step 20, Steam API) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
+**Staleness root cause (documented 2026-06-02)**: `pull-steam-news.yml` writes `last_polled_at` into `patches/index.json` on the GH Actions runner, but monitoring-only runs (no draft) never committed/pushed that change to `main` — the workspace change was silently discarded. `stats.json` / `health.json` were also never rebuilt by the workflow. Fixed: added "Rebuild stats + health, commit poll timestamp" step to `pull-steam-news.yml` — now runs `make stats && make health` and commits the 3 files after every poll, draft or not.
+
+**Last `make check` run**: 2026-06-02 (idle-loop Forge Step 21) — ✅ exit 0 (all 7 artifacts valid)
+**Last `make check-stats` run**: 2026-06-02 (idle-loop Forge Step 21) — ✅ fresh (last_polled_at 2026-06-01T22:55:00Z)
+**Last Steam check**: 2026-06-02 (idle-loop Forge Step 21, Steam API) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
 **Push/CI status**: commit 86c2fe7 pushed to `origin/main` (2026-06-01 Step 17 — Discord bot + CI lint/tag-freshness workflows). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).

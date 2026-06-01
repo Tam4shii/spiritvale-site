@@ -28,9 +28,11 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from spiritvale import get_diff, get_index, get_latest, get_patch
+
+ANNOUNCE_CHANNEL_ID = int(os.getenv("SPIRITVALE_CHANNEL_ID", "0"))
 
 BADGES = {
     "added": "🟢",
@@ -62,6 +64,37 @@ def _patch_embed(patch: dict) -> discord.Embed:
         embed.add_field(name=key.capitalize(), value="\n".join(lines), inline=False)
     embed.set_footer(text="spiritvale.tama.sh · !help patch")
     return embed
+
+
+_last_known_version: str | None = None
+
+
+@bot.event
+async def on_ready():
+    print(f"Logged in as {bot.user}")
+    if ANNOUNCE_CHANNEL_ID:
+        poll_new_patch.start()
+
+
+@tasks.loop(minutes=5)
+async def poll_new_patch():
+    global _last_known_version
+    try:
+        index = get_index()
+        current = index["latest_version"]
+        if _last_known_version is None:
+            _last_known_version = current
+            return
+        if current != _last_known_version:
+            channel = bot.get_channel(ANNOUNCE_CHANNEL_ID)
+            if channel:
+                patch = get_latest()
+                embed = _patch_embed(patch)
+                embed.color = 0xFAA61A  # amber = new patch announced
+                await channel.send(content="@here **New SpiritVale patch!**", embed=embed)
+            _last_known_version = current
+    except Exception as exc:
+        print(f"[poll] error: {exc}")
 
 
 @bot.command(name="patch")

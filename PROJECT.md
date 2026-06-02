@@ -102,8 +102,8 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 
 **Last `make check` run**: 2026-06-03 (idle-loop Forge Step 26) — ✅ exit 0 (all 7 artifacts valid)
 **Last `make check-stats` run**: 2026-06-03 (idle-loop Forge Step 26) — ✅ fresh (last_polled_at 2026-06-02T18:07:46Z)
-**Last Steam check**: 2026-06-02 (GH Actions pull-steam-news.yml) — ✅ v0.18.0 "New and Revamped Maps" detected + classified; archive complete at 11 versions
-**Push/CI status**: commit 947b631 pushed to `origin/main` (2026-06-03 Step 26 — v0.18.0 full release). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Last Steam check**: 2026-06-03 (idle-loop Forge Step 27) — ✅ No new patches since v0.18.0; baseline corrected (was stale at 0.17.0 → fixed to 0.18.0, commit 6b814d2)
+**Push/CI status**: commit 6b814d2 pushed to `origin/main` (2026-06-03 Step 27 — poll + baseline fix). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 

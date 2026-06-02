@@ -1,4 +1,4 @@
-.PHONY: build index tags validate mirror stats health badge check check-ci check-types check-stats check-clean og install-hooks check-steam help
+.PHONY: build index tags validate mirror stats health badge check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags validate mirror stats health badge
@@ -46,6 +46,13 @@ check:
 	@echo "--- feed.json ---" && python3 -m json.tool feed.json > /dev/null && echo "feed.json: OK"
 	@echo "--- feed.xml ---" && xmllint --noout feed.xml && echo "feed.xml: OK"
 	@echo "--- stats.json ---" && python3 -m json.tool stats.json > /dev/null && echo "stats.json: OK"
+	@python3 -c "\
+import json, sys; \
+idx = json.load(open('patches/index.json')); \
+base = json.load(open('state/steam-news-baseline.json')) if __import__('os').path.exists('state/steam-news-baseline.json') else {}; \
+iv = idx.get('latest_version'); bv = base.get('latest_version'); \
+(print(f'baseline: OK (both {iv})') if iv == bv else (print(f'ERROR: baseline drift — index={iv} but baseline={bv}; run make check-steam to sync', file=sys.stderr) or sys.exit(1))) \
+if bv else print('baseline: SKIP (no baseline file yet)')"
 	@echo "All checks passed."
 
 # Validate clients/spiritvale.d.ts and openapi.json are in sync with schema/patch.json.
@@ -103,21 +110,31 @@ install-hooks:
 	chmod +x .git/hooks/pre-commit
 	@echo "Pre-commit hook installed."
 
+check-baseline:
+	@python3 -c "\
+import json, sys, os; \
+idx = json.load(open('patches/index.json')); \
+base = json.load(open('state/steam-news-baseline.json')) if os.path.exists('state/steam-news-baseline.json') else {}; \
+iv = idx.get('latest_version'); bv = base.get('latest_version'); \
+sys.exit(0) if not bv else (sys.exit(0) if iv == bv else (print(f'ERROR: baseline drift — index={iv} but baseline={bv}; run make check-steam', file=sys.stderr) or sys.exit(1)))"
+	@echo "Baseline version matches index ✓"
+
 help:
 	@echo "Targets:"
-	@echo "  make build         — index + validate (run before any patch commit)"
-	@echo "  make index         — rebuild search-index.json"
-	@echo "  make validate      — validate all patches against schema"
-	@echo "  make og            — generate OG preview images (requires pillow)"
-	@echo "  make tags          — generate /tag/<slug>/ static pages"
-	@echo "  make mirror        — generate archive/YYYY-MM-DD-vX.Y.Z.md for each patch"
-	@echo "  make check         — validate sitemap.xml + JSON artifacts (xmllint + json.tool)"
-	@echo "  make check-types   — validate .d.ts + openapi.json in sync with schema/patch.json"
-	@echo "  make check-stats   — verify stats.json is not stale relative to its inputs"
-	@echo "  make check-clean   — assert git working tree is clean (commit gate)"
-	@echo "  make install-hooks — install git pre-commit hook"
-	@echo "  make check-steam   — poll Steam API; stamps index + baseline (no draft creation unless new patches found)"
-	@echo "  make check-ci      — verify GH Actions cron is firing (requires gh CLI)"
-	@echo "  make stats         — generate stats.json (cadence, change totals, top tags)"
-	@echo "  make health        — generate api/health.json (structured freshness endpoint)"
-	@echo "  make badge         — generate badge/latest.json (shields.io endpoint badge)"
+	@echo "  make build          — index + validate (run before any patch commit)"
+	@echo "  make index          — rebuild search-index.json"
+	@echo "  make validate       — validate all patches against schema"
+	@echo "  make og             — generate OG preview images (requires pillow)"
+	@echo "  make tags           — generate /tag/<slug>/ static pages"
+	@echo "  make mirror         — generate archive/YYYY-MM-DD-vX.Y.Z.md for each patch"
+	@echo "  make check          — validate sitemap.xml + JSON artifacts + baseline drift"
+	@echo "  make check-baseline — assert baseline version == index latest_version (drift guard)"
+	@echo "  make check-types    — validate .d.ts + openapi.json in sync with schema/patch.json"
+	@echo "  make check-stats    — verify stats.json is not stale relative to its inputs"
+	@echo "  make check-clean    — assert git working tree is clean (commit gate)"
+	@echo "  make install-hooks  — install git pre-commit hook"
+	@echo "  make check-steam    — poll Steam API; stamps index + baseline (no draft unless new patches)"
+	@echo "  make check-ci       — verify GH Actions cron is firing (requires gh CLI)"
+	@echo "  make stats          — generate stats.json (cadence, change totals, top tags)"
+	@echo "  make health         — generate api/health.json (structured freshness endpoint)"
+	@echo "  make badge          — generate badge/latest.json (shields.io endpoint badge)"

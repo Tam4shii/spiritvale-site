@@ -1,0 +1,38 @@
+{
+  "name": "@spiritvale/client",
+  "version": "0.1.0",
+  "description": "Zero-dependency JS/TS client for the SpiritVale Community Hub patch API",
+  "type": "module",
+  "main": "./spiritvale.js",
+  "types": "./spiritvale.d.ts",
+  "exports": {
+    ".": {
+      "import": "./spiritvale.js",
+      "types": "./spiritvale.d.ts"
+    }
+  },
+  "files": [
+    "spiritvale.js",
+    "spiritvale.d.ts",
+    "README.md"
+  ],
+  "keywords": [
+    "spiritvale",
+    "game",
+    "patch-notes",
+    "api-client"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tam4shii/spiritvale-site.git",
+    "directory": "clients"
+  },
+  "homepage": "https://spiritvale.tama.sh",
+  "bugs": {
+    "url": "https://github.com/Tam4shii/spiritvale-site/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

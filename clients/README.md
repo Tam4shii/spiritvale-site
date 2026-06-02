@@ -6,14 +6,19 @@ Full TypeScript types are co-located in `spiritvale.d.ts`.
 
 ## Install
 
-No install required — import directly from the site:
+```bash
+# npm / pnpm / yarn
+npm install @spiritvale/client
+```
+
+Or import directly from the site (no install):
 
 ```js
-// Browser or Deno — CDN import (once spiritvale.tama.sh is live)
+// Browser / Deno — CDN import
 import { getLatest } from 'https://spiritvale.tama.sh/clients/spiritvale.js';
 
-// Node ≥ 18 (copy file locally or reference from this repo)
-import { getLatest } from './clients/spiritvale.js';
+// Node ≥ 18 — after npm install
+import { getLatest } from '@spiritvale/client';
 ```
 
 ## Functions

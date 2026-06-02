@@ -97,10 +97,13 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 5. Rename file to `patches/v{version}.json`; update `patches/index.json`
 6. Run `make build og check` — confirm exit 0
 7. Commit + push → CF Pages auto-deploys; Discord green embed fires on merge
+8. **Run `make check-steam`** — syncs `state/steam-news-baseline.json` to new version (prevents drift; `make check` will fail on next run if skipped)
 
 **Staleness root cause (documented 2026-06-02)**: `pull-steam-news.yml` writes `last_polled_at` into `patches/index.json` on the GH Actions runner, but monitoring-only runs (no draft) never committed/pushed that change to `main` — the workspace change was silently discarded. `stats.json` / `health.json` were also never rebuilt by the workflow. Fixed: added "Rebuild stats + health, commit poll timestamp" step to `pull-steam-news.yml` — now runs `make stats && make health` and commits the 3 files after every poll, draft or not.
 
-**Last `make check` run**: 2026-06-03 (idle-loop Forge Step 26) — ✅ exit 0 (all 7 artifacts valid)
+**Baseline drift root cause (documented 2026-06-03)**: `state/steam-news-baseline.json` is written by `pull-steam-news.py:save_baseline()` — it only runs during `make check-steam` / GH Actions poll. When a new patch is committed directly (e.g., Step 26's v0.18.0 commit), the script is never called and the baseline stays at the old version. **Process guard added (Step 28)**: `make check` now asserts `baseline.latest_version == index.latest_version`; fails with actionable message if drift is detected. Named process gap: the release checklist (Next Steps §6) must include `make check-steam` or `make check-baseline` as the final step after committing any new patch version.
+
+**Last `make check` run**: 2026-06-03 (idle-loop Forge Step 28) — ✅ exit 0 (all 7 artifacts valid + baseline drift guard added)
 **Last `make check-stats` run**: 2026-06-03 (idle-loop Forge Step 26) — ✅ fresh (last_polled_at 2026-06-02T18:07:46Z)
 **Last Steam check**: 2026-06-03 (idle-loop Forge Step 27) — ✅ No new patches since v0.18.0; baseline corrected (was stale at 0.17.0 → fixed to 0.18.0, commit 6b814d2)
 **Push/CI status**: commit 6b814d2 pushed to `origin/main` (2026-06-03 Step 27 — poll + baseline fix). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.

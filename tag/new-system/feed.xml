@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/new-system/feed.xml</id>
+  <title>SpiritVale — New System Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/new-system/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/new-system/feed.xml" />
+  <updated>2026-05-25T00:00:00Z</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.17.0.json#tag-new-system</id>
+    <title>v0.17.0 – The Echoing Spire [New System]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.17.0" />
+    <updated>2026-05-25T00:00:00Z</updated>
+    <summary type="text">Grimoires: new equip slot (up to 3 equipped at once), class-locked passives — trade in a full artifact set to receive one; Base Class Grimoires: trade in box of origin sets with base class masters in Nevaris</summary>
+  </entry>
+</feed>

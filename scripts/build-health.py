@@ -88,7 +88,9 @@ def main():
         "latest_version": stats.get("latest_version"),
         "total_patches": total_patches,
         "steam_newsitems_baseline": steam_baseline,
-        "steam_baseline_match": (total_patches == steam_baseline) if (total_patches is not None and steam_baseline is not None) else None,
+        # >= because our archive may contain historical patches older than Steam's news feed window.
+        # False only when total_patches < steam_baseline (we missed patches Steam knows about).
+        "steam_baseline_match": (total_patches >= steam_baseline) if (total_patches is not None and steam_baseline is not None) else None,
     }
     _write(out_dir / "health.json", health)
     baseline_note = f", baseline={steam_baseline}, match={health['steam_baseline_match']}" if steam_baseline else ""

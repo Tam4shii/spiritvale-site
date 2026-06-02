@@ -1,13 +1,27 @@
 {
-  "latest_version": "0.17.0",
-  "last_polled_at": "2026-06-02T10:55:17Z",
+  "latest_version": "0.18.0",
+  "last_polled_at": "2026-06-02T18:07:46Z",
   "poll_tz": "UTC",
   "versions": [
+    {
+      "version": "0.18.0",
+      "title": "New and Revamped Maps",
+      "date": "2026-06-02",
+      "current": true,
+      "archive_url": "/patches/v0.18.0.json",
+      "steam_news_id": "1833968530901053",
+      "change_counts": {
+        "added": 3,
+        "changed": 6,
+        "fixed": 5,
+        "removed": 0
+      }
+    },
     {
       "version": "0.17.0",
       "title": "The Echoing Spire",
       "date": "2026-05-25",
-      "current": true,
+      "current": false,
       "archive_url": "/patches/v0.17.0.json",
       "steam_news_id": "1833334318576172",
       "change_counts": {

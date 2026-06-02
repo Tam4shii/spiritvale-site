@@ -1,0 +1,16 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.18.0",
+  "title": "[Update 0.18.0] New and Revamped Maps",
+  "date": "2026-06-02",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1833968530901053",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1833968530901053",
+  "released_at": "2026-06-02T16:45:44+00:00",
+  "raw_body": "New and Revamped Maps Many maps have been rearranged for better layout (17 new maps 💀, thanks @Polliwagon) Sunny Meadows 1 & 2 Forest Field 1 & 2 Lake Field Mystic Lake 1 & 2 Nevaris Sewers Festering Woods 1 & 2 Forgotten Depths Goblin Field Goblin Village Goblin Cave 1 & 2 Stormreef Isle Abyss Castle Dungeon New items About a dozen new items (early-mid gear) New pets Many item drops have been relocated (mostly some gear brought to lower maps where they would be more useful) Features & Improvements New World Map UI All new artifact icons (replacing AI icons with ones made by artists) Bug Fixes Fix skill mods not affecting summons Fix a gold dupe exploit Fix vending sales UI not displayed Fix incorrect item counts in vending search Fix getting stuck with vending character Balance Changes Bolts were obviously overtuned, these changes aim to bring autocast sources closer together Reduced damage of autocast bolts back to 50% Increased autocast chance of some items back to before",
+  "added": [],
+  "changed": [],
+  "fixed": [],
+  "removed": []
+}

@@ -1,26 +1,36 @@
 {
-  "generated_at": "2026-06-02T10:55:22Z",
-  "latest_version": "0.17.0",
-  "last_polled_at": "2026-06-02T10:55:17Z",
-  "total_patches": 10,
-  "total_entries": 182,
+  "generated_at": "2026-06-02T20:31:43Z",
+  "latest_version": "0.18.0",
+  "last_polled_at": "2026-06-02T18:07:46Z",
+  "total_patches": 11,
+  "total_entries": 196,
   "change_totals": {
-    "added": 42,
-    "changed": 102,
-    "fixed": 36,
+    "added": 45,
+    "changed": 108,
+    "fixed": 41,
     "removed": 2
   },
-  "avg_days_between_patches": 10.7,
+  "avg_days_between_patches": 10.4,
   "top_tags": [
+    {
+      "tag": "balance",
+      "count": 15,
+      "url": "/tag/balance/"
+    },
+    {
+      "tag": "boss",
+      "count": 7,
+      "url": "/tag/boss/"
+    },
+    {
+      "tag": "nerf",
+      "count": 7,
+      "url": "/tag/nerf/"
+    },
     {
       "tag": "shinobi",
       "count": 6,
       "url": "/tag/shinobi/"
-    },
-    {
-      "tag": "boss",
-      "count": 6,
-      "url": "/tag/boss/"
     },
     {
       "tag": "berserker",
@@ -33,32 +43,32 @@
       "url": "/tag/necromancer/"
     },
     {
-      "tag": "crafting",
-      "count": 3,
-      "url": "/tag/crafting/"
+      "tag": "equipment",
+      "count": 5,
+      "url": "/tag/equipment/"
     },
     {
-      "tag": "pvp",
-      "count": 3,
-      "url": "/tag/pvp/"
+      "tag": "economy",
+      "count": 4,
+      "url": "/tag/economy/"
     },
     {
       "tag": "forgotten-depths",
-      "count": 2,
+      "count": 3,
       "url": "/tag/forgotten-depths/"
     },
     {
-      "tag": "arena",
-      "count": 2,
-      "url": "/tag/arena/"
-    },
-    {
-      "tag": "echoing-spire",
-      "count": 1,
-      "url": "/tag/echoing-spire/"
+      "tag": "crafting",
+      "count": 3,
+      "url": "/tag/crafting/"
     }
   ],
   "patch_cadence": [
+    {
+      "version": "0.18.0",
+      "date": "2026-06-02",
+      "days_since_prev": 8
+    },
     {
       "version": "0.17.0",
       "date": "2026-05-25",

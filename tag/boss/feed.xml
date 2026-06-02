@@ -13,7 +13,7 @@
     <title>v0.17.0 – The Echoing Spire [Boss]</title>
     <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.17.0" />
     <updated>2026-05-25T00:00:00Z</updated>
-    <summary type="text">Boss lure crafting: craftsman NPC can craft boss lures in exchange for monster memories</summary>
+    <summary type="text">Boss lure crafting: craftsman NPC can craft boss lures in exchange for monster memories; Bosses recover 10% HP per second when out of combat (was 100% HP instantly)</summary>
   </entry>
   <entry>
     <id>https://spiritvale.tama.sh/patches/v0.16.0.json#tag-boss</id>

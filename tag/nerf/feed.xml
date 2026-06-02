@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>https://spiritvale.tama.sh/tag/nerf/feed.xml</id>
+  <title>SpiritVale — Nerf Changes</title>
+  <link rel="alternate" type="text/html" href="https://spiritvale.tama.sh/tag/nerf/" />
+  <link rel="self" type="application/atom+xml" href="https://spiritvale.tama.sh/tag/nerf/feed.xml" />
+  <updated>2026-05-25T00:00:00Z</updated>
+  <author><name>SpiritVale Community Archive</name></author>
+
+
+  <entry>
+    <id>https://spiritvale.tama.sh/patches/v0.17.0.json#tag-nerf</id>
+    <title>v0.17.0 – The Echoing Spire [Nerf]</title>
+    <link rel="alternate" href="https://spiritvale.tama.sh/patch/?v=0.17.0" />
+    <updated>2026-05-25T00:00:00Z</updated>
+    <summary type="text">Autocast reduced across the board: 20% → 10% and 30% → 20%; headgear autocast cards are now unique; Status damage reduced: divisor /8 → /10 (~20% reduction); Scrap Fang: Slots 4 → 3, Multistrike 100% → 50%; Launcher: Slots 4 → 3; Siphon reclassified as leech — recovery over time, capped at 20% HP/MP (was instant) … (2 more)</summary>
+  </entry>
+</feed>

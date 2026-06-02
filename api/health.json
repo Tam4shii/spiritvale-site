@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-06-02T10:55:43Z",
+  "generated_at": "2026-06-02T20:32:37Z",
   "poll_mode": "live",
   "stale": false,
-  "hours_since_poll": 0.0,
+  "hours_since_poll": 2.4,
   "hours_since_poll_note": "0.0 = measured immediately after a poll; non-zero = drift since last Steam check",
   "severity": "ok",
-  "message": "polled 0.0h ago",
-  "latest_version": "0.17.0",
-  "total_patches": 10,
+  "message": "polled 2.4h ago",
+  "latest_version": "0.18.0",
+  "total_patches": 11,
   "steam_newsitems_baseline": 10,
   "steam_baseline_match": true
 }

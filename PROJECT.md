@@ -77,6 +77,7 @@
 - [x] **`clients/README.md`** (2026-05-31) — SDK usage documentation with browser + Node examples, function table, TypeScript import guide, error handling pattern, and CORS note; wired into GitHub directory rendering for discoverability.
 - [x] **validate-stats.yml CI guard + `make check-stats`** (2026-05-31) — `.github/workflows/validate-stats.yml` added: fails CI if `stats.json` is stale relative to `patches/index.json`, `tag/index.json`, or `search-index.json` (mirrors `validate-index.yml` pattern). `make check-stats` provides the same gate locally. `stats.json` + `patches/index.json` `last_polled_at` stamped from previous idle-loop run. Committed + pushed (commit 65f29af).
 - [x] **Python SDK `clients/spiritvale.py`** (2026-05-31) — zero-dependency Python client (stdlib `urllib.request`, Python ≥ 3.8); 5 functions matching JS SDK surface: `get_latest`, `get_index`, `get_patch`, `get_search_index`, `get_diff`; diff logic smoke-tested against local JSON (34 added, 72 changed across v0.13.0→v0.17.0); README expanded with Python section (examples, function table, error handling). Competitive pattern: warframestat.us Python SDK is the primary driver of Discord-bot adoption — Python ecosystem = discord.py bots + data scrapers.
+- [x] **v0.18.0 "New and Revamped Maps" shipped** (2026-06-03) — idle-loop Forge detected uncommitted v0.18.0 classified patch; moved `draft-0.18.0.json` → `patches/drafts/`; generated `og/v0.18.0.png`; rebuilt health.json (severity ok, match=true); committed full release: 11 versions (v0.13.0 → v0.18.0, 196 total entries: 45 added, 108 changed, 41 fixed, 2 removed). archive/2026-06-02-v0.18.0.md + tag pages (autocast, balance, buff, economy, equipment, nerf, new-system) all committed.
 
 ## FUTURE IDEAS (ถ้าจะขยาย)
 - Build guides / class info
@@ -99,10 +100,10 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 
 **Staleness root cause (documented 2026-06-02)**: `pull-steam-news.yml` writes `last_polled_at` into `patches/index.json` on the GH Actions runner, but monitoring-only runs (no draft) never committed/pushed that change to `main` — the workspace change was silently discarded. `stats.json` / `health.json` were also never rebuilt by the workflow. Fixed: added "Rebuild stats + health, commit poll timestamp" step to `pull-steam-news.yml` — now runs `make stats && make health` and commits the 3 files after every poll, draft or not.
 
-**Last `make check` run**: 2026-06-02 (idle-loop Forge Step 23) — ✅ exit 0 (all 7 artifacts valid)
-**Last `make check-stats` run**: 2026-06-02 (idle-loop Forge Step 23) — ✅ fresh (last_polled_at 2026-06-02T06:10:32Z)
-**Last Steam check**: 2026-06-02 (idle-loop Forge Step 23, Steam API) — ✅ no new patch (latest: v0.17.0 "The Echoing Spire"); newsitems=10 all accounted for
-**Push/CI status**: commit 86c2fe7 pushed to `origin/main` (2026-06-01 Step 17 — Discord bot + CI lint/tag-freshness workflows). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Last `make check` run**: 2026-06-03 (idle-loop Forge Step 26) — ✅ exit 0 (all 7 artifacts valid)
+**Last `make check-stats` run**: 2026-06-03 (idle-loop Forge Step 26) — ✅ fresh (last_polled_at 2026-06-02T18:07:46Z)
+**Last Steam check**: 2026-06-02 (GH Actions pull-steam-news.yml) — ✅ v0.18.0 "New and Revamped Maps" detected + classified; archive complete at 11 versions
+**Push/CI status**: commit pending (idle-loop Forge Step 26 — v0.18.0 release commit). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 

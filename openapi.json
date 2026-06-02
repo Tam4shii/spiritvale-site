@@ -253,6 +253,28 @@
           }
         }
       }
+    },
+    "/api/health.json": {
+      "get": {
+        "operationId": "getHealthStatus",
+        "summary": "Data freshness and poll status",
+        "description": "Returns the result of the most recent Steam poll. Use `hours_since_poll` to detect stale data; `severity=ok` means baseline matches Steam. `poll_mode` is `live` for real writes, `dry_run` for simulated runs.",
+        "tags": [
+          "Monitoring"
+        ],
+        "responses": {
+          "200": {
+            "description": "Health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthStatus"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -401,6 +423,47 @@
           }
         }
       },
+      "HealthStatus": {
+        "type": "object",
+        "description": "Result of the most recent Steam news poll.",
+        "properties": {
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "poll_mode": {
+            "type": "string",
+            "enum": ["live", "dry_run"],
+            "description": "live = real file writes committed; dry_run = simulated run, no writes"
+          },
+          "stale": {
+            "type": "boolean",
+            "description": "true if hours_since_poll exceeds the stale threshold"
+          },
+          "hours_since_poll": {
+            "type": "number"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["ok", "warn", "error"]
+          },
+          "message": {
+            "type": "string"
+          },
+          "latest_version": {
+            "type": "string"
+          },
+          "total_patches": {
+            "type": "integer"
+          },
+          "steam_newsitems_baseline": {
+            "type": "integer"
+          },
+          "steam_baseline_match": {
+            "type": "boolean"
+          }
+        }
+      },
       "SearchEntry": {
         "type": "object",
         "properties": {
@@ -447,6 +510,10 @@
     {
       "name": "Meta",
       "description": "Schema and API docs"
+    },
+    {
+      "name": "Monitoring",
+      "description": "Data freshness, poll status, and operational health"
     }
   ]
 }

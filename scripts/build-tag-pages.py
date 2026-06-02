@@ -31,6 +31,8 @@ DISPLAY_NAME = {
     'pvp': 'PvP',
 }
 
+CLASS_TAGS = {'shinobi', 'berserker', 'necromancer', 'paladin', 'mage'}
+
 CSS = """
   :root{--bg:#0a0612;--fg:#e8e3f0;--muted:#8b82a0;--accent:#a78bfa;--accent-2:#7c3aed;--card:rgba(167,139,250,.08);--border:rgba(167,139,250,.2)}
   *{box-sizing:border-box;margin:0;padding:0}

@@ -111,7 +111,7 @@ help:
 	@echo "  make check-stats   — verify stats.json is not stale relative to its inputs"
 	@echo "  make check-clean   — assert git working tree is clean (commit gate)"
 	@echo "  make install-hooks — install git pre-commit hook"
-	@echo "  make check-steam   — check Steam API for new patch notes (local dry-run)"
+	@echo "  make check-steam   — poll Steam API; stamps index + baseline (no draft creation unless new patches found)"
 	@echo "  make check-ci      — verify GH Actions cron is firing (requires gh CLI)"
 	@echo "  make stats         — generate stats.json (cadence, change totals, top tags)"
 	@echo "  make health        — generate api/health.json (structured freshness endpoint)"

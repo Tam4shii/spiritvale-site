@@ -104,6 +104,7 @@ def stamp_index(polled_at: str) -> None:
     data = json.loads(INDEX_PATH.read_text())
     data["last_polled_at"] = polled_at
     INDEX_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+    print(f"WROTE: {INDEX_PATH} (last_polled_at → {polled_at})")
 
 
 def load_baseline() -> dict:
@@ -116,6 +117,7 @@ def save_baseline(count: int, version: str, checked_at: str) -> None:
     BASELINE_PATH.parent.mkdir(parents=True, exist_ok=True)
     data = {"count": count, "latest_version": version, "checked_at": checked_at}
     BASELINE_PATH.write_text(json.dumps(data, indent=2) + "\n")
+    print(f"WROTE: {BASELINE_PATH} (count={count}, version={version})")
 
 
 def check_baseline_delta(current_count: int, index: dict) -> None:

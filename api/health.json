@@ -1,5 +1,6 @@
 {
   "generated_at": "2026-06-02T10:55:43Z",
+  "poll_mode": "live",
   "stale": false,
   "hours_since_poll": 0.0,
   "hours_since_poll_note": "0.0 = measured immediately after a poll; non-zero = drift since last Steam check",

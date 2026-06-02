@@ -31,6 +31,7 @@ DISPLAY_NAME = {
     'pvp': 'PvP',
 }
 
+# TODO(class-pages): use to generate /class/<slug>/ pages with lore header + cross-version skill delta
 CLASS_TAGS = {'shinobi', 'berserker', 'necromancer', 'paladin', 'mage'}
 
 CSS = """

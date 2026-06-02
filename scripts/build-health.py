@@ -79,6 +79,7 @@ def main():
     # Non-zero values reflect drift since the last Steam check — anything >24h triggers warn.
     health = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "poll_mode": "live",
         "stale": stale,
         "hours_since_poll": hours_since,
         "hours_since_poll_note": "0.0 = measured immediately after a poll; non-zero = drift since last Steam check",

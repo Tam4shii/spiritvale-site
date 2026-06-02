@@ -1,7 +1,7 @@
-.PHONY: build index tags validate mirror stats health check check-ci check-types check-stats check-clean og install-hooks check-steam help
+.PHONY: build index tags validate mirror stats health badge check check-ci check-types check-stats check-clean og install-hooks check-steam help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index tags validate mirror stats health
+build: index tags validate mirror stats health badge
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
@@ -25,6 +25,11 @@ mirror:
 # Run after `make index` so search-index.json is current.
 stats:
 	python3 scripts/build-stats.py
+
+# Generate badge/latest.json — shields.io Endpoint-URL badge (current patch version).
+# Embed: https://img.shields.io/endpoint?url=https://spiritvale.tama.sh/badge/latest.json
+badge:
+	python3 scripts/build-badge.py
 
 # Generate api/health.json — structured freshness endpoint.
 # Derives stale/warn/critical from stats.json last_polled_at.
@@ -115,3 +120,4 @@ help:
 	@echo "  make check-ci      — verify GH Actions cron is firing (requires gh CLI)"
 	@echo "  make stats         — generate stats.json (cadence, change totals, top tags)"
 	@echo "  make health        — generate api/health.json (structured freshness endpoint)"
+	@echo "  make badge         — generate badge/latest.json (shields.io endpoint badge)"

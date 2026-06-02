@@ -254,6 +254,28 @@
         }
       }
     },
+    "/badge/latest.json": {
+      "get": {
+        "operationId": "getBadge",
+        "summary": "shields.io endpoint badge",
+        "description": "shields.io Endpoint-URL badge. Embed in any README or Discord message: `https://img.shields.io/endpoint?url=https://spiritvale.tama.sh/badge/latest.json`. Regenerated on each patch release.",
+        "tags": [
+          "Meta"
+        ],
+        "responses": {
+          "200": {
+            "description": "Badge payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShieldsBadge"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/health.json": {
       "get": {
         "operationId": "getHealthStatus",
@@ -443,9 +465,13 @@
           "hours_since_poll": {
             "type": "number"
           },
+          "hours_since_poll_note": {
+            "type": "string",
+            "description": "Human-readable explanation of hours_since_poll semantics"
+          },
           "severity": {
             "type": "string",
-            "enum": ["ok", "warn", "error"]
+            "enum": ["ok", "warn", "critical"]
           },
           "message": {
             "type": "string"
@@ -462,6 +488,17 @@
           "steam_baseline_match": {
             "type": "boolean"
           }
+        }
+      },
+      "ShieldsBadge": {
+        "type": "object",
+        "description": "shields.io Endpoint-URL badge payload (https://shields.io/badges/endpoint-badge).",
+        "required": ["schemaVersion", "label", "message", "color"],
+        "properties": {
+          "schemaVersion": { "type": "integer", "enum": [1] },
+          "label": { "type": "string" },
+          "message": { "type": "string" },
+          "color": { "type": "string" }
         }
       },
       "SearchEntry": {

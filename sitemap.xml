@@ -176,4 +176,11 @@
   <url><loc>https://spiritvale.tama.sh/tag/arena/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
   <url><loc>https://spiritvale.tama.sh/tag/forgotten-depths/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
   <url><loc>https://spiritvale.tama.sh/tag/echoing-spire/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <url>
+    <!-- shields.io endpoint badge — live patch version; embed in README / Discord -->
+    <loc>https://spiritvale.tama.sh/badge/latest.json</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
 </urlset>

@@ -37,16 +37,21 @@ for path in patch_files:
     version = p['version']
     patch_title = p.get('title', f'v{version}')
     date = p.get('date', '')
+    explicit_tags = p.get('entry_tags', {})
     for change_type in ('added', 'changed', 'deprecated', 'removed', 'fixed', 'security'):
         for i, text in enumerate(p.get(change_type) or []):
+            entry_id = f'v{version}-{change_type}-{i}'
+            auto_tags = extract_tags(text)
+            extra_tags = explicit_tags.get(entry_id, [])
+            merged = list(dict.fromkeys(extra_tags + auto_tags))
             entries.append({
-                'id': f'v{version}-{change_type}-{i}',
+                'id': entry_id,
                 'version': version,
                 'patch_title': patch_title,
                 'date': date,
                 'type': change_type,
                 'text': text,
-                'tags': extract_tags(text),
+                'tags': merged,
                 'url': f'/patch/?v={version}'
             })
 

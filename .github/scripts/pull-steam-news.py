@@ -24,6 +24,7 @@ API_URL = (
 
 INDEX_PATH = Path("patches/index.json")
 PATCHES_DIR = Path("patches")
+BASELINE_PATH = Path("state/steam-news-baseline.json")
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
@@ -105,6 +106,37 @@ def stamp_index(polled_at: str) -> None:
     INDEX_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
 
 
+def load_baseline() -> dict:
+    if BASELINE_PATH.exists():
+        return json.loads(BASELINE_PATH.read_text())
+    return {}
+
+
+def save_baseline(count: int, version: str, checked_at: str) -> None:
+    BASELINE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    data = {"count": count, "latest_version": version, "checked_at": checked_at}
+    BASELINE_PATH.write_text(json.dumps(data, indent=2) + "\n")
+
+
+def check_baseline_delta(current_count: int, index: dict) -> None:
+    """Warn if newsitems count changed without a version bump — early-signal check."""
+    baseline = load_baseline()
+    if not baseline:
+        return
+    prev_count = baseline.get("count")
+    prev_version = baseline.get("latest_version")
+    cur_version = index.get("latest_version")
+    if prev_count is not None and current_count != prev_count:
+        if cur_version == prev_version:
+            print(
+                f"WARN: newsitems count changed {prev_count} → {current_count} "
+                f"without version bump (still {cur_version}) — possible stealth update",
+                file=sys.stderr,
+            )
+        else:
+            print(f"[baseline] count {prev_count} → {current_count}, version {prev_version} → {cur_version}")
+
+
 def main():
     try:
         news_data = fetch_news()
@@ -115,6 +147,7 @@ def main():
 
     items = news_data.get("appnews", {}).get("newsitems", [])
     index = load_index()
+    check_baseline_delta(len(items), index)
     seen_gids = existing_news_ids(index)
     seen_versions = existing_versions(index)
 
@@ -169,6 +202,7 @@ def main():
     polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
         stamp_index(polled_at)
+        save_baseline(len(items), index.get("latest_version", "unknown"), polled_at)
     except Exception as e:
         # Non-fatal: audit trail write failure must not abort a successful poll
         print(f"WARN: could not update last_polled_at in index: {e}", file=sys.stderr)

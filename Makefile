@@ -1,4 +1,4 @@
-.PHONY: build index tags validate mirror stats health check check-ci check-types check-stats og install-hooks check-steam help
+.PHONY: build index tags validate mirror stats health check check-ci check-types check-stats check-clean og install-hooks check-steam help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags validate mirror stats health
@@ -66,6 +66,14 @@ json.dump(d, open('/tmp/stats-after.json', 'w'), sort_keys=True)"
 	  && echo "stats.json is fresh ✓" \
 	  || (echo "ERROR: stats.json is stale — run make stats and commit" && exit 1)
 
+# Assert the working tree is clean before marking a step complete.
+# Add to loop monitoring protocol: run after every commit gate.
+# Exits non-zero if any tracked file is modified or staged — catches stale carry-over.
+check-clean:
+	@git diff --quiet && git diff --cached --quiet \
+	  && echo "Working tree is clean ✓" \
+	  || (echo "ERROR: uncommitted changes detected — commit or stash before proceeding" && exit 1)
+
 # Generate per-patch OG social-preview images to og/*.png.
 # Run: make og  (requires: pip install pillow)
 og:
@@ -101,6 +109,7 @@ help:
 	@echo "  make check         — validate sitemap.xml + JSON artifacts (xmllint + json.tool)"
 	@echo "  make check-types   — validate .d.ts + openapi.json in sync with schema/patch.json"
 	@echo "  make check-stats   — verify stats.json is not stale relative to its inputs"
+	@echo "  make check-clean   — assert git working tree is clean (commit gate)"
 	@echo "  make install-hooks — install git pre-commit hook"
 	@echo "  make check-steam   — check Steam API for new patch notes (local dry-run)"
 	@echo "  make check-ci      — verify GH Actions cron is firing (requires gh CLI)"

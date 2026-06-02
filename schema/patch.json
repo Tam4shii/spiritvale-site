@@ -107,6 +107,14 @@
         "security":   { "type": "array", "items": { "type": "string" } }
       },
       "additionalProperties": false
+    },
+    "entry_tags": {
+      "type": "object",
+      "description": "Explicit per-bullet tags keyed by entry_id (e.g. 'v0.17.0-changed-3': ['balance','autocast']). Merged with auto-extracted keyword tags in search-index.json. Use for semantic categories that keyword extraction cannot infer (e.g. 'balance', 'nerf', 'buff', 'equipment', 'economy').",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string", "minLength": 1 }
+      }
     }
   }
 }

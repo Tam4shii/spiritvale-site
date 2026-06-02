@@ -54,6 +54,26 @@
   "removed": [
     "Hidden 100% Multistrike removed from Naga, Bat, and Wolf gear"
   ],
+  "entry_tags": {
+    "v0.17.0-added-1":   ["crafting", "economy"],
+    "v0.17.0-added-6":   ["equipment", "new-system"],
+    "v0.17.0-added-7":   ["equipment", "new-system"],
+    "v0.17.0-changed-0": ["economy", "balance"],
+    "v0.17.0-changed-1": ["economy", "balance"],
+    "v0.17.0-changed-2": ["economy", "balance"],
+    "v0.17.0-changed-3": ["balance", "nerf", "autocast"],
+    "v0.17.0-changed-4": ["balance", "buff", "autocast"],
+    "v0.17.0-changed-5": ["balance", "nerf"],
+    "v0.17.0-changed-6": ["balance", "nerf", "equipment"],
+    "v0.17.0-changed-7": ["balance", "nerf", "equipment"],
+    "v0.17.0-changed-8": ["balance", "nerf"],
+    "v0.17.0-changed-9": ["balance", "nerf"],
+    "v0.17.0-changed-11": ["boss", "balance"],
+    "v0.17.0-changed-12": ["balance", "nerf"],
+    "v0.17.0-changed-13": ["balance", "buff"],
+    "v0.17.0-changed-16": ["balance", "equipment"],
+    "v0.17.0-changed-17": ["balance", "buff"]
+  },
   "entry_ids": {
     "added": [
       "v0.17.0-added-0",

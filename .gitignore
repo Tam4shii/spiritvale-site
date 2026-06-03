@@ -9,3 +9,5 @@ node_modules/
 __pycache__/
 *.pyc
 *.pyo
+# Ephemeral poll timestamp — updated every monitoring run, never committed
+state/last-poll.json

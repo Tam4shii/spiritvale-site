@@ -25,6 +25,12 @@ API_URL = (
 INDEX_PATH = Path("patches/index.json")
 PATCHES_DIR = Path("patches")
 BASELINE_PATH = Path("state/steam-news-baseline.json")
+# Ephemeral poll timestamp — gitignored, never commits, updated every run
+POLL_STATE_PATH = Path("state/last-poll.json")
+
+# Set at project inception (10 items requested from Steam API).
+# Warn on deviation — catches silent Steam-side truncation or growth.
+EXPECTED_ITEMS = 10
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
@@ -121,8 +127,25 @@ def save_baseline(count: int, version: str, checked_at: str) -> None:
     print(f"WROTE: {BASELINE_PATH} (count={count}, version={version})")
 
 
+def _write_poll_state(polled_at: str, items_found: int) -> None:
+    """Write ephemeral poll timestamp to a gitignored file (never commits)."""
+    try:
+        POLL_STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        POLL_STATE_PATH.write_text(
+            json.dumps({"polled_at": polled_at, "items_found": items_found}, indent=2) + "\n"
+        )
+    except Exception as e:
+        print(f"WARN: could not write poll state: {e}", file=sys.stderr)
+
+
 def check_baseline_delta(current_count: int, index: dict) -> None:
     """Warn if newsitems count changed without a version bump — early-signal check."""
+    if current_count != EXPECTED_ITEMS:
+        print(
+            f"WARN: expected {EXPECTED_ITEMS} items but got {current_count} "
+            f"— Steam pagination or item removal may have occurred",
+            file=sys.stderr,
+        )
     baseline = load_baseline()
     if not baseline:
         return
@@ -203,24 +226,35 @@ def main():
         new_drafts.append({"slug": slug, "title": title})
 
     polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    try:
-        stamp_index(polled_at, len(items))
-        save_baseline(len(items), index.get("latest_version", "unknown"), polled_at)
-    except Exception as e:
-        # Non-fatal: audit trail write failure must not abort a successful poll
-        print(f"WARN: could not update last_polled_at in index: {e}", file=sys.stderr)
+    cur_version = index.get("latest_version", "unknown")
+
+    # Always write ephemeral poll timestamp (gitignored — no commit noise on every run)
+    _write_poll_state(polled_at, len(items))
 
     if new_drafts:
+        # Content changed — update committed artifacts
+        try:
+            stamp_index(polled_at, len(items))
+            save_baseline(len(items), cur_version, polled_at)
+        except Exception as e:
+            print(f"WARN: could not update committed state: {e}", file=sys.stderr)
         first = new_drafts[0]
         set_output("new_draft", "true")
         set_output("slug", first["slug"])
-        # Strip newlines so the output line stays single-line
         safe_title = first["title"].replace("\n", " ").replace("\r", "")
         set_output("title", safe_title)
-        print(f"[{polled_at}] {len(new_drafts)} new draft(s) created.")
+        print(f"[{polled_at}] mode=draft-created, {len(new_drafts)} new draft(s).")
     else:
+        # No new drafts — skip committed writes to avoid no-op commit noise.
+        # Update baseline only when count or version actually changed (drift signal).
+        baseline = load_baseline()
+        if baseline.get("count") != len(items) or baseline.get("latest_version") != cur_version:
+            try:
+                save_baseline(len(items), cur_version, polled_at)
+            except Exception as e:
+                print(f"WARN: could not update baseline: {e}", file=sys.stderr)
         set_output("new_draft", "false")
-        print(f"[{polled_at}] No new patch notes found. Latest indexed: {index.get('latest_version', 'unknown')}")
+        print(f"[{polled_at}] mode=poll-only (no new items). Latest indexed: {cur_version}")
 
 
 if __name__ == "__main__":

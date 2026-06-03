@@ -10,14 +10,15 @@ Commands:
     !versions        — list all tracked patch versions
 
 Requirements:
-    pip install discord.py
+    pip install -r clients/bots/requirements.txt
 
 Setup:
     1. Create a bot at https://discord.com/developers/applications
     2. Copy the bot token
     3. Invite the bot to your server (Message Content Intent required)
     4. Run:
-         export DISCORD_BOT_TOKEN=your_token_here
+         cp clients/bots/.env.example clients/bots/.env
+         # Edit .env — paste your DISCORD_BOT_TOKEN (and optionally SPIRITVALE_CHANNEL_ID)
          python clients/bots/discord-example.py
 """
 
@@ -25,7 +26,15 @@ import os
 import sys
 
 # Allow running from the repo root or from clients/bots/
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+_bot_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(_bot_dir, ".."))
+
+# Load .env if present (python-dotenv); silently skipped if not installed or file absent
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(_bot_dir, ".env"))
+except ImportError:
+    pass
 
 import discord
 from discord.ext import commands, tasks

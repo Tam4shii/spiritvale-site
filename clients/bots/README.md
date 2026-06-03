@@ -21,12 +21,25 @@ python clients/bots/discord-example.py
 
 ## Commands
 
+### Slash commands (modern — appear in Discord's autocomplete)
+
+| Command | Description |
+|---|---|
+| `/latest` | Latest patch embed |
+| `/patch version:0.17.0` | Specific version |
+| `/diff from:0.13.0 to:0.18.0` | Cumulative changes between two versions |
+| `/search query:shinobi` | Search all patch entries by keyword |
+
+### Classic prefix commands (still supported)
+
 | Command | Description |
 |---|---|
 | `!patch` | Latest patch embed |
 | `!patch <version>` | Specific version, e.g. `!patch 0.17.0` |
 | `!diff <from> <to>` | Cumulative changes between two versions |
 | `!versions` | List all tracked versions |
+
+> **Note**: The first time the bot starts, it calls `bot.tree.sync()` to register slash commands globally with Discord. This takes up to an hour to propagate to all servers. For instant updates in one server during testing, use guild-scoped sync — see discord.py docs.
 
 ## Files
 

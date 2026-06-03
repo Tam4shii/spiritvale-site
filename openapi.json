@@ -316,6 +316,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Diff index not yet generated — run make diff-endpoints"
           }
         }
       }
@@ -333,9 +336,10 @@
             "name": "range",
             "in": "path",
             "required": true,
-            "description": "Version range in `v{from}...v{to}` format",
+            "description": "Version range in `v{from}...v{to}` format, e.g. `v0.17.0...v0.18.0`",
             "schema": {
               "type": "string",
+              "pattern": "^v\\d+\\.\\d+\\.\\d+\\.\\.\\.v\\d+\\.\\d+\\.\\d+$",
               "example": "v0.17.0...v0.18.0"
             }
           }
@@ -350,6 +354,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Malformed range — expected format: v{MAJOR}.{MINOR}.{PATCH}...v{MAJOR}.{MINOR}.{PATCH}"
           },
           "404": {
             "description": "Range not precomputed — see /diff/index.json for available combinations"
@@ -375,6 +382,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Stats not yet generated — run make stats"
           }
         }
       }

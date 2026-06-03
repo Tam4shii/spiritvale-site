@@ -157,6 +157,13 @@
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <!-- Interactive API reference — Redoc viewer for openapi.json; try-it-out for all 9 endpoints -->
+    <loc>https://spiritvale.tama.sh/api/</loc>
+    <lastmod>2026-06-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url><loc>https://spiritvale.tama.sh/tag/shinobi/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url><loc>https://spiritvale.tama.sh/tag/berserker/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url><loc>https://spiritvale.tama.sh/tag/necromancer/</loc><lastmod>2026-05-30</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>

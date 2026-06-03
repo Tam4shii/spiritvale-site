@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale API Reference</title>
+<meta name="description" content="Interactive API reference for the SpiritVale Community Hub. All endpoints are CORS-open and freely consumable.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://spiritvale.tama.sh/api/">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="SpiritVale API Reference">
+<meta property="og:description" content="Interactive API docs for SpiritVale patch notes — CORS-open, static JSON.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://spiritvale.tama.sh/api/">
+<meta property="og:image" content="https://spiritvale.tama.sh/og/v0.18.0.png">
+<style>
+  :root{
+    --bg:#0a0612;--fg:#e8e3f0;--muted:#8b82a0;
+    --accent:#a78bfa;--accent-2:#7c3aed;
+    --border:rgba(167,139,250,.2);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Inter","Noto Sans Thai",sans-serif;
+    background:var(--bg);color:var(--fg);
+    background-image:
+      radial-gradient(at 20% 30%,rgba(124,58,237,.15),transparent 50%),
+      radial-gradient(at 80% 70%,rgba(167,139,250,.1),transparent 50%);
+  }
+  header{
+    padding:1.25rem 2rem;
+    border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  }
+  header a{color:var(--muted);text-decoration:none;font-size:.85rem}
+  header a:hover{color:var(--accent)}
+  header .sep{color:var(--border)}
+  header .title{color:var(--accent);font-weight:700;font-size:1rem}
+  #redoc-container{min-height:100vh}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/">← SpiritVale</a>
+  <span class="sep">/</span>
+  <span class="title">API Reference</span>
+  <span class="sep">·</span>
+  <a href="/openapi.json">openapi.json</a>
+  <span class="sep">·</span>
+  <a href="/v1/patches/latest.json">latest patch</a>
+  <span class="sep">·</span>
+  <a href="/search/">search</a>
+</header>
+
+<div id="redoc-container"></div>
+
+<script src="https://cdn.redoc.ly/redoc/latest/bundles/redoc.standalone.js"></script>
+<script>
+  Redoc.init('/openapi.json', {
+    theme: {
+      colors: {
+        primary: { main: '#a78bfa' },
+        text: { primary: '#e8e3f0', secondary: '#8b82a0' },
+        responses: {
+          success: { color: '#34d399' },
+          error:   { color: '#f87171' },
+          redirect:{ color: '#fbbf24' },
+          info:    { color: '#60a5fa' }
+        },
+        http: {
+          get:    '#34d399',
+          post:   '#60a5fa',
+          put:    '#fbbf24',
+          delete: '#f87171'
+        }
+      },
+      sidebar: {
+        backgroundColor: '#0d0918',
+        textColor: '#e8e3f0'
+      },
+      rightPanel: {
+        backgroundColor: '#110c1e'
+      },
+      typography: {
+        fontFamily: '-apple-system,BlinkMacSystemFont,"Inter","Noto Sans Thai",sans-serif',
+        headings: { fontFamily: 'inherit' },
+        code: { fontFamily: '"SF Mono","Fira Code",monospace' }
+      }
+    },
+    hideHostname: false,
+    expandSingleSchemaField: true,
+    showExtensions: false,
+    sortPropsAlphabetically: false,
+    noAutoAuth: true,
+    pathInMiddlePanel: false,
+    scrollYOffset: 56
+  }, document.getElementById('redoc-container'));
+</script>
+
+</body>
+</html>

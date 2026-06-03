@@ -65,6 +65,10 @@
   The page doubles as a standalone embeddable iframe (detects `window.self !== window.top`, hides snippet UI).
   CORS-open: `Access-Control-Allow-Origin: *` on all JSON endpoints.
 
+- **API Reference (interactive)** — https://spiritvale.tama.sh/api/
+  Redoc viewer rendering `/openapi.json` (OpenAPI 3.1). Human-browsable interactive docs for all 9 endpoints.
+  Machine consumers: fetch `/openapi.json` or `/v1/openapi.json` directly.
+
 - **shields.io badge** — https://spiritvale.tama.sh/badge/latest.json
   Shields.io Endpoint-URL badge. Embed live patch version in any README or Discord embed:
   `https://img.shields.io/endpoint?url=https://spiritvale.tama.sh/badge/latest.json`

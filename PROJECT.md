@@ -104,9 +104,9 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 **Baseline drift root cause (documented 2026-06-03)**: `state/steam-news-baseline.json` is written by `pull-steam-news.py:save_baseline()` — it only runs during `make check-steam` / GH Actions poll. When a new patch is committed directly (e.g., Step 26's v0.18.0 commit), the script is never called and the baseline stays at the old version. **Process guard added (Step 28)**: `make check` now asserts `baseline.latest_version == index.latest_version`; fails with actionable message if drift is detected. Named process gap: the release checklist (Next Steps §6) must include `make check-steam` or `make check-baseline` as the final step after committing any new patch version.
 
 **Last `make check` run**: 2026-06-03 (idle-loop Forge Step 28) — ✅ exit 0 (all 7 artifacts valid + baseline drift guard added)
-**Last `make check-stats` run**: 2026-06-03 (idle-loop Forge Step 26) — ✅ fresh (last_polled_at 2026-06-02T18:07:46Z)
-**Last Steam check**: 2026-06-03 (idle-loop Forge Step 27) — ✅ No new patches since v0.18.0; baseline corrected (was stale at 0.17.0 → fixed to 0.18.0, commit 6b814d2)
-**Push/CI status**: commit 6b814d2 pushed to `origin/main` (2026-06-03 Step 27 — poll + baseline fix). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Last `make check-stats` run**: 2026-06-03 (idle-loop Forge Step 29) — ✅ fresh (last_polled_at 2026-06-03T01:19:23Z)
+**Last Steam check**: 2026-06-03 (idle-loop Forge Step 29) — ✅ No new patches since v0.18.0; poll timestamps refreshed (commit 40593f5)
+**Push/CI status**: commit 40593f5 pushed to `origin/main` (2026-06-03 Step 29 — routine poll). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 

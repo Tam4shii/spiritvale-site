@@ -1,0 +1,47 @@
+{
+  "from": "0.14.0",
+  "to": "0.15.0",
+  "patches_included": [
+    "0.15.0"
+  ],
+  "patch_count": 1,
+  "patch_metas": [
+    {
+      "version": "0.15.0",
+      "title": "PVP Systems and Status Immunities",
+      "date": "2026-03-24"
+    }
+  ],
+  "added": [
+    "PVP Skirmish Mode (free-for-all sandpit, now with NPC showing player count)",
+    "Arena 2v2 and Arena 3v3 instanced modes (new map by Polliwagon)",
+    "Arena rewards per match (more for wins), MMR calculation, and leaderboard",
+    "Autoattack hotkey (default: C) \u2014 hold to continuously attack highlighted enemy",
+    "Status Effect Immunity revamp \u2014 Attributes grant 2/3% resist per point to designated statuses"
+  ],
+  "changed": [
+    "Pet loot pickup interval: 2s \u2192 1s",
+    "Gear swap blocked for 3s after dealing or receiving a hit",
+    "Gunslinger Pistol/Shotgun range: 5 \u2192 6; Gatling/Launcher: 8 \u2192 9; Rifle: 10 \u2192 12",
+    "Flash Bang backslide range: 8 \u2192 10; charges: 1 \u2192 2",
+    "Jump Shot range: 10 \u2192 15",
+    "Cards and gear grant 50% status resist (was 100%); Priest skills still grant 100%",
+    "Silence durations reduced for Summoner, Priest, and Wizard",
+    "Cure and Mass Cure can now be cast while Silenced",
+    "Shinobi Fan of Knives now lands at cursor position (like Stomp)",
+    "Gunk Shot and Wide Poison no longer apply Slow",
+    "Inside PVP: all damage \u221275%, all healing \u221250%, summon stat inheritance halved, Revive forced to Lv.1",
+    "Autoattack now starts after using a physical targeted attack skill"
+  ],
+  "fixed": [
+    "Multiple PVP-related bug fixes",
+    "Increased see-through-wall radius in most maps"
+  ],
+  "removed": [],
+  "change_counts": {
+    "added": 5,
+    "changed": 12,
+    "fixed": 2,
+    "removed": 0
+  }
+}

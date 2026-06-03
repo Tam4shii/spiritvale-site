@@ -1,0 +1,40 @@
+{
+  "from": "0.13.4",
+  "to": "0.13.5",
+  "patches_included": [
+    "0.13.5"
+  ],
+  "patch_count": 1,
+  "patch_metas": [
+    {
+      "version": "0.13.5",
+      "title": "Update 0.13.5",
+      "date": "2026-02-24"
+    }
+  ],
+  "added": [],
+  "changed": [
+    "Judgement Blade: now applies Slow on hit",
+    "Divine Punishment: now applies Blind on hit",
+    "Divine Punishment visual effects optimised",
+    "Animation Delay now applied on cast instead of after cast for skills with cast times",
+    "Minimum After Cast Delay: 0.14s \u2192 0.3s",
+    "Removed individual skill minimum cooldown of 0.3s (After Cast Delay now covers it)",
+    "Movement slowed to 25% while Attacking/Casting (for first 33% of Animation Delay; unaffected by Free Cast)",
+    "Shadow Seal, Shadow Feint, and Twist of Fate can now be cast while Silenced",
+    "Unyielding and Blood Crash can now be cast while Silenced (and during Cyclone)",
+    "Clones now copy toggle buffs upon being spawned"
+  ],
+  "fixed": [
+    "Summons not casting Soul Strike with Invoker (Primary Summon only; by design)",
+    "Gold not deducted when setting up a purchase shop",
+    "Toggles resetting summon skills"
+  ],
+  "removed": [],
+  "change_counts": {
+    "added": 0,
+    "changed": 10,
+    "fixed": 3,
+    "removed": 0
+  }
+}

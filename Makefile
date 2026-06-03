@@ -1,7 +1,7 @@
-.PHONY: build index tags validate mirror stats health badge check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline help
+.PHONY: build index tags validate mirror stats health badge diff-endpoints check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index tags validate mirror stats health badge
+build: index tags validate mirror stats health badge diff-endpoints
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
@@ -34,8 +34,18 @@ badge:
 # Generate api/health.json — structured freshness endpoint.
 # Derives stale/warn/critical from stats.json last_polled_at.
 # Consumable by Grafana, uptime monitors, Discord bots without client-side math.
+# NOTE: api/health.json IS a committed artifact (not ephemeral / not gitignored).
+# If it goes missing: check `git log -- api/health.json` — it should appear in recent commits.
+# Root cause for missing file is typically a `git clean -f` or stale loop run that didn't regenerate it.
+# Fix: run `make health` then commit. The `make check` target now validates its presence.
 health:
 	python3 scripts/build-health.py
+
+# Generate server-side diff JSON for every adjacent and cumulative version pair.
+# Produces diff/v{from}...v{to}.json — immutable, CDN-cacheable, SDK/bot-friendly.
+# Pattern mirrors wago.tools URL scheme. Avoids client-side N+1 patch fetches.
+diff-endpoints:
+	python3 scripts/build-diff-endpoints.py
 
 # Validate XML and JSON derived artifacts for crawler correctness.
 check:
@@ -46,6 +56,13 @@ check:
 	@echo "--- feed.json ---" && python3 -m json.tool feed.json > /dev/null && echo "feed.json: OK"
 	@echo "--- feed.xml ---" && xmllint --noout feed.xml && echo "feed.xml: OK"
 	@echo "--- stats.json ---" && python3 -m json.tool stats.json > /dev/null && echo "stats.json: OK"
+	@echo "--- api/health.json ---" && python3 -m json.tool api/health.json > /dev/null && echo "api/health.json: OK"
+	@python3 -c "\
+import json, sys; \
+h = json.load(open('api/health.json')); \
+sev = h.get('severity', 'unknown'); \
+print(f'health severity: {sev}') if sev in ('ok','warn') else (print(f'ERROR: health.json severity={sev}', file=sys.stderr) or sys.exit(1))"
+	@echo "--- diff/index.json ---" && python3 -m json.tool diff/index.json > /dev/null && echo "diff/index.json: OK"
 	@python3 -c "\
 import json, sys; \
 idx = json.load(open('patches/index.json')); \
@@ -137,4 +154,5 @@ help:
 	@echo "  make check-ci       — verify GH Actions cron is firing (requires gh CLI)"
 	@echo "  make stats          — generate stats.json (cadence, change totals, top tags)"
 	@echo "  make health         — generate api/health.json (structured freshness endpoint)"
+	@echo "  make diff-endpoints — generate diff/v{from}...v{to}.json static endpoints"
 	@echo "  make badge          — generate badge/latest.json (shields.io endpoint badge)"

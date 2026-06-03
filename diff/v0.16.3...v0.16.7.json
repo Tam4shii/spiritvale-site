@@ -1,0 +1,34 @@
+{
+  "from": "0.16.3",
+  "to": "0.16.7",
+  "patches_included": [
+    "0.16.7"
+  ],
+  "patch_count": 1,
+  "patch_metas": [
+    {
+      "version": "0.16.7",
+      "title": "Update 0.16.7",
+      "date": "2026-05-16"
+    }
+  ],
+  "added": [],
+  "changed": [
+    "Vending Search: double-clicking an item now lets you buy it directly",
+    "Each account limited to 1 vending character (was 2)"
+  ],
+  "fixed": [
+    "Damage numbers now optimised (major source of lag reduced)",
+    "Server optimisations to reduce rubberbanding",
+    "Vendors no longer huddle in a corner"
+  ],
+  "removed": [
+    "Sell shops no longer visible on maps (purchase shops remain; sell shops may return in future)"
+  ],
+  "change_counts": {
+    "added": 0,
+    "changed": 2,
+    "fixed": 3,
+    "removed": 1
+  }
+}

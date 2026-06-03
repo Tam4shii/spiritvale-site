@@ -1,0 +1,54 @@
+{
+  "from": "0.13.0",
+  "to": "0.13.4",
+  "patches_included": [
+    "0.13.2",
+    "0.13.4"
+  ],
+  "patch_count": 2,
+  "patch_metas": [
+    {
+      "version": "0.13.2",
+      "title": "Update 0.13.2",
+      "date": "2026-02-20"
+    },
+    {
+      "version": "0.13.4",
+      "title": "Paladin Revamp",
+      "date": "2026-02-21"
+    }
+  ],
+  "added": [
+    "Divine Punishment: New FX"
+  ],
+  "changed": [
+    "Crafting and Refine cooldown: 0.7s \u2192 0.1s",
+    "Execute Axe: Cooldown \u22121 \u2192 \u22122, Damage 35% \u2192 15% (now Exclusive)",
+    "Chaos Reaver: Dark Claw Damage 35% \u2192 15%",
+    "Eclipse Kunai: Black Blade cooldown changed to Twist of Fate cooldown",
+    "Fuma Shuriken: Removed skill mods, Slots 1 \u2192 2",
+    "Razor Kunai [Underground Cavern]: gained Fan of Knives and Shuriken Fan mods",
+    "Stormfeather Kunai [Underground Cavern]: switched to melee substats",
+    "Red Maw / Flintlock / Serpent Fang: Slots 3 \u2192 2",
+    "Judgement Blade, Grand Cross and Divine Punishment now trigger hit effects (and sacrifice)",
+    "Oathbreaker and Radiant Scepter revamped",
+    "Judgement Blade: Cooldown 3s \u2192 1s, Damage 77% \u2192 100%, now Blinds",
+    "Grand Cross: Cast Time 0.75s \u2192 1s, Damage 100% \u2192 200%",
+    "Divine Punishment: Duration 1.5s \u2192 5s, Cast Time 1s \u2192 0.3s per level, Damage 150% \u2192 77%, now Slows",
+    "Summons: Reduced AA damage"
+  ],
+  "fixed": [
+    "Database integration issues",
+    "Healing not working against undead enemies",
+    "Cooldown recovery stat not applying correctly",
+    "Summon behaviour improved",
+    "Removed AA aftercast delay from Summons (broken after previous patch)"
+  ],
+  "removed": [],
+  "change_counts": {
+    "added": 1,
+    "changed": 14,
+    "fixed": 5,
+    "removed": 0
+  }
+}

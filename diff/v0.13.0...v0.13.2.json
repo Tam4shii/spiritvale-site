@@ -1,0 +1,39 @@
+{
+  "from": "0.13.0",
+  "to": "0.13.2",
+  "patches_included": [
+    "0.13.2"
+  ],
+  "patch_count": 1,
+  "patch_metas": [
+    {
+      "version": "0.13.2",
+      "title": "Update 0.13.2",
+      "date": "2026-02-20"
+    }
+  ],
+  "added": [],
+  "changed": [
+    "Crafting and Refine cooldown: 0.7s \u2192 0.1s",
+    "Execute Axe: Cooldown \u22121 \u2192 \u22122, Damage 35% \u2192 15% (now Exclusive)",
+    "Chaos Reaver: Dark Claw Damage 35% \u2192 15%",
+    "Eclipse Kunai: Black Blade cooldown changed to Twist of Fate cooldown",
+    "Fuma Shuriken: Removed skill mods, Slots 1 \u2192 2",
+    "Razor Kunai [Underground Cavern]: gained Fan of Knives and Shuriken Fan mods",
+    "Stormfeather Kunai [Underground Cavern]: switched to melee substats",
+    "Red Maw / Flintlock / Serpent Fang: Slots 3 \u2192 2"
+  ],
+  "fixed": [
+    "Database integration issues",
+    "Healing not working against undead enemies",
+    "Cooldown recovery stat not applying correctly",
+    "Summon behaviour improved"
+  ],
+  "removed": [],
+  "change_counts": {
+    "added": 0,
+    "changed": 8,
+    "fixed": 4,
+    "removed": 0
+  }
+}

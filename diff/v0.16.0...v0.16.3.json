@@ -1,0 +1,31 @@
+{
+  "from": "0.16.0",
+  "to": "0.16.3",
+  "patches_included": [
+    "0.16.3"
+  ],
+  "patch_count": 1,
+  "patch_metas": [
+    {
+      "version": "0.16.3",
+      "title": "Update 0.16.3",
+      "date": "2026-05-13"
+    }
+  ],
+  "added": [
+    "2 SEA servers (more EU / NA / SEA servers coming soon)",
+    "Server list now auto-populates for future servers"
+  ],
+  "changed": [],
+  "fixed": [
+    "Rage skill not working on Berserker",
+    "Vending list now automatically populates when opened"
+  ],
+  "removed": [],
+  "change_counts": {
+    "added": 2,
+    "changed": 0,
+    "fixed": 2,
+    "removed": 0
+  }
+}

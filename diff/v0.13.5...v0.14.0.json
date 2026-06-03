@@ -1,0 +1,46 @@
+{
+  "from": "0.13.5",
+  "to": "0.14.0",
+  "patches_included": [
+    "0.14.0"
+  ],
+  "patch_count": 1,
+  "patch_metas": [
+    {
+      "version": "0.14.0",
+      "title": "Cosmetics Update",
+      "date": "2026-03-15"
+    }
+  ],
+  "added": [
+    "Wardrobe and Cosmetics System \u2014 new in-game cosmetic menu",
+    "Premium currency (p) purchased via Kofi donations (Steam purchase after EA release)",
+    "Dozens of gear, pet, and mount cosmetics (mix of asset-pack and custom)",
+    "Equip-to-cosmetic conversion (100p)",
+    "Boss-exclusive cosmetics (boss drops)",
+    "Monster-exclusive pets and mounts \u2014 tradable world drops",
+    "Mystery Pet Box and Mystery Mount Box (world drops, give random monster pet/mount)",
+    "Storage Expansion +500 slots (500p)",
+    "New hair colors, eye colors, eye styles, and iris styles",
+    "Character eye blinking animation",
+    "Loot Filter (configurable in Settings)"
+  ],
+  "changed": [
+    "Inventory and storage structures rebuilt for optimisation (one-time delay on first relog)",
+    "Pets periodically pick up nearby items automatically",
+    "Mounts grant 40% movement speed out of combat",
+    "All premium cosmetics are account-bound; world-drop monster pets/mounts remain tradable",
+    "Objects now become invisible near the player for visual clarity (most maps)"
+  ],
+  "fixed": [
+    "Hair clipping through headgear greatly reduced",
+    "Feet no longer clip through shoes"
+  ],
+  "removed": [],
+  "change_counts": {
+    "added": 11,
+    "changed": 5,
+    "fixed": 2,
+    "removed": 0
+  }
+}

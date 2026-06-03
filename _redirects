@@ -1,3 +1,5 @@
+# shields.io canonical alias — matches warframestat.us /shields/version.json pattern
+/shields/version.json /badge/latest.json 302
 /latest /patches/latest.json 302
 /latest.json /patches/latest.json 302
 /manifest.json /patches/index.json 302

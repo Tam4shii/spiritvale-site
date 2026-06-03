@@ -17,9 +17,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 APPID = os.environ.get("STEAM_APPID", "3918510")
+# How many items we request from Steam — also the baseline we expect back.
+STEAM_NEWS_COUNT = 10
 API_URL = (
     f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/"
-    f"?appid={APPID}&count=10&format=json"
+    f"?appid={APPID}&count={STEAM_NEWS_COUNT}&format=json"
 )
 
 INDEX_PATH = Path("patches/index.json")
@@ -27,10 +29,6 @@ PATCHES_DIR = Path("patches")
 BASELINE_PATH = Path("state/steam-news-baseline.json")
 # Ephemeral poll timestamp — gitignored, never commits, updated every run
 POLL_STATE_PATH = Path("state/last-poll.json")
-
-# Set at project inception (10 items requested from Steam API).
-# Warn on deviation — catches silent Steam-side truncation or growth.
-EXPECTED_ITEMS = 10
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
@@ -140,9 +138,9 @@ def _write_poll_state(polled_at: str, items_found: int) -> None:
 
 def check_baseline_delta(current_count: int, index: dict) -> None:
     """Warn if newsitems count changed without a version bump — early-signal check."""
-    if current_count != EXPECTED_ITEMS:
+    if current_count != STEAM_NEWS_COUNT:
         print(
-            f"WARN: expected {EXPECTED_ITEMS} items but got {current_count} "
+            f"WARN: expected {STEAM_NEWS_COUNT} items (count= param) but got {current_count} "
             f"— Steam pagination or item removal may have occurred",
             file=sys.stderr,
         )

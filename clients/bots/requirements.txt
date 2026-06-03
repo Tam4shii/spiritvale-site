@@ -1,2 +1,3 @@
-discord.py>=2.3.0,<3.0.0
-python-dotenv>=1.0.0
+# Pinned 2026-06-03 — update intentionally, not silently via pip install
+discord.py==2.3.0
+python-dotenv==1.0.0

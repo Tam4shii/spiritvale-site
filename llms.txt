@@ -22,6 +22,15 @@
   Cumulative diff between any two versions. Params: `?from=X&to=Y` (e.g. `?from=0.14.0&to=0.17.0`).
   Also accepts `/diff/v0.14.0...v0.17.0`. Aggregates added/changed/fixed/removed across all versions in range.
 
+- **Diff index (JSON)** — https://spiritvale.tama.sh/diff/index.json
+  Machine-readable index of all 19 precomputed server-side diff endpoints: consecutive adjacent pairs + cumulative
+  ranges anchored at v0.13.0. Each entry has `from`, `to`, and `url` fields.
+
+- **Server-side diff (JSON)** — https://spiritvale.tama.sh/diff/v{from}...v{to}.json
+  E.g. https://spiritvale.tama.sh/diff/v0.17.0...v0.18.0.json — precomputed cumulative diff for that range.
+  Returns: from, to, patches_included[], patch_metas[], added[], changed[], fixed[], removed[], change_counts.
+  LLM consumers: fetch this instead of diffing individual patches client-side. Enumerate valid ranges via diff/index.json.
+
 - **Atom feed** — https://spiritvale.tama.sh/feed.xml
   RFC 4287 feed of all archived patches, newest-first. Subscribe for updates.
 
@@ -60,6 +69,14 @@
   Shields.io Endpoint-URL badge. Embed live patch version in any README or Discord embed:
   `https://img.shields.io/endpoint?url=https://spiritvale.tama.sh/badge/latest.json`
 
+- **Patch statistics (JSON)** — https://spiritvale.tama.sh/stats.json
+  Aggregate stats: total_patches, total_entries, change_totals (added/changed/fixed/removed), avg_days_between_patches,
+  top_tags, patch_cadence (history by date), per_version_changes. Regenerated on each release.
+
+- **Data health (JSON)** — https://spiritvale.tama.sh/api/health.json
+  Poll freshness: hours_since_poll, severity (ok/warn/critical), latest_version, steam_baseline_match.
+  Use to detect stale data before relying on patch endpoints.
+
 - **OpenAPI spec** — https://spiritvale.tama.sh/openapi.json
   OpenAPI 3.1 machine-readable API contract. Versioned alias: https://spiritvale.tama.sh/v1/openapi.json.
   Use to auto-generate typed clients or validate integration assumptions.
@@ -72,7 +89,7 @@
 
 ## Archived versions (newest first)
 
-v0.17.0, v0.16.7, v0.16.3, v0.16.0, v0.15.0, v0.14.0, v0.13.5, v0.13.4, v0.13.2, v0.13.0
+v0.18.0, v0.17.0, v0.16.7, v0.16.3, v0.16.0, v0.15.0, v0.14.0, v0.13.5, v0.13.4, v0.13.2, v0.13.0
 
 ## Context for LLMs
 

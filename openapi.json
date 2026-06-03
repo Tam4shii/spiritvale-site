@@ -297,6 +297,87 @@
           }
         }
       }
+    },
+    "/diff/index.json": {
+      "get": {
+        "operationId": "getDiffIndex",
+        "summary": "Server-side diff endpoint index",
+        "description": "Index of all precomputed cumulative diff JSON files. 19 endpoints: 10 consecutive adjacent pairs + 9 cumulative ranges anchored at v0.13.0 (the earliest version). Use to enumerate fetchable ranges before calling /diff/{range}.json.",
+        "tags": [
+          "Diffs"
+        ],
+        "responses": {
+          "200": {
+            "description": "Diff index",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiffIndex"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/diff/{range}.json": {
+      "get": {
+        "operationId": "getDiff",
+        "summary": "Precomputed cumulative diff between two versions",
+        "description": "Returns the aggregated added/changed/fixed/removed items across all patches from `from` to `to` (inclusive). Range format: `v{from}...v{to}`, e.g. `v0.17.0...v0.18.0`. All valid combinations are listed in /diff/index.json — unlisted combinations return 404.",
+        "tags": [
+          "Diffs"
+        ],
+        "parameters": [
+          {
+            "name": "range",
+            "in": "path",
+            "required": true,
+            "description": "Version range in `v{from}...v{to}` format",
+            "schema": {
+              "type": "string",
+              "example": "v0.17.0...v0.18.0"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cumulative diff",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiffResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Range not precomputed — see /diff/index.json for available combinations"
+          }
+        }
+      }
+    },
+    "/stats.json": {
+      "get": {
+        "operationId": "getStats",
+        "summary": "Aggregate patch statistics",
+        "description": "Aggregate statistics: total patches and entries, change-type totals (added/changed/fixed/removed), average days between patches, top tags, patch cadence, and per-version breakdown. Regenerated on each patch release.",
+        "tags": [
+          "Monitoring"
+        ],
+        "responses": {
+          "200": {
+            "description": "Patch statistics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stats"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -528,6 +609,179 @@
             "type": "string"
           }
         }
+      },
+      "DiffIndex": {
+        "type": "object",
+        "properties": {
+          "endpoints": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["from", "to", "url"],
+              "properties": {
+                "from": {
+                  "type": "string",
+                  "example": "0.17.0"
+                },
+                "to": {
+                  "type": "string",
+                  "example": "0.18.0"
+                },
+                "url": {
+                  "type": "string",
+                  "example": "/diff/v0.17.0...v0.18.0.json"
+                }
+              }
+            }
+          },
+          "total": {
+            "type": "integer",
+            "example": 19
+          }
+        }
+      },
+      "DiffResult": {
+        "type": "object",
+        "description": "Precomputed cumulative diff between two versions.",
+        "properties": {
+          "from": {
+            "type": "string",
+            "example": "0.17.0"
+          },
+          "to": {
+            "type": "string",
+            "example": "0.18.0"
+          },
+          "patches_included": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "patch_count": {
+            "type": "integer"
+          },
+          "patch_metas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "version": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          "added": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "changed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fixed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "removed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "change_counts": {
+            "type": "object",
+            "properties": {
+              "added": {
+                "type": "integer"
+              },
+              "changed": {
+                "type": "integer"
+              },
+              "fixed": {
+                "type": "integer"
+              },
+              "removed": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "Stats": {
+        "type": "object",
+        "description": "Aggregate patch statistics. Regenerated on each release.",
+        "properties": {
+          "generated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "latest_version": {
+            "type": "string"
+          },
+          "last_polled_at": {
+            "type": ["string", "null"],
+            "format": "date-time"
+          },
+          "total_patches": {
+            "type": "integer"
+          },
+          "total_entries": {
+            "type": "integer"
+          },
+          "change_totals": {
+            "type": "object",
+            "properties": {
+              "added": {
+                "type": "integer"
+              },
+              "changed": {
+                "type": "integer"
+              },
+              "fixed": {
+                "type": "integer"
+              },
+              "removed": {
+                "type": "integer"
+              }
+            }
+          },
+          "avg_days_between_patches": {
+            "type": "number"
+          },
+          "top_tags": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "patch_cadence": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "per_version_changes": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
       }
     }
   },
@@ -551,6 +805,10 @@
     {
       "name": "Monitoring",
       "description": "Data freshness, poll status, and operational health"
+    },
+    {
+      "name": "Diffs",
+      "description": "Precomputed cumulative diffs between version ranges"
     }
   ]
 }

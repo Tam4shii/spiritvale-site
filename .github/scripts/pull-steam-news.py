@@ -97,14 +97,15 @@ def set_output(key, value):
         print(f"[output] {key}={value}")
 
 
-def stamp_index(polled_at: str) -> None:
-    """Persist the exact poll timestamp into patches/index.json for audit trail."""
+def stamp_index(polled_at: str, items_found: int) -> None:
+    """Persist poll timestamp and item count into patches/index.json for audit trail."""
     if not INDEX_PATH.exists():
         return
     data = json.loads(INDEX_PATH.read_text())
     data["last_polled_at"] = polled_at
+    data["items_found"] = items_found
     INDEX_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
-    print(f"WROTE: {INDEX_PATH} (last_polled_at → {polled_at})")
+    print(f"WROTE: {INDEX_PATH} (last_polled_at → {polled_at}, items_found={items_found})")
 
 
 def load_baseline() -> dict:
@@ -203,7 +204,7 @@ def main():
 
     polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
-        stamp_index(polled_at)
+        stamp_index(polled_at, len(items))
         save_baseline(len(items), index.get("latest_version", "unknown"), polled_at)
     except Exception as e:
         # Non-fatal: audit trail write failure must not abort a successful poll

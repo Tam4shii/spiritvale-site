@@ -63,6 +63,16 @@ def main():
     except FileNotFoundError:
         total_entries = sum(totals.values())
 
+    per_version_changes = list(reversed([
+        {
+            "version": v["version"],
+            "title": v.get("title", ""),
+            "date": v["date"],
+            "counts": v.get("change_counts", {"added": 0, "changed": 0, "fixed": 0, "removed": 0}),
+        }
+        for v in sorted(versions, key=lambda x: x["date"])
+    ]))
+
     stats = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "latest_version": index["latest_version"],
@@ -73,6 +83,7 @@ def main():
         "avg_days_between_patches": avg_cadence,
         "top_tags": top_tags,
         "patch_cadence": list(reversed(cadence)),  # newest-first for consumers
+        "per_version_changes": per_version_changes,
     }
 
     out = ROOT / "stats.json"

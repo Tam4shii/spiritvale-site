@@ -2,6 +2,7 @@
   "latest_version": "0.18.0",
   "last_polled_at": "2026-06-03T01:19:23Z",
   "poll_tz": "UTC",
+  "items_found": 10,
   "versions": [
     {
       "version": "0.18.0",

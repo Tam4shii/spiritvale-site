@@ -106,7 +106,8 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 **Last `make check` run**: 2026-06-03 (idle-loop Forge Step 28) — ✅ exit 0 (all 7 artifacts valid + baseline drift guard added)
 **Last `make check-stats` run**: 2026-06-03T01:19Z (idle-loop Forge Step 30) — ✅ fresh; `per_version_changes` field added to stats.json (11 versions)
 **Last Steam check**: 2026-06-03T01:19:23Z (idle-loop Forge Step 29) — ✅ No new patches since v0.18.0; items_found=10 (baseline count stable)
-**Push/CI status**: commit 40593f5 pushed to `origin/main` (2026-06-03 Step 29 — routine poll). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Push/CI status**: commit 8ed0177 pushed to `origin/main` (2026-06-03 idle-loop Forge — poll refactor + discord bot DX). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
+**Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.
 **`last_polled_at` null origin**: field was initialized as `null` in commit `15b9b01` (2026-05-30 hardening). First value (`2026-05-30T18:07:01Z`) written by idle-loop local dry-run on 2026-05-31; not by GH Actions (GH Actions requires CF Pages + DISCORD_PATCH_WEBHOOK secret, neither configured yet).
 

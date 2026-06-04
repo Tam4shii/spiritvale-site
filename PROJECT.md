@@ -106,7 +106,7 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 **v0.18.0 deployment status**: v0.18.0 "New and Revamped Maps" was published on 2026-06-02 (Steam) and committed to `main` on 2026-06-03 (commit includes archive, OG image, tag pages). Site reflects the latest patch as of that commit. CF Pages is **not** connected (Blocker #1) — live URL `spiritvale.tama.sh` not yet serving; GitHub Pages preview only.
 **Last `make check` run**: 2026-06-03 (idle-loop Forge Step 28) — ✅ exit 0 (all 7 artifacts valid + baseline drift guard added)
 **Last `make check-stats` run**: 2026-06-03T01:19Z (idle-loop Forge Step 30) — ✅ fresh; `per_version_changes` field added to stats.json (11 versions)
-**Last Steam check**: 2026-06-03T01:19:23Z (idle-loop Forge Step 29) — ✅ No new patches since v0.18.0; items_found=10 (expected baseline count = 10; regression threshold: alert if < 10)
+**Last Steam check**: 2026-06-04T08:32:53Z (idle-loop Forge) — ✅ No new patches since v0.18.0; items_found=10 (expected baseline count = 10; regression threshold: alert if < 10)
 **Next idle-loop action**: run `make check-steam`; if `new_draft=true` → follow Phase 0 Step 3-8 release checklist above. No-op if `new_draft=false`.
 **Push/CI status**: commit 0d44662 pushed to `origin/main` (2026-06-04 idle-loop Forge — stats.json timestamp refresh). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.

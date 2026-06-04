@@ -125,13 +125,25 @@ def save_baseline(count: int, version: str, checked_at: str) -> None:
     print(f"WROTE: {BASELINE_PATH} (count={count}, version={version})")
 
 
-def _write_poll_state(polled_at: str, items_found: int) -> None:
-    """Write ephemeral poll timestamp to a gitignored file (never commits)."""
+def _write_poll_state(
+    polled_at: str,
+    items_found: int,
+    latest_item_id: str | None = None,
+    latest_item_title: str | None = None,
+) -> None:
+    """Write ephemeral poll state to a gitignored file (never commits).
+
+    Includes latest_item_id/title as a concrete anchor so auditors can confirm
+    which article Steam returned most recently without re-running the poll.
+    """
     try:
         POLL_STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        POLL_STATE_PATH.write_text(
-            json.dumps({"polled_at": polled_at, "items_found": items_found}, indent=2) + "\n"
-        )
+        state: dict = {"polled_at": polled_at, "items_found": items_found}
+        if latest_item_id is not None:
+            state["latest_item_id"] = latest_item_id
+        if latest_item_title is not None:
+            state["latest_item_title"] = latest_item_title
+        POLL_STATE_PATH.write_text(json.dumps(state, indent=2) + "\n")
     except Exception as e:
         print(f"WARN: could not write poll state: {e}", file=sys.stderr)
 
@@ -226,8 +238,15 @@ def main():
     polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     cur_version = index.get("latest_version", "unknown")
 
-    # Always write ephemeral poll timestamp (gitignored — no commit noise on every run)
-    _write_poll_state(polled_at, len(items))
+    # Always write ephemeral poll state (gitignored — no commit noise on every run).
+    # Anchor on the first item so auditors know exactly which Steam article was top-of-feed.
+    top = items[0] if items else {}
+    _write_poll_state(
+        polled_at,
+        len(items),
+        latest_item_id=str(top.get("gid", "")) or None,
+        latest_item_title=top.get("title", "").strip() or None,
+    )
 
     if new_drafts:
         # Content changed — update committed artifacts

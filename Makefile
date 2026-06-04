@@ -1,4 +1,4 @@
-.PHONY: build index tags validate mirror stats health badge diff-endpoints check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline help
+.PHONY: build index tags validate mirror stats health badge diff-endpoints check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags validate mirror stats health badge diff-endpoints
@@ -136,6 +136,14 @@ iv = idx.get('latest_version'); bv = base.get('latest_version'); \
 sys.exit(0) if not bv else (sys.exit(0) if iv == bv else (print(f'ERROR: baseline drift — index={iv} but baseline={bv}; run make check-steam', file=sys.stderr) or sys.exit(1)))"
 	@echo "Baseline version matches index ✓"
 
+# Validate @spiritvale/client is publish-ready without uploading to npm.
+# Run before cutting a GitHub release to confirm package contents, types, and README are correct.
+# Mirrors the warframestat.us "distribution beats discoverability" model — SDK ships as npm package.
+check-sdk:
+	@echo "--- npm pack dry-run (clients/) ---"
+	cd clients && npm pack --dry-run
+	@echo "SDK package check passed ✓"
+
 help:
 	@echo "Targets:"
 	@echo "  make build          — index + validate (run before any patch commit)"
@@ -152,6 +160,7 @@ help:
 	@echo "  make install-hooks  — install git pre-commit hook"
 	@echo "  make check-steam    — poll Steam API; stamps index + baseline (no draft unless new patches)"
 	@echo "  make check-ci       — verify GH Actions cron is firing (requires gh CLI)"
+	@echo "  make check-sdk      — dry-run npm pack for @spiritvale/client (pre-release gate)"
 	@echo "  make stats          — generate stats.json (cadence, change totals, top tags)"
 	@echo "  make health         — generate api/health.json (structured freshness endpoint)"
 	@echo "  make diff-endpoints — generate diff/v{from}...v{to}.json static endpoints"

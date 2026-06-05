@@ -1,0 +1,16 @@
+{
+  "$schema": "/schema/patch.json",
+  "version": "0.0.0",
+  "title": "SpiritVale Official Date release!",
+  "date": "2026-06-04",
+  "current": false,
+  "url": null,
+  "steam_news_id": "1834602721187686",
+  "steam_url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1834602721187686",
+  "released_at": "2026-06-04T14:25:53+00:00",
+  "raw_body": "The moment you has been waiting for is here!Official SpiritVale dates for the upcoming days and months, please read carefully:June 8: End Playtest and Wipe.In this day we will end Playtest and game progress will be wiped. Everything you have will wiped, if you bought premium currency you will get them back once Early Access release.From June 8 to June 12th: PerformanceWe will work on polish, fixes, performance in the game to assure everything is running smooth for Steam Next Fest Demo and Early Access. We will probably need to check how things goes on Demo and fix them before Early Access.June 12th - June 22nd: Launch DemoOn June 12th we will launch Demo, this Demo won't have the content limited. Everyone will start from Level 1 to give new players coming from the Steam Next Fest event the opportunity to experience and enjoy the Demo.June 15th starts Steam Next Fest. At this point we will have already a few days with Demo live, should help with position on Steam most played demos.At the end of the Demo, we will wipe everyone progress moving forward to Early Access fresh start.July 2: Kickstarter campaignKickstarter campaign ends and we will start contacting backers to arrange rewards.July 15th: EA ReleaseEarly Access release, fresh start. We will welcome everyone to play the game on Steam, you will be able to play from level 1 with no advantages.SpiritVale will be buy to play, it will cost around $15 usd with regional prices. As we discussed months ago, it will be only one-time payment (no subscription).Between June 22 to July 15, servers will be down unless Phil needs to stress test servers.Hopefully this clears up some concerns, if you still have any questions feel free to let us know!",
+  "added": [],
+  "changed": [],
+  "fixed": [],
+  "removed": []
+}

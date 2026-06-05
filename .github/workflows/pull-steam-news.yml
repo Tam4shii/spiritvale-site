@@ -55,6 +55,24 @@ jobs:
           labels: patch-draft
           commit-message: "patch: steam draft — ${{ steps.draft.outputs.title }}"
 
+      - name: Discord — announcement detected
+        if: steps.draft.outputs.new_announcement == 'true'
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_PATCH_WEBHOOK }}
+          TITLE: ${{ steps.draft.outputs.announcement_title }}
+          SLUG: ${{ steps.draft.outputs.announcement_slug }}
+        run: |
+          curl -s -X POST "$WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"📢 SpiritVale announcement — ${TITLE}\",
+                \"color\": 3447003,
+                \"description\": \"Non-patch Steam post detected (version \\\"0.0.0\\\").\nSaved to \`patches/drafts/announcement-${SLUG}.json\`.\n\nBoss action: review draft → decide publish / archive / ignore.\",
+                \"footer\": { \"text\": \"spiritvale-site · pull-steam-news.yml\" }
+              }]
+            }"
+
       - name: Discord — draft review needed
         if: steps.draft.outputs.new_draft == 'true'
         env:

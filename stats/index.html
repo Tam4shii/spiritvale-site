@@ -69,6 +69,18 @@
   a:hover{text-decoration:underline}
   #error{display:none;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);
     color:#f87171;padding:1rem;border-radius:.5rem;margin-bottom:1.5rem}
+  /* Health status banner — SteamDB pattern: public "is the data fresh?" signal */
+  #health-banner{display:none;flex-wrap:wrap;align-items:center;gap:.6rem;
+    padding:.65rem 1rem;border-radius:.625rem;margin-bottom:1.5rem;border:1px solid var(--border);font-size:.8rem}
+  #health-banner.sev-ok{background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.3)}
+  #health-banner.sev-warn{background:rgba(251,191,36,.07);border-color:rgba(251,191,36,.3)}
+  #health-banner.sev-crit{background:rgba(248,113,113,.07);border-color:rgba(248,113,113,.3)}
+  .h-pill{font-size:.7rem;font-weight:700;padding:.15rem .55rem;border-radius:999px}
+  .h-pill.ok{background:rgba(52,211,153,.2);color:#34d399}
+  .h-pill.warn{background:rgba(251,191,36,.2);color:#fbbf24}
+  .h-pill.crit{background:rgba(248,113,113,.2);color:#f87171}
+  .h-meta{color:var(--muted)}.h-meta strong{color:var(--fg)}
+  .h-links{margin-left:auto;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -80,6 +92,9 @@
   </header>
 
   <div id="error">Failed to load stats.json — try refreshing.</div>
+
+  <!-- Health banner — fetches api/health.json (SteamDB "is data fresh?" pattern) -->
+  <div id="health-banner"></div>
 
   <div class="grid" id="kpi-grid"></div>
 
@@ -108,7 +123,7 @@
 
 <script>
 (async () => {
-  let s;
+  let s, h;
   try {
     const res = await fetch('/stats.json');
     if (!res.ok) throw new Error(res.status);
@@ -116,6 +131,34 @@
   } catch (e) {
     document.getElementById('error').style.display = 'block';
     return;
+  }
+
+  // Health banner — best-effort; never blocks stats rendering
+  try {
+    const hr = await fetch('/api/health.json');
+    if (hr.ok) h = await hr.json();
+  } catch (e) { /* silent */ }
+
+  if (h) {
+    const sev = h.severity || 'warn';
+    const pillCls = {ok:'ok', warn:'warn', critical:'crit'}[sev] || 'warn';
+    const bannerCls = {ok:'sev-ok', warn:'sev-warn', critical:'sev-crit'}[sev] || 'sev-warn';
+    const driftHtml = h.steam_baseline_match
+      ? '<strong style="color:#34d399">✓ baseline match</strong>'
+      : '<strong style="color:#f87171">⚠ baseline drift</strong>';
+    // steam_newsitems_baseline is the STEAM_NEWS_COUNT sentinel (hardcoded API count= param)
+    const countNote = h.steam_newsitems_baseline != null
+      ? `<span title="STEAM_NEWS_COUNT: hardcoded count= parameter sent to Steam API — not a dynamic total">${h.steam_newsitems_baseline} newsitems (count= sentinel)</span>`
+      : '';
+    const banner = document.getElementById('health-banner');
+    banner.className = bannerCls;
+    banner.innerHTML =
+      `<span class="h-pill ${pillCls}">${sev.toUpperCase()}</span>` +
+      `<span class="h-meta">Polled <strong>${h.hours_since_poll != null ? h.hours_since_poll.toFixed(1) + 'h ago' : 'unknown'}</strong></span>` +
+      `<span class="h-meta">Steam: ${driftHtml}</span>` +
+      (countNote ? `<span class="h-meta">${countNote}</span>` : '') +
+      `<span class="h-links"><a href="/api/health.json">health.json</a> · <a href="/state/steam-news-baseline.json">baseline</a></span>`;
+    banner.style.display = 'flex';
   }
 
   // KPI cards

@@ -1,4 +1,4 @@
-.PHONY: build index tags validate mirror stats health badge diff-endpoints check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk help
+.PHONY: build index tags validate mirror stats health badge diff-endpoints check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk check-drafts help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags validate mirror stats health badge diff-endpoints
@@ -136,6 +136,24 @@ iv = idx.get('latest_version'); bv = base.get('latest_version'); \
 sys.exit(0) if not bv else (sys.exit(0) if iv == bv else (print(f'ERROR: baseline drift — index={iv} but baseline={bv}; run make check-steam', file=sys.stderr) or sys.exit(1)))"
 	@echo "Baseline version matches index ✓"
 
+# List all unreviewed drafts in patches/drafts/ — patch drafts and announcement drafts.
+# Mirrors SteamDB's "unprocessed items" browse pattern: surface pending work locally
+# without needing CI. new_draft=false ≠ empty; announcements land here too.
+check-drafts:
+	@echo "--- Patch drafts (patches/drafts/draft-*.json) ---"
+	@ls patches/drafts/draft-*.json 2>/dev/null | while read f; do \
+	  echo "  $$f"; \
+	  python3 -c "import json,sys; d=json.load(open('$$f')); print(f'    version={d.get(\"version\")}  title={d.get(\"title\",\"\")[:60]}')"; \
+	done || echo "  (none)"
+	@echo ""
+	@echo "--- Announcement drafts (patches/drafts/announcement-*.json) ---"
+	@ls patches/drafts/announcement-*.json 2>/dev/null | while read f; do \
+	  echo "  $$f"; \
+	  python3 -c "import json,sys; d=json.load(open('$$f')); print(f'    date={d.get(\"date\")}  title={d.get(\"title\",\"\")[:60]}')"; \
+	done || echo "  (none)"
+	@echo ""
+	@echo "  Review workflow: patches/drafts/README.md"
+
 # Validate @spiritvale/client is publish-ready without uploading to npm.
 # Run before cutting a GitHub release to confirm package contents, types, and README are correct.
 # Mirrors the warframestat.us "distribution beats discoverability" model — SDK ships as npm package.
@@ -158,7 +176,8 @@ help:
 	@echo "  make check-stats    — verify stats.json is not stale relative to its inputs"
 	@echo "  make check-clean    — assert git working tree is clean (commit gate)"
 	@echo "  make install-hooks  — install git pre-commit hook"
-	@echo "  make check-steam    — poll Steam API; stamps index + baseline (no draft unless new patches)"
+	@echo "  make check-steam    — poll Steam API; new_draft=true (patch) | new_announcement=true (non-semver); stamps index + baseline"
+	@echo "  make check-drafts   — list unreviewed patch + announcement drafts in patches/drafts/"
 	@echo "  make check-ci       — verify GH Actions cron is firing (requires gh CLI)"
 	@echo "  make check-sdk      — dry-run npm pack for @spiritvale/client (pre-release gate)"
 	@echo "  make stats          — generate stats.json (cadence, change totals, top tags)"

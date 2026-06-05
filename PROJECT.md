@@ -2,11 +2,11 @@
 
 **Status**: 🟢 Active · **Started**: 2026-05-25 · **Owner**: เจ้านาย (Tam4shii)
 
-## 🚨 PENDING DECISIONS (updated 2026-06-06)
+## 🚨 PENDING DECISIONS (updated 2026-06-06 idle-loop)
 
 | # | Item | Urgency | Action |
 |---|---|---|---|
-| 1 | **PR #1** — [SpiritVale Official Date release (June 8 / June 12 / July 15)](https://github.com/Tam4shii/spiritvale-site/pull/1) | 🔴 HIGH — June 8 playtest ends in 2 days | (a) merge → publishes as news page  (b) close PR → archives  (c) leave draft → revisit post June 8 |
+| 1 | **PR #1** — [SpiritVale Official Date release (June 8 / June 12 / July 15)](https://github.com/Tam4shii/spiritvale-site/pull/1) | 🔴🔴 CRITICAL — June 8 playtest ends in **2 days** | (a) merge → publishes as news page  (b) close PR → archives  (c) leave draft → revisit post June 8 |
 | 2 | **CF Pages not connected** | 🟡 MEDIUM — `spiritvale.tama.sh` not serving live | Go to dash.cloudflare.com → Pages → connect `Tam4shii/spiritvale-site` |
 
 ## WHY
@@ -111,11 +111,11 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 **Baseline drift root cause (documented 2026-06-03)**: `state/steam-news-baseline.json` is written by `pull-steam-news.py:save_baseline()` — it only runs during `make check-steam` / GH Actions poll. When a new patch is committed directly (e.g., Step 26's v0.18.0 commit), the script is never called and the baseline stays at the old version. **Process guard added (Step 28)**: `make check` now asserts `baseline.latest_version == index.latest_version`; fails with actionable message if drift is detected. Named process gap: the release checklist (Next Steps §6) must include `make check-steam` or `make check-baseline` as the final step after committing any new patch version.
 
 **v0.18.0 deployment status**: v0.18.0 "New and Revamped Maps" was published on 2026-06-02 (Steam) and committed to `main` on 2026-06-03 (commit includes archive, OG image, tag pages). Site reflects the latest patch as of that commit. CF Pages is **not** connected (Blocker #1) — live URL `spiritvale.tama.sh` not yet serving; GitHub Pages preview only.
-**Last `make check` run**: 2026-06-05T13:19Z (idle-loop Forge 2026-06-05) — ✅ exit 0 (all 8 artifacts valid; baseline OK at 0.18.0)
+**Last `make check` run**: 2026-06-06T20:31Z (idle-loop Forge 2026-06-06) — ✅ exit 0 (all 8 artifacts valid; baseline OK at 0.18.0)
 **Last `make check-stats` run**: 2026-06-03T01:19Z (idle-loop Forge Step 30) — ✅ fresh; `per_version_changes` field added to stats.json (11 versions)
-**Last Steam check**: 2026-06-05T13:19:18Z (idle-loop Forge 2026-06-05) — ✅ No new patch notes; items_found=10; new_draft=false. latest_item_id=1834602721187686 (announcement). **⚠️ ANNOUNCEMENT DRAFT PENDING**: `patches/draft-spiritvale-official-date-release.json` — roadmap post (June 8 wipe, June 12 demo, July 15 EA ~$15 USD). File is untracked; boss decision required.
-**🚨 TIME-SENSITIVE (2026-06-05)**: Playtest ends **June 8** (3 days). Demo launches June 12. Early Access July 15 ~$15 USD. Announcement draft surfaced but awaiting boss decision on routing.
-**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — Draft PR **#1** opened: https://github.com/Tam4shii/spiritvale-site/pull/1 — "SpiritVale Official Date release (June 8 / June 12 / July 15)". Click link, choose: (a) merge → publishes as news page, (b) close PR + delete branch → archives it, (c) leave as draft → revisit post June 8. **Playtest ends June 8** (3 days — time-sensitive).
+**Last Steam check**: 2026-06-05T20:31:49Z (idle-loop Forge 2026-06-06) — ✅ No new patch notes; items_found=10; new_draft=false. latest_item_id=1834602721187686 (announcement). **⚠️ ANNOUNCEMENT DRAFT PENDING**: `patches/drafts/announcement-spiritvale-official-date-release.json` — roadmap post (June 8 wipe, June 12 demo, July 15 EA ~$15 USD). Awaiting boss decision on routing (PR #1).
+**🚨 TIME-SENSITIVE (2026-06-06)**: Playtest ends **June 8** (2 days). Demo launches June 12. Early Access July 15 ~$15 USD. Announcement draft surfaced but awaiting boss decision on routing.
+**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — Draft PR **#1** opened: https://github.com/Tam4shii/spiritvale-site/pull/1 — "SpiritVale Official Date release (June 8 / June 12 / July 15)". Click link, choose: (a) merge → publishes as news page, (b) close PR + delete branch → archives it, (c) leave as draft → revisit post June 8. **Playtest ends June 8** (2 days — time-sensitive).
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

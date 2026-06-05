@@ -89,6 +89,15 @@
   Zero-dependency ES module. `import { getLatest, getIndex, getPatch, getDiff } from '...spiritvale.js'`.
   Works in browser (fetch) and Node ≥18. Source: `clients/spiritvale.js` in the repo.
 
+- **Python client SDK** — https://spiritvale.tama.sh/clients/spiritvale.py
+  Zero-dependency stdlib module (Python ≥3.8, `urllib` only). `from spiritvale import get_latest, get_patch, get_diff`.
+  Copy-paste install: `curl -O https://spiritvale.tama.sh/clients/spiritvale.py`. Source: `clients/spiritvale.py` in the repo.
+
+- **Discord bot example** — https://spiritvale.tama.sh/clients/bots/discord-example.py
+  Ready-to-fork Discord bot (discord.py). Slash commands: `/latest`, `/patch <version>`, `/diff <from> <to>`, `/search <query>`.
+  Classic prefix: `!patch`, `!diff`, `!versions`. Auto-announces new patches to a channel via 5-min poll loop.
+  Deploy free on Railway or Fly.io using the included `Procfile`. Setup guide: `clients/bots/README.md` in the repo.
+
 - **Landing page** — https://spiritvale.tama.sh/
 
 ## Archived versions (newest first)

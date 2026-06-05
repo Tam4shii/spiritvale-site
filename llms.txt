@@ -93,6 +93,9 @@
   Zero-dependency stdlib module (Python ≥3.8, `urllib` only). `from spiritvale import get_latest, get_patch, get_diff`.
   Copy-paste install: `curl -O https://spiritvale.tama.sh/clients/spiritvale.py`. Source: `clients/spiritvale.py` in the repo.
 
+- **Discord bot embed endpoint** — https://spiritvale.tama.sh/patches/bot.json
+  Pre-formatted Discord embed payload (color, title, description, fields[], footer, timestamp). Bot authors: fetch this URL and pass `.latest.embed` directly to `discord.Embed(**data)` or Discord REST `embeds[]`. Updated on every patch release. No parsing required.
+
 - **Discord bot example** — https://spiritvale.tama.sh/clients/bots/discord-example.py
   Ready-to-fork Discord bot (discord.py). Slash commands: `/latest`, `/patch <version>`, `/diff <from> <to>`, `/search <query>`.
   Classic prefix: `!patch`, `!diff`, `!versions`. Auto-announces new patches to a channel via 5-min poll loop.

@@ -2,6 +2,13 @@
 
 **Status**: 🟢 Active · **Started**: 2026-05-25 · **Owner**: เจ้านาย (Tam4shii)
 
+## 🚨 PENDING DECISIONS (updated 2026-06-06)
+
+| # | Item | Urgency | Action |
+|---|---|---|---|
+| 1 | **PR #1** — [SpiritVale Official Date release (June 8 / June 12 / July 15)](https://github.com/Tam4shii/spiritvale-site/pull/1) | 🔴 HIGH — June 8 playtest ends in 2 days | (a) merge → publishes as news page  (b) close PR → archives  (c) leave draft → revisit post June 8 |
+| 2 | **CF Pages not connected** | 🟡 MEDIUM — `spiritvale.tama.sh` not serving live | Go to dash.cloudflare.com → Pages → connect `Tam4shii/spiritvale-site` |
+
 ## WHY
 เจ้านายเล่นเกม **SpiritVale** (Steam app 3918510) — อยาก host patch note ของเกมไว้ที่โดเมนตัวเอง (`spiritvale.tama.sh`) เพื่อใช้ผูกกับ Claude artifact (และอาจขยายเป็น community hub ในอนาคต)
 

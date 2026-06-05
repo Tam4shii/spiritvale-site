@@ -36,6 +36,8 @@ PATCHES_DIR = Path("patches")
 BASELINE_PATH = Path("state/steam-news-baseline.json")
 # Ephemeral poll timestamp — gitignored, never commits, updated every run
 POLL_STATE_PATH = Path("state/last-poll.json")
+# Tracks how many poll cycles each unreviewed draft has been sitting — signals staleness
+SEEN_COUNTS_PATH = Path("state/draft-seen-counts.json")
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
@@ -119,6 +121,26 @@ def stamp_index(polled_at: str, items_found: int) -> None:
     print(f"WROTE: {INDEX_PATH} (last_polled_at → {polled_at}, items_found={items_found})")
 
 
+def load_seen_counts() -> dict:
+    if SEEN_COUNTS_PATH.exists():
+        return json.loads(SEEN_COUNTS_PATH.read_text())
+    return {}
+
+
+def save_seen_counts(counts: dict) -> None:
+    SEEN_COUNTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SEEN_COUNTS_PATH.write_text(json.dumps(counts, indent=2) + "\n")
+    print(f"WROTE: {SEEN_COUNTS_PATH} ({len(counts)} tracked draft(s))")
+
+
+def bump_seen_count(counts: dict, draft_name: str, polled_at: str) -> None:
+    """Increment the stale-draft counter for a draft that exists but hasn't been reviewed."""
+    entry = counts.get(draft_name, {"seen_count": 0, "first_seen_at": polled_at})
+    entry["seen_count"] = entry.get("seen_count", 0) + 1
+    entry["last_seen_at"] = polled_at
+    counts[draft_name] = entry
+
+
 def load_baseline() -> dict:
     if BASELINE_PATH.exists():
         return json.loads(BASELINE_PATH.read_text())
@@ -197,6 +219,11 @@ def main():
     seen_gids = existing_news_ids(index)
     seen_versions = existing_versions(index)
 
+    # Pre-compute timestamp so stale-count bumps and new draft writes share the same polled_at.
+    polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    seen_counts = load_seen_counts()
+    seen_counts_dirty = False
+
     new_drafts = []
 
     for item in items:
@@ -223,6 +250,9 @@ def main():
             draft_path = PATCHES_DIR / f"draft-{slug}.json"
 
         if draft_path.exists():
+            # Draft already written but not yet reviewed — bump staleness counter
+            bump_seen_count(seen_counts, draft_path.name, polled_at)
+            seen_counts_dirty = True
             continue
 
         pub_ts = item.get("date", 0)
@@ -255,7 +285,6 @@ def main():
         print(f"Created: {draft_path}")
         new_drafts.append({"slug": slug, "title": title, "is_announcement": is_announcement})
 
-    polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     cur_version = index.get("latest_version", "unknown")
 
     # Always write ephemeral poll state (gitignored — no commit noise on every run).
@@ -323,6 +352,9 @@ def main():
         )
     else:
         set_output("new_announcement", "false")
+
+    if seen_counts_dirty:
+        save_seen_counts(seen_counts)
 
     if not new_drafts:
         # No new drafts — skip committed writes to avoid no-op commit noise.

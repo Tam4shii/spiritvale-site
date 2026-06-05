@@ -139,6 +139,7 @@ sys.exit(0) if not bv else (sys.exit(0) if iv == bv else (print(f'ERROR: baselin
 # List all unreviewed drafts in patches/drafts/ — patch drafts and announcement drafts.
 # Mirrors SteamDB's "unprocessed items" browse pattern: surface pending work locally
 # without needing CI. new_draft=false ≠ empty; announcements land here too.
+# seen_count: how many poll cycles the draft has sat unreviewed (from state/draft-seen-counts.json).
 check-drafts:
 	@echo "--- Patch drafts (patches/drafts/draft-*.json) ---"
 	@ls patches/drafts/draft-*.json 2>/dev/null | while read f; do \
@@ -148,8 +149,18 @@ check-drafts:
 	@echo ""
 	@echo "--- Announcement drafts (patches/drafts/announcement-*.json) ---"
 	@ls patches/drafts/announcement-*.json 2>/dev/null | while read f; do \
+	  base=$$(basename "$$f"); \
 	  echo "  $$f"; \
-	  python3 -c "import json,sys; d=json.load(open('$$f')); print(f'    date={d.get(\"date\")}  title={d.get(\"title\",\"\")[:60]}')"; \
+	  python3 -c "\
+import json, os, sys; \
+d = json.load(open('$$f')); \
+sc = json.load(open('state/draft-seen-counts.json')) if os.path.exists('state/draft-seen-counts.json') else {}; \
+entry = sc.get('$$base', {}); \
+seen = entry.get('seen_count', 0); \
+first = entry.get('first_seen_at', 'unknown'); \
+staleness = f'[STALE: seen {seen}x since {first[:10]}]' if seen > 0 else '[NEW — not yet polled as stale]'; \
+print(f'    date={d.get(\"date\")}  title={d.get(\"title\",\"\")[:55]}'); \
+print(f'    {staleness}')"; \
 	done || echo "  (none)"
 	@echo ""
 	@echo "  Review workflow: patches/drafts/README.md"

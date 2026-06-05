@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """Generate server-side diff JSON endpoints.
 
-Produces diff/v{from}...v{to}.json for every adjacent pair and every
-cumulative span from oldest to each later version. These are immutable,
-CDN-cacheable endpoints that bots and SDKs can fetch with a single request
-instead of computing diffs client-side from N patch files.
+Produces diff/v{from}...v{to}.json for every ordered version pair (i < j).
+These are immutable, CDN-cacheable endpoints that bots and SDKs can fetch
+with a single request instead of computing diffs client-side from N patch files.
 
 URL pattern mirrors wago.tools (?from=X&to=Y) adapted for static hosting:
-  /diff/v0.17.0...v0.18.0.json   — single-step diff
+  /diff/v0.17.0...v0.18.0.json   — single-step (adjacent) diff
   /diff/v0.13.0...v0.18.0.json   — cumulative diff (all patches between)
+  /diff/v0.14.0...v0.18.0.json   — any-pair diff (wago.tools pattern)
 
+Covers N*(N-1)/2 pairs — every possible "what changed between X and Y?" query.
 Also writes diff/index.json listing all available diff endpoints.
 
 Run: python3 scripts/build-diff-endpoints.py  OR  make diff-endpoints
@@ -86,21 +87,15 @@ def main():
 
     written = []
 
-    # Adjacent pairs: v[i] → v[i+1]
-    for i in range(len(versions) - 1):
-        fv, tv = versions[i], versions[i + 1]
-        diff = build_diff(fv, tv, versions)
-        out = DIFF_DIR / slug(fv, tv)
-        out.write_text(json.dumps(diff, indent=2) + "\n")
-        written.append({"from": fv, "to": tv, "file": str(out.relative_to(ROOT))})
-
-    # Cumulative spans: oldest → every later version
-    oldest = versions[0]
-    for tv in versions[2:]:  # skip adjacent (already written as v[0]→v[1])
-        diff = build_diff(oldest, tv, versions)
-        out = DIFF_DIR / slug(oldest, tv)
-        out.write_text(json.dumps(diff, indent=2) + "\n")
-        written.append({"from": oldest, "to": tv, "file": str(out.relative_to(ROOT))})
+    # All ordered pairs (i < j) — covers adjacent, cumulative, and any intermediate span.
+    # N*(N-1)/2 total: with 10 versions → 45 endpoints vs prior 19.
+    for i in range(len(versions)):
+        for j in range(i + 1, len(versions)):
+            fv, tv = versions[i], versions[j]
+            diff = build_diff(fv, tv, versions)
+            out = DIFF_DIR / slug(fv, tv)
+            out.write_text(json.dumps(diff, indent=2) + "\n")
+            written.append({"from": fv, "to": tv, "file": str(out.relative_to(ROOT))})
 
     # diff/index.json — registry of all generated endpoints
     index = {

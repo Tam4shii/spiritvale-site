@@ -1,0 +1,61 @@
+{
+  "from": "0.15.0",
+  "to": "0.16.7",
+  "patches_included": [
+    "0.16.0",
+    "0.16.3",
+    "0.16.7"
+  ],
+  "patch_count": 3,
+  "patch_metas": [
+    {
+      "version": "0.16.0",
+      "title": "Rebalance Patch",
+      "date": "2026-04-17"
+    },
+    {
+      "version": "0.16.3",
+      "title": "Update 0.16.3",
+      "date": "2026-05-13"
+    },
+    {
+      "version": "0.16.7",
+      "title": "Update 0.16.7",
+      "date": "2026-05-16"
+    }
+  ],
+  "added": [
+    "Threat System \u2014 monsters target the highest-threat player in range",
+    "Spawner Bosses: 60s KS protection for the spawner and their party (cleared if spawner leaves map)",
+    "2 SEA servers (more EU / NA / SEA servers coming soon)",
+    "Server list now auto-populates for future servers"
+  ],
+  "changed": [
+    "All class damage and sustain rebalanced using new metrics to reduce one-shots and full-heal spam",
+    "Shared skills (Heal, Haste, Cure, FreeCast) removed from shared pool and redistributed to base classes",
+    "Status effects revamped for clarity and to reduce status bloat",
+    "All armor sets revamped (late-game armors were overpowering earlier sets)",
+    "Monsters now have Def and Mdef stats",
+    "Monster damage reduced by ~25%",
+    "Boss regen removed",
+    "Random boss casting and extra cast range removed",
+    "Vending Search: double-clicking an item now lets you buy it directly",
+    "Each account limited to 1 vending character (was 2)"
+  ],
+  "fixed": [
+    "Rage skill not working on Berserker",
+    "Vending list now automatically populates when opened",
+    "Damage numbers now optimised (major source of lag reduced)",
+    "Server optimisations to reduce rubberbanding",
+    "Vendors no longer huddle in a corner"
+  ],
+  "removed": [
+    "Sell shops no longer visible on maps (purchase shops remain; sell shops may return in future)"
+  ],
+  "change_counts": {
+    "added": 4,
+    "changed": 10,
+    "fixed": 5,
+    "removed": 1
+  }
+}

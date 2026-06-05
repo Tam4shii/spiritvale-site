@@ -4,9 +4,16 @@ Fetch Steam AppNews for SpiritVale (app 3918510) and create draft patch files
 for any items that look like patch notes and aren't already indexed.
 
 Output (GITHUB_OUTPUT):
-  new_draft=true|false
-  slug=<slug>          (first new draft only)
-  title=<title>        (first new draft only)
+  new_draft=true|false        semver-versioned game update found (triggers PR + patch pipeline)
+  slug=<slug>                 first new *patch* draft only (requires new_draft=true)
+  title=<title>               first new *patch* draft only (requires new_draft=true)
+
+  new_announcement=true|false non-semver Steam post matched PATCH_KEYWORDS (e.g. release dates,
+                              wipe notices, Next Fest announcements). Draft written to
+                              patches/drafts/announcement-<slug>.json — NOT a patch entry.
+                              new_draft=false is expected when only announcements are found.
+  announcement_slug=<slug>    first announcement draft only (requires new_announcement=true)
+  announcement_title=<title>  first announcement draft only (requires new_announcement=true)
 """
 import json
 import os
@@ -161,6 +168,9 @@ def check_baseline_delta(current_count: int, index: dict) -> None:
         return
     prev_count = baseline.get("count")
     prev_version = baseline.get("latest_version")
+    # Emit source path so log readers can verify without guessing the file location.
+    # count= is the STEAM_NEWS_COUNT constant passed to the Steam API, not a dynamic total.
+    print(f"[baseline] {BASELINE_PATH}: version={prev_version}, count={prev_count}/{STEAM_NEWS_COUNT}")
     cur_version = index.get("latest_version")
     if prev_count is not None and current_count != prev_count:
         if cur_version == prev_version:
@@ -203,8 +213,14 @@ def main():
         if version and version in seen_versions:
             continue
 
+        # Announcements (no semver in title) go to patches/drafts/ with a distinct prefix
+        # so new_draft=true remains exclusively for semver-versioned game updates.
+        is_announcement = version is None
         slug = version or title_to_slug(title)
-        draft_path = PATCHES_DIR / f"draft-{slug}.json"
+        if is_announcement:
+            draft_path = PATCHES_DIR / "drafts" / f"announcement-{slug}.json"
+        else:
+            draft_path = PATCHES_DIR / f"draft-{slug}.json"
 
         if draft_path.exists():
             continue
@@ -214,15 +230,15 @@ def main():
         raw_body = strip_html(item.get("contents", ""))[:2000]
         steam_url = item.get("url") or None
 
-        draft = {
+        draft: dict = {
             "$schema": "/schema/patch.json",
             "version": version or "0.0.0",
             "title": title,
             "date": pub_dt.strftime("%Y-%m-%d"),
             "current": False,
-            "url": None,           # Claude artifact URL — set manually after publishing
+            "url": None,
             "steam_news_id": gid,
-            "steam_url": steam_url,  # canonical upstream Steam announcement URL
+            "steam_url": steam_url,
             "released_at": pub_dt.isoformat(),
             "raw_body": raw_body,
             "added": [],
@@ -230,10 +246,14 @@ def main():
             "fixed": [],
             "removed": [],
         }
+        if is_announcement:
+            # Announcements are not semver patches — skip semver validation downstream
+            draft["type"] = "announcement"
 
+        draft_path.parent.mkdir(parents=True, exist_ok=True)
         draft_path.write_text(json.dumps(draft, indent=2, ensure_ascii=False) + "\n")
         print(f"Created: {draft_path}")
-        new_drafts.append({"slug": slug, "title": title})
+        new_drafts.append({"slug": slug, "title": title, "is_announcement": is_announcement})
 
     polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     cur_version = index.get("latest_version", "unknown")
@@ -248,6 +268,9 @@ def main():
         latest_item_title=top.get("title", "").strip() or None,
     )
 
+    patch_drafts = [d for d in new_drafts if not d.get("is_announcement")]
+    announcement_drafts = [d for d in new_drafts if d.get("is_announcement")]
+
     if new_drafts:
         # Content changed — update committed artifacts
         try:
@@ -255,13 +278,53 @@ def main():
             save_baseline(len(items), cur_version, polled_at)
         except Exception as e:
             print(f"WARN: could not update committed state: {e}", file=sys.stderr)
-        first = new_drafts[0]
+        print(
+            f"[{polled_at}] mode=draft-created, "
+            f"{len(patch_drafts)} patch draft(s), {len(announcement_drafts)} announcement draft(s)."
+        )
+
+    # new_draft=true ↔ a semver-versioned game update was found (triggers PR + patch pipeline).
+    # new_announcement=true ↔ a non-semver Steam post matched PATCH_KEYWORDS (e.g. release date
+    # news, wipe announcements) — stored in patches/drafts/announcement-*.json, NOT as a patch.
+    if patch_drafts:
+        first = patch_drafts[0]
         set_output("new_draft", "true")
         set_output("slug", first["slug"])
         safe_title = first["title"].replace("\n", " ").replace("\r", "")
         set_output("title", safe_title)
-        print(f"[{polled_at}] mode=draft-created, {len(new_drafts)} new draft(s).")
     else:
+        set_output("new_draft", "false")
+
+    if announcement_drafts:
+        first_ann = announcement_drafts[0]
+        set_output("new_announcement", "true")
+        set_output("announcement_slug", first_ann["slug"])
+        safe_ann_title = first_ann["title"].replace("\n", " ").replace("\r", "")
+        set_output("announcement_title", safe_ann_title)
+        # Prominent local callout — CI fires Discord; local runs must surface this visually.
+        # new_draft=false is CORRECT here (no semver patch); new_announcement=true is the signal.
+        ann_paths = [
+            f"  patches/drafts/announcement-{d['slug']}.json" for d in announcement_drafts
+        ]
+        print(
+            "\n"
+            "╔══════════════════════════════════════════════════════════════╗\n"
+            "║  [BOSS ACTION] STEAM ANNOUNCEMENT DETECTED                   ║\n"
+            "╠══════════════════════════════════════════════════════════════╣\n"
+            f"║  Title : {safe_ann_title[:52]:<52} ║\n"
+            f"║  Count : {len(announcement_drafts):<52} ║\n"
+            "║  Files :                                                     ║\n"
+            + "".join(f"║    {p:<58} ║\n" for p in ann_paths)
+            + "╠══════════════════════════════════════════════════════════════╣\n"
+            "║  new_draft=false is CORRECT — no semver patch was released.  ║\n"
+            "║  Review draft → publish / archive / ignore.                  ║\n"
+            "║  See: patches/drafts/README.md                               ║\n"
+            "╚══════════════════════════════════════════════════════════════╝"
+        )
+    else:
+        set_output("new_announcement", "false")
+
+    if not new_drafts:
         # No new drafts — skip committed writes to avoid no-op commit noise.
         # Update baseline only when count or version actually changed (drift signal).
         baseline = load_baseline()
@@ -270,8 +333,17 @@ def main():
                 save_baseline(len(items), cur_version, polled_at)
             except Exception as e:
                 print(f"WARN: could not update baseline: {e}", file=sys.stderr)
-        set_output("new_draft", "false")
-        print(f"[{polled_at}] mode=poll-only (no new items). Latest indexed: {cur_version}")
+        # Emit both sides of every comparison so a log excerpt is self-verifying
+        # without needing to cross-reference a prior run.
+        b_version = baseline.get("latest_version", "n/a")
+        b_count = baseline.get("count")
+        b_count_str = str(b_count) if b_count is not None else "n/a"
+        count_verdict = "→ no change" if b_count == len(items) else f"→ CHANGED (was {b_count_str})"
+        print(
+            f"[{polled_at}] mode=poll-only (no new items). "
+            f"version: {b_version} → {cur_version} (no change). "
+            f"newsitems: {len(items)} (prev: {b_count_str}) {count_verdict}"
+        )
 
 
 if __name__ == "__main__":

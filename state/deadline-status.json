@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-06-06T13:20:55Z",
-  "today": "2026-06-06",
+  "generated_at": "2026-06-06T22:57:25Z",
+  "today": "2026-06-07",
   "worst_severity": "critical",
   "deadlines": [
     {
       "key": "pr1",
       "description": "PR #1 spiritvale-site \u2014 merge/close decision for news page",
       "deadline": "2026-06-08",
-      "days_until": 2,
+      "days_until": 1,
       "severity": "critical"
     }
   ]

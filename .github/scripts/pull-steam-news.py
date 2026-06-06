@@ -18,6 +18,7 @@ Output (GITHUB_OUTPUT):
 import json
 import os
 import re
+import subprocess
 import sys
 import urllib.request
 from datetime import datetime, timezone
@@ -38,8 +39,10 @@ BASELINE_PATH = Path("state/steam-news-baseline.json")
 POLL_STATE_PATH = Path("state/last-poll.json")
 # Tracks how many poll cycles each unreviewed draft has been sitting — signals staleness
 SEEN_COUNTS_PATH = Path("state/draft-seen-counts.json")
-# Re-ping Discord after this many poll cycles with an unreviewed draft sitting in drafts/.
-STALE_DRAFT_CYCLES = 3
+# Escalation thresholds for unreviewed drafts (poll cycles = runs of make check-steam / GH Actions daily cron).
+STALE_ALERT_CYCLES = 3   # seen_count >= this → push luna-tg notification to boss
+STALE_ARCHIVE_CYCLES = 7  # seen_count >= this → notification recommends auto-archive
+STALE_DRAFT_CYCLES = STALE_ALERT_CYCLES  # backward-compat alias (used in stale list filter below)
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
@@ -177,6 +180,57 @@ def _write_poll_state(
         POLL_STATE_PATH.write_text(json.dumps(state, indent=2) + "\n")
     except Exception as e:
         print(f"WARN: could not write poll state: {e}", file=sys.stderr)
+
+
+def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool:
+    """Send a luna-tg push notification for an unreviewed draft.
+
+    Deduplicates via alerted_at — skips if a notification was sent within the last 12 hours.
+    Escalates message severity when seen_count >= STALE_ARCHIVE_CYCLES.
+    Returns True if notification was sent (caller must set seen_counts_dirty).
+    """
+    count = stale_entry.get("seen_count", 0)
+    last_alerted = stale_entry.get("alerted_at", "")
+
+    if last_alerted:
+        try:
+            last_dt = datetime.fromisoformat(last_alerted.replace("Z", "+00:00"))
+            now_dt = datetime.now(tz=timezone.utc)
+            if (now_dt - last_dt).total_seconds() < 43200:  # 12-hour dedup window
+                print(f"[stale-alert] suppressed — already alerted at {last_alerted[:16]}, <12h ago")
+                return False
+        except Exception:
+            pass
+
+    suggest_archive = count >= STALE_ARCHIVE_CYCLES
+    severity = "🔴🔴" if suggest_archive else "🔴"
+    action = (
+        "Draft sitting too long — consider closing PR + archiving."
+        if suggest_archive
+        else "Action needed: merge / close PR / leave draft."
+    )
+    msg = (
+        f"{severity} SpiritVale: Stale draft unreviewed\n"
+        f"Draft: {stale_name}\n"
+        f"Seen: {count} poll cycles "
+        f"(first: {stale_entry.get('first_seen_at', '?')[:10]})\n"
+        f"PR #1 → https://github.com/Tam4shii/spiritvale-site/pull/1\n"
+        f"{action}"
+    )
+
+    luna_tg = Path.home() / ".local/bin/luna-tg"
+    if not luna_tg.is_file():
+        print(f"WARN: luna-tg not found at {luna_tg} — stale alert skipped", file=sys.stderr)
+        return False
+
+    try:
+        subprocess.run([str(luna_tg), msg], check=True, timeout=10)
+        stale_entry["alerted_at"] = polled_at
+        print(f"[stale-alert] notification sent for {stale_name} (count={count})")
+        return True
+    except Exception as e:
+        print(f"WARN: stale alert send failed: {e}", file=sys.stderr)
+        return False
 
 
 def check_baseline_delta(current_count: int, index: dict) -> None:
@@ -376,6 +430,13 @@ def main():
             f"{stale_entry.get('seen_count', 0)} cycles "
             f"(first seen: {stale_entry.get('first_seen_at', 'unknown')})"
         )
+        # 🔴 Push notification: alert boss when draft sits past STALE_ALERT_CYCLES.
+        # Deduplicates via alerted_at (12h window) — safe to call on every poll run.
+        # IMPORTANT: save_seen_counts runs before this block so alerted_at must be
+        # persisted here explicitly; otherwise the 12h dedup never takes effect and
+        # the notification either fires on every run or silently re-fires after restart.
+        if fire_stale_alert(stale_name, stale_entry, polled_at):
+            save_seen_counts(seen_counts)  # persist alerted_at for dedup
     else:
         set_output("stale_draft", "false")
 

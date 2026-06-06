@@ -1,7 +1,7 @@
-.PHONY: build index tags validate mirror stats health badge diff-endpoints check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk check-drafts help
+.PHONY: build index tags validate mirror stats health badge diff-endpoints jsonld check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk check-drafts help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index tags validate mirror stats health badge diff-endpoints
+build: index tags validate mirror stats health badge diff-endpoints jsonld
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
@@ -40,6 +40,12 @@ badge:
 # Fix: run `make health` then commit. The `make check` target now validates its presence.
 health:
 	python3 scripts/build-health.py
+
+# Inject Schema.org JSON-LD into index.html and patch/index.html for rich-result SEO.
+# Pattern: SteamDB/wago.tools — structured data drives Google rich results for
+# "<game> <version> patch notes" queries. Idempotent via marker comments.
+jsonld:
+	python3 scripts/build-jsonld.py
 
 # Generate server-side diff JSON for every adjacent and cumulative version pair.
 # Produces diff/v{from}...v{to}.json — immutable, CDN-cacheable, SDK/bot-friendly.
@@ -194,4 +200,5 @@ help:
 	@echo "  make stats          — generate stats.json (cadence, change totals, top tags)"
 	@echo "  make health         — generate api/health.json (structured freshness endpoint)"
 	@echo "  make diff-endpoints — generate diff/v{from}...v{to}.json static endpoints"
+	@echo "  make jsonld         — inject Schema.org JSON-LD into index.html + patch/index.html (SEO)"
 	@echo "  make badge          — generate badge/latest.json (shields.io endpoint badge)"

@@ -1,0 +1,49 @@
+name: Feature request
+description: Suggest a new feature or improvement to the SpiritVale Community Hub
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideas for new pages, API endpoints, bot commands, or site improvements are welcome.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the site/project does this relate to?
+      options:
+        - Patch data / archive
+        - Search
+        - Diff viewer
+        - Tag pages
+        - Entity pages
+        - Discord bot
+        - API / SDK
+        - Site design / UX
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What would you like to see?
+      description: Describe the feature. What problem does it solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: Example or reference
+      description: "Optional: link to a similar feature on another site (e.g. SteamDB, wago.tools, poe.ninja)"
+
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Would you like to contribute this?
+      options:
+        - "Yes — I can submit a PR"
+        - "Maybe — with some guidance"
+        - "No — just the idea"

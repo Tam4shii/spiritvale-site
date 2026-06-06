@@ -1,0 +1,58 @@
+name: Data correction
+description: Report an incorrect bullet, wrong classification, or typo in a patch entry
+labels: ["correction", "data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Spotted something wrong in a patch entry? Let us know the version and what to fix.
+
+  - type: input
+    id: version
+    attributes:
+      label: Patch version
+      description: Which version contains the incorrect entry?
+      placeholder: "0.17.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Entry type
+      description: Which change category does the incorrect entry appear in?
+      options:
+        - added
+        - changed
+        - fixed
+        - removed
+        - deprecated
+        - security
+        - not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_text
+    attributes:
+      label: Current (incorrect) text
+      description: Paste the exact text as it appears now
+      placeholder: "Shinobi base stamina reduced from 120 to 100"
+    validations:
+      required: true
+
+  - type: textarea
+    id: correct_text
+    attributes:
+      label: Correct text
+      description: What should it say instead?
+      placeholder: "Shinobi base stamina reduced from 130 to 110"
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Steam post URL or in-game text that confirms the correct value
+      placeholder: "https://store.steampowered.com/news/app/3918510/view/..."

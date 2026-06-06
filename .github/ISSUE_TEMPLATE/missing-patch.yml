@@ -1,0 +1,45 @@
+name: Missing patch version
+description: Report a SpiritVale patch that is not yet in the archive
+labels: ["missing-patch", "data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping keep the patch archive complete!
+        Please fill in as much as you know — even a Steam GID or approximate date helps.
+
+  - type: input
+    id: version
+    attributes:
+      label: Patch version
+      description: Version string shown in-game or on Steam (e.g. 0.16.0)
+      placeholder: "0.16.0"
+    validations:
+      required: true
+
+  - type: input
+    id: steam_url
+    attributes:
+      label: Steam announcement URL
+      description: Link to the Steam community patch-notes post (if you have it)
+      placeholder: "https://store.steampowered.com/news/app/3918510/view/..."
+
+  - type: input
+    id: release_date
+    attributes:
+      label: Release date (approximate)
+      description: ISO format preferred — YYYY-MM-DD
+      placeholder: "2026-04-15"
+
+  - type: textarea
+    id: raw_notes
+    attributes:
+      label: Raw patch notes (paste here if you have them)
+      description: Full text from Steam or in-game — we will classify and format them
+      render: text
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context
+      description: Anything else that might help (e.g. "this was a hotfix, no Steam post")

@@ -23,6 +23,64 @@
     }
   ],
   "paths": {
+    "/state.json": {
+      "get": {
+        "operationId": "getWorldstate",
+        "summary": "Worldstate aggregation",
+        "description": "Single-fetch aggregation endpoint: latest patch summary, health status, pending drafts, deadline alerts, and stats totals. Recommended first fetch for LLM consumers — collapses 3 client round-trips to 1. Alias: /v1/state.json. Pattern: warframestat.us worldstate.",
+        "tags": [
+          "Meta"
+        ],
+        "responses": {
+          "200": {
+            "description": "Worldstate",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "generated_at": { "type": "string", "format": "date-time" },
+                    "latest_version": { "type": "string" },
+                    "last_polled_at": { "type": "string", "format": "date-time" },
+                    "poll_tz": { "type": "string" },
+                    "latest": {
+                      "type": "object",
+                      "description": "Summary of the current patch (non-content fields). Fetch /patches/latest.json for full bullet lists."
+                    },
+                    "index_summary": {
+                      "type": "object",
+                      "properties": {
+                        "total_versions": { "type": "integer" },
+                        "items_found": { "type": "integer" }
+                      }
+                    },
+                    "health": {
+                      "type": "object",
+                      "properties": {
+                        "severity": { "type": "string", "enum": ["ok", "warn", "critical"] },
+                        "stale": { "type": "boolean" },
+                        "hours_since_poll": { "type": "number" },
+                        "message": { "type": "string" },
+                        "steam_baseline_match": { "type": "boolean" }
+                      }
+                    },
+                    "stats_summary": { "type": "object" },
+                    "pending_drafts": { "type": "array" },
+                    "pending_drafts_count": { "type": "integer" },
+                    "deadline_alerts": {
+                      "type": "array",
+                      "description": "Calendar deadlines from state/persistent-blockers.json with severity classification (critical/urgent/warn/ok/expired)."
+                    },
+                    "worst_deadline_severity": { "type": "string" },
+                    "_links": { "type": "object", "description": "Canonical URLs for all related endpoints." }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/patches/latest.json": {
       "get": {
         "operationId": "getLatestPatch",

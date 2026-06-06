@@ -6,6 +6,12 @@
 
 ## Canonical endpoints
 
+- **Worldstate (JSON)** — https://spiritvale.tama.sh/v1/state.json
+  Single-fetch aggregation: latest patch summary + health + pending drafts + deadline alerts + stats totals.
+  Recommended first fetch for LLM consumers — collapses 3 round-trips to 1. Alias: /state.json.
+  Fields: latest, health (severity/stale/hours_since_poll), stats_summary, pending_drafts[], deadline_alerts[], _links.
+  Cache-Control: stale-while-revalidate=300.
+
 - **Latest patch (JSON)** — https://spiritvale.tama.sh/patches/latest.json
   Always points to the current patch. Fields: version, title, date, added[], changed[], fixed[], removed[].
 
@@ -42,8 +48,14 @@
 
 - **Search index (JSON)** — https://spiritvale.tama.sh/search-index.json
   Machine-readable flat array of all change entries: {id, version, patch_title, date, type, text, url, tags[]}.
-  182 entries (10 patches × added/changed/fixed/removed bullets). Regenerated on each patch release.
-  LLM consumers: fetch this once to answer queries like "when was Shadow Step nerfed?" without fetching 10 separate patch files.
+  196 entries (11 patches × added/changed/fixed/removed bullets). Regenerated on each patch release.
+  LLM consumers: fetch this once to answer queries like "when was Shadow Step nerfed?" without fetching 11 separate patch files.
+
+- **Full history export (CSV)** — https://spiritvale.tama.sh/patches/export.csv
+  Flat CSV of all 196 patch entries — same data as search-index.json but importable into Excel, pandas, R, Google Sheets.
+  Columns: id, version, patch_title, date, type, text, tags (semicolon-delimited), url.
+  Regenerated on each patch release via `make csv`. wago.tools data-export pattern — enables community analysis without JSON parsing.
+  Content-Type: text/csv; charset=utf-8. stale-while-revalidate=600 for CDN freshness.
 
 - **Tag index** — https://spiritvale.tama.sh/tag/
   Browse patch changes grouped by class (shinobi, berserker, necromancer), system (crafting, pvp, arena), or area (echoing-spire, forgotten-depths, boss).

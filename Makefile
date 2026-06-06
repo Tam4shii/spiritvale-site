@@ -1,7 +1,7 @@
-.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines help
+.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld state csv check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index tags entities validate mirror stats health badge diff-endpoints jsonld
+build: index tags entities validate mirror stats health badge diff-endpoints jsonld state csv
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
@@ -59,6 +59,12 @@ jsonld:
 diff-endpoints:
 	python3 scripts/build-diff-endpoints.py
 
+# Generate patches/export.csv — flat CSV of all patch entries (wago.tools data export pattern).
+# Universally importable: Excel, pandas, R, Google Sheets, discord.py bots.
+# Source: search-index.json. Run after `make index` to reflect latest data.
+csv:
+	python3 scripts/build-csv-export.py
+
 # Validate XML and JSON derived artifacts for crawler correctness.
 check:
 	@echo "--- sitemap.xml ---" && xmllint --noout sitemap.xml && echo "sitemap.xml: OK"
@@ -75,6 +81,7 @@ h = json.load(open('api/health.json')); \
 sev = h.get('severity', 'unknown'); \
 print(f'health severity: {sev}') if sev in ('ok','warn') else (print(f'ERROR: health.json severity={sev}', file=sys.stderr) or sys.exit(1))"
 	@echo "--- diff/index.json ---" && python3 -m json.tool diff/index.json > /dev/null && echo "diff/index.json: OK"
+	@echo "--- state.json ---" && python3 -m json.tool state.json > /dev/null && echo "state.json: OK"
 	@python3 -c "\
 import json, sys; \
 idx = json.load(open('patches/index.json')); \
@@ -192,6 +199,13 @@ check-sdk:
 check-deadlines:
 	python3 scripts/check-deadlines.py
 
+# Generate state.json — worldstate aggregation endpoint.
+# Single-fetch summary: latest patch + health + pending drafts + deadline alerts.
+# Pattern: warframestat.us /pc worldstate — collapses 3 client RTTs to 1.
+# Accessible at /state.json and /v1/state.json (via _redirects /v1/* rewrite).
+state:
+	python3 scripts/build-state.py
+
 help:
 	@echo "Targets:"
 	@echo "  make build          — index + validate (run before any patch commit)"
@@ -211,6 +225,7 @@ help:
 	@echo "  make check-drafts   — list unreviewed patch + announcement drafts in patches/drafts/"
 	@echo "  make check-ci       — verify GH Actions cron is firing (requires gh CLI)"
 	@echo "  make check-sdk      — dry-run npm pack for @spiritvale/client (pre-release gate)"
+	@echo "  make state          — generate state.json worldstate aggregation endpoint (/v1/state.json)"
 	@echo "  make stats          — generate stats.json (cadence, change totals, top tags)"
 	@echo "  make health         — generate api/health.json (structured freshness endpoint)"
 	@echo "  make diff-endpoints — generate diff/v{from}...v{to}.json static endpoints"

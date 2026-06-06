@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+"""Build state.json — worldstate aggregation endpoint.
+
+Single-response summary: latest patch + index summary + health + draft status +
+deadline alerts + stats totals. Collapses 3 client round-trips to 1.
+
+Pattern: warframestat.us /pc worldstate — single fetch gives clients everything
+they need to decide whether to poll further.
+
+Accessible at:
+  /state.json          (root)
+  /v1/state.json       (versioned alias via _redirects /v1/* rewrite)
+
+Run: python3 scripts/build-state.py  OR  make state
+"""
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).parent.parent
+
+
+def _load(path: Path) -> dict | list | None:
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+
+def main():
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    patches_index = _load(ROOT / "patches" / "index.json") or {}
+    latest_version = patches_index.get("latest_version")
+
+    latest_entry = next(
+        (v for v in patches_index.get("versions", []) if v.get("current")),
+        None,
+    )
+
+    health = _load(ROOT / "api" / "health.json") or {}
+    stats = _load(ROOT / "stats.json") or {}
+    draft_seen = _load(ROOT / "state" / "draft-seen-counts.json") or {}
+    deadline_status = _load(ROOT / "state" / "deadline-status.json") or {}
+
+    pending_drafts = [
+        {"filename": k, **v} for k, v in draft_seen.items()
+    ]
+
+    state = {
+        "generated_at": now,
+        "latest_version": latest_version,
+        "last_polled_at": patches_index.get("last_polled_at"),
+        "poll_tz": patches_index.get("poll_tz", "UTC"),
+        "latest": {
+            "version": latest_entry.get("version"),
+            "title": latest_entry.get("title"),
+            "date": latest_entry.get("date"),
+            "change_counts": latest_entry.get("change_counts"),
+            "archive_url": latest_entry.get("archive_url"),
+            "steam_news_id": latest_entry.get("steam_news_id"),
+        } if latest_entry else None,
+        "index_summary": {
+            "total_versions": len(patches_index.get("versions", [])),
+            "items_found": patches_index.get("items_found"),
+        },
+        "health": {
+            "severity": health.get("severity"),
+            "stale": health.get("stale"),
+            "hours_since_poll": health.get("hours_since_poll"),
+            "message": health.get("message"),
+            "steam_baseline_match": health.get("steam_baseline_match"),
+        },
+        "stats_summary": {
+            "total_patches": stats.get("total_patches"),
+            "total_entries": stats.get("total_entries"),
+            "change_totals": stats.get("change_totals"),
+            "avg_days_between_patches": stats.get("avg_days_between_patches"),
+        },
+        "pending_drafts": pending_drafts,
+        "pending_drafts_count": len(pending_drafts),
+        "deadline_alerts": deadline_status.get("deadlines", []),
+        "worst_deadline_severity": deadline_status.get("worst_severity"),
+        "_links": {
+            "latest": "/patches/latest.json",
+            "index": "/patches/index.json",
+            "health": "/api/health.json",
+            "stats": "/stats.json",
+            "search": "/search-index.json",
+            "diff_index": "/diff/index.json",
+            "openapi": "/v1/openapi.json",
+        },
+    }
+
+    out_path = ROOT / "state.json"
+    with open(out_path, "w") as f:
+        json.dump(state, f, indent=2)
+        f.write("\n")
+
+    deadline_count = len(state["deadline_alerts"])
+    worst = state["worst_deadline_severity"] or "none"
+    print(
+        f"state.json written — latest={latest_version}, "
+        f"severity={health.get('severity')}, "
+        f"pending_drafts={len(pending_drafts)}, "
+        f"deadline_alerts={deadline_count} (worst={worst})"
+    )
+
+
+if __name__ == "__main__":
+    main()

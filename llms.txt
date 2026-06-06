@@ -69,9 +69,14 @@
   Redoc viewer rendering `/openapi.json` (OpenAPI 3.1). Human-browsable interactive docs for all 9 endpoints.
   Machine consumers: fetch `/openapi.json` or `/v1/openapi.json` directly.
 
-- **shields.io badge** — https://spiritvale.tama.sh/badge/latest.json
+- **shields.io version badge** — https://spiritvale.tama.sh/badge/latest.json
   Shields.io Endpoint-URL badge. Embed live patch version in any README or Discord embed:
   `https://img.shields.io/endpoint?url=https://spiritvale.tama.sh/badge/latest.json`
+
+- **shields.io freshness badge** — https://spiritvale.tama.sh/badge/freshness.json
+  Staleness-aware badge showing days since the latest patch release (wago.tools "current build" pattern).
+  Color: brightgreen (≤7d) → yellow (≤14d) → orange (≤30d) → red (>30d).
+  `https://img.shields.io/endpoint?url=https://spiritvale.tama.sh/badge/freshness.json`
 
 - **Patch statistics (JSON)** — https://spiritvale.tama.sh/stats.json
   Aggregate stats: total_patches, total_entries, change_totals (added/changed/fixed/removed), avg_days_between_patches,

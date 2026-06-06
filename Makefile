@@ -1,7 +1,7 @@
-.PHONY: build index tags validate mirror stats health badge diff-endpoints jsonld check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk check-drafts help
+.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines help
 
 # Regenerate all derived artifacts (run before committing a new patch).
-build: index tags validate mirror stats health badge diff-endpoints jsonld
+build: index tags entities validate mirror stats health badge diff-endpoints jsonld
 
 # Rebuild search-index.json from patches/v*.json.
 # MUST run whenever a patch file is added or modified.
@@ -12,6 +12,12 @@ index:
 # Run after `make index` to reflect latest tag data.
 tags:
 	python3 scripts/build-tag-pages.py
+
+# Generate /entity/<slug>/ timeline pages from search-index.json.
+# Extracts entity mentions by tag AND text match (poedb.tw pattern — cross-version balance history).
+# Run after `make index` to reflect latest data.
+entities:
+	python3 scripts/build-entity-pages.py
 
 # Validate all patch files against schema/patch.json.
 validate:
@@ -179,6 +185,13 @@ check-sdk:
 	cd clients && npm pack --dry-run
 	@echo "SDK package check passed ✓"
 
+# Check state/persistent-blockers.json for time-sensitive deadlines.
+# Distinct from stale-draft alerts (seen_count): this ladder fires on calendar dates.
+# Exits non-zero when any deadline is critical (≤2d), urgent (≤5d), or expired.
+# Writes state/deadline-status.json with per-blocker severity breakdown.
+check-deadlines:
+	python3 scripts/check-deadlines.py
+
 help:
 	@echo "Targets:"
 	@echo "  make build          — index + validate (run before any patch commit)"
@@ -186,6 +199,7 @@ help:
 	@echo "  make validate       — validate all patches against schema"
 	@echo "  make og             — generate OG preview images (requires pillow)"
 	@echo "  make tags           — generate /tag/<slug>/ static pages"
+	@echo "  make entities       — generate /entity/<slug>/ timeline pages (text-extracted, poedb pattern)"
 	@echo "  make mirror         — generate archive/YYYY-MM-DD-vX.Y.Z.md for each patch"
 	@echo "  make check          — validate sitemap.xml + JSON artifacts + baseline drift"
 	@echo "  make check-baseline — assert baseline version == index latest_version (drift guard)"
@@ -201,4 +215,5 @@ help:
 	@echo "  make health         — generate api/health.json (structured freshness endpoint)"
 	@echo "  make diff-endpoints — generate diff/v{from}...v{to}.json static endpoints"
 	@echo "  make jsonld         — inject Schema.org JSON-LD into index.html + patch/index.html (SEO)"
-	@echo "  make badge          — generate badge/latest.json (shields.io endpoint badge)"
+	@echo "  make badge          — generate badge/latest.json + badge/freshness.json (shields.io endpoint badges)"
+	@echo "  make check-deadlines — check state/persistent-blockers.json for calendar deadlines (distinct from stale-draft alerts)"

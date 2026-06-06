@@ -1,0 +1,10 @@
+{
+  "pr1": {
+    "description": "PR #1 spiritvale-site — merge/close decision for news page",
+    "deadline": "2026-06-08",
+    "first_seen_at": "2026-06-05T20:31:49Z",
+    "alert_count": 1,
+    "last_alerted_at": "2026-06-06T11:00:00Z",
+    "last_severity": "critical"
+  }
+}

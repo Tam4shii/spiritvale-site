@@ -92,3 +92,22 @@ jobs:
                 \"footer\": { \"text\": \"spiritvale-site · pull-steam-news.yml\" }
               }]
             }"
+
+      - name: Discord — stale draft re-ping
+        if: steps.draft.outputs.stale_draft == 'true'
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_PATCH_WEBHOOK }}
+          SLUG: ${{ steps.draft.outputs.stale_draft_slug }}
+          CYCLES: ${{ steps.draft.outputs.stale_draft_cycles }}
+          FIRST_SEEN: ${{ steps.draft.outputs.stale_draft_first_seen }}
+        run: |
+          curl -s -X POST "$WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"embeds\": [{
+                \"title\": \"⏰ SpiritVale draft stale — action needed\",
+                \"color\": 15158332,
+                \"description\": \"Draft \`${SLUG}\` has been waiting **${CYCLES} poll cycles** without review (first seen: ${FIRST_SEEN}).\n\nBoss action: merge, close, or archive this draft before the next patch lands.\",
+                \"footer\": { \"text\": \"spiritvale-site · stale-draft escalation (threshold: 3 cycles)\" }
+              }]
+            }"

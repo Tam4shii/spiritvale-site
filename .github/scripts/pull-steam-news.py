@@ -38,6 +38,8 @@ BASELINE_PATH = Path("state/steam-news-baseline.json")
 POLL_STATE_PATH = Path("state/last-poll.json")
 # Tracks how many poll cycles each unreviewed draft has been sitting — signals staleness
 SEEN_COUNTS_PATH = Path("state/draft-seen-counts.json")
+# Re-ping Discord after this many poll cycles with an unreviewed draft sitting in drafts/.
+STALE_DRAFT_CYCLES = 3
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
@@ -355,6 +357,27 @@ def main():
 
     if seen_counts_dirty:
         save_seen_counts(seen_counts)
+
+    # Stale escalation — re-ping Discord for any draft stuck ≥ STALE_DRAFT_CYCLES poll cycles.
+    # Gives the boss an actionable nudge with a concrete timeout, rather than silent "awaiting review".
+    stale = [
+        (name, entry)
+        for name, entry in seen_counts.items()
+        if entry.get("seen_count", 0) >= STALE_DRAFT_CYCLES
+    ]
+    if stale:
+        stale_name, stale_entry = stale[0]
+        set_output("stale_draft", "true")
+        set_output("stale_draft_slug", stale_name)
+        set_output("stale_draft_cycles", str(stale_entry.get("seen_count", 0)))
+        set_output("stale_draft_first_seen", stale_entry.get("first_seen_at", ""))
+        print(
+            f"[stale-escalation] {stale_name} has been unreviewed for "
+            f"{stale_entry.get('seen_count', 0)} cycles "
+            f"(first seen: {stale_entry.get('first_seen_at', 'unknown')})"
+        )
+    else:
+        set_output("stale_draft", "false")
 
     if not new_drafts:
         # No new drafts — skip committed writes to avoid no-op commit noise.

@@ -66,6 +66,14 @@
   Content-Type: text/csv; charset=utf-8
   Cache-Control: public, max-age=300, s-maxage=300, stale-while-revalidate=600
 
+/api/health.json
+  Content-Type: application/json; charset=utf-8
+  # stale-while-revalidate=300: uptime monitors (Grafana, Discord bots) always get an
+  # instant cached response; CDN re-fetches silently in background. Matches warframestat.us
+  # CDN pattern for health/status endpoints. GH Actions rebuilds health.json after every
+  # poll run so the CDN window (5 min) is well within the 24h severity threshold.
+  Cache-Control: public, max-age=60, s-maxage=60, stale-while-revalidate=300
+
 /api/
   Content-Type: text/html; charset=utf-8
   Cache-Control: public, max-age=3600, s-maxage=3600

@@ -18,6 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 STEAM_BASELINE_PATH = ROOT / "state" / "steam-last-count.txt"
+LAST_POLL_PATH = ROOT / "state" / "last-poll.json"
 
 
 def _read_steam_baseline() -> int | None:
@@ -48,7 +49,17 @@ def main():
         _write(out_dir / "health.json", health)
         return
 
+    # Use whichever poll timestamp is fresher: stats.json (stamped on new-patch commits)
+    # or state/last-poll.json (written by monitoring-only poll runs, not committed to git).
     last_polled = stats.get("last_polled_at")
+    try:
+        lp = json.loads(LAST_POLL_PATH.read_text())
+        last_poll_file_ts = lp.get("polled_at")
+        if last_poll_file_ts and (not last_polled or last_poll_file_ts > last_polled):
+            last_polled = last_poll_file_ts
+    except (FileNotFoundError, json.JSONDecodeError, TypeError):
+        pass
+
     hours_since = None
     if last_polled:
         polled_dt = datetime.fromisoformat(last_polled.replace("Z", "+00:00"))

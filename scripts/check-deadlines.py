@@ -16,6 +16,8 @@ Writes state/deadline-status.json with per-blocker results.
 Run: python3 scripts/check-deadlines.py  OR  make check-deadlines
 """
 import json
+import os
+import subprocess
 import sys
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -54,6 +56,37 @@ def _editorial_risk(worst_severity: str) -> str:
         "warn": "low",
         "ok": "low",
     }.get(worst_severity, "unknown")
+
+
+LUNA_TG = os.environ.get("LUNA_TG", os.path.expanduser("~/.local/bin/luna-tg"))
+ALERT_SEVERITIES = {"critical", "urgent", "expired"}
+
+
+def _send_tg_alert(worst: str, results: list) -> bool:
+    """Fire luna-tg when severity is critical/urgent/expired. Returns True if sent."""
+    if not os.path.isfile(LUNA_TG) or not os.access(LUNA_TG, os.X_OK):
+        print(f"WARN: luna-tg not executable at {LUNA_TG} — Telegram alert skipped")
+        return False
+    lines = []
+    for r in results:
+        if r["severity"] in ALERT_SEVERITIES:
+            d = r["days_until"]
+            label = f"TOMORROW ({r['deadline']})" if d == 1 else (
+                f"TODAY ({r['deadline']})" if d == 0 else
+                f"EXPIRED {abs(d)}d ({r['deadline']})" if d < 0 else
+                f"{d}d left ({r['deadline']})"
+            )
+            lines.append(f"🚨 [{r['key']}] {label}\n   {r['description']}")
+    if not lines:
+        return False
+    msg = f"<b>SpiritVale Deadline Alert — {worst.upper()}</b>\n\n" + "\n\n".join(lines)
+    try:
+        subprocess.run([LUNA_TG, msg], timeout=10, check=True)
+        print(f"Telegram alert sent (severity={worst})")
+        return True
+    except Exception as e:
+        print(f"WARN: Telegram alert failed — {e}")
+        return False
 
 
 def _check_idempotency(blockers: dict, worst: str, today) -> bool:
@@ -131,10 +164,14 @@ def main():
     print(f"\n── Risk Assessment ──")
     print(f"Operational risk : LOW  (read-only — no content or schema changes)")
     print(f"Editorial risk   : {editorial_risk.upper()}")
-    if already_alerted:
-        print(f"Idempotency      : already alerted at severity={worst} today — no repeat notification needed")
+    if worst in ALERT_SEVERITIES:
+        if already_alerted:
+            print(f"Idempotency      : already alerted at severity={worst} today — Telegram skipped")
+        else:
+            print(f"Idempotency      : first alert at severity={worst} — firing Telegram notification")
+            _send_tg_alert(worst, results)
     else:
-        print(f"Idempotency      : first alert at severity={worst} — notification may fire")
+        print(f"Idempotency      : severity={worst} below alert threshold — no notification")
 
     if worst in ("critical", "urgent", "expired"):
         print(

@@ -199,6 +199,13 @@ check-sdk:
 check-deadlines:
 	python3 scripts/check-deadlines.py
 
+# Generate news/ namespace — announcement index, HTML listing, and Atom feed.
+# Pattern: warframestat.us /news/ — announcements/roadmaps distinct from versioned patches.
+# Source: patches/drafts/announcement-*.json. Run after adding new announcement drafts.
+# Outputs: news/index.json, news/index.html, news/feed.xml
+news:
+	python3 scripts/build-news-index.py
+
 # Generate state.json — worldstate aggregation endpoint.
 # Single-fetch summary: latest patch + health + pending drafts + deadline alerts.
 # Pattern: warframestat.us /pc worldstate — collapses 3 client RTTs to 1.
@@ -232,3 +239,4 @@ help:
 	@echo "  make jsonld         — inject Schema.org JSON-LD into index.html + patch/index.html (SEO)"
 	@echo "  make badge          — generate badge/latest.json + badge/freshness.json (shields.io endpoint badges)"
 	@echo "  make check-deadlines — check state/persistent-blockers.json for calendar deadlines (distinct from stale-draft alerts)"
+	@echo "  make news           — build news/ namespace (index.json + index.html + feed.xml) from announcement drafts"

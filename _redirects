@@ -10,6 +10,10 @@
 /releases.json /feed.json 302
 /releases /patch/ 302
 
+# News namespace aliases — announcements separate from patch versioning (warframestat.us pattern)
+/news/announcements.json /news/index.json 302
+/news/announcements.atom /news/feed.xml 302
+
 # Clean version permalinks — /patch/<version> → /patch/?v=<version>
 /patch/0.17.0 /patch/?v=0.17.0 301
 /patch/0.16.7 /patch/?v=0.16.7 301

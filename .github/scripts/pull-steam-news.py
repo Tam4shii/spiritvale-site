@@ -20,6 +20,7 @@ import os
 import re
 import subprocess
 import sys
+import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -51,6 +52,9 @@ PR1_URL = "https://github.com/Tam4shii/spiritvale-site/pull/1"
 URGENT_HOURS_THRESHOLD = 48  # hours remaining before deadline → escalate to [URGENT]
 URGENT_DEDUP_HOURS = 6       # hours between re-fires of the [URGENT] message (shorter than stale 12h)
 PERSISTENT_BLOCKERS_PATH = Path("state/persistent-blockers.json")
+
+WEBSUB_HUB = "https://pubsubhubbub.superfeedr.com/"
+FEED_SELF_URL = "https://spiritvale.tama.sh/feed.xml"
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
@@ -190,6 +194,18 @@ def _write_poll_state(
         print(f"WARN: could not write poll state: {e}", file=sys.stderr)
 
 
+def notify_websub(feed_url: str = FEED_SELF_URL) -> None:
+    """Notify WebSub hub so Atom subscribers get push delivery instead of polling."""
+    payload = urllib.parse.urlencode({"hub.mode": "publish", "hub.url": feed_url}).encode()
+    try:
+        req = urllib.request.Request(WEBSUB_HUB, data=payload, method="POST")
+        with urllib.request.urlopen(req, timeout=10) as r:
+            status = r.status
+        print(f"[websub] hub notified — HTTP {status} ({feed_url})")
+    except Exception as e:
+        print(f"WARN: websub notify failed: {e}", file=sys.stderr)
+
+
 def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool:
     """Send a luna-tg push notification for an unreviewed draft.
 
@@ -204,8 +220,12 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
         try:
             last_dt = datetime.fromisoformat(last_alerted.replace("Z", "+00:00"))
             now_dt = datetime.now(tz=timezone.utc)
-            if (now_dt - last_dt).total_seconds() < 43200:  # 12-hour dedup window
-                print(f"[stale-alert] suppressed — already alerted at {last_alerted[:16]}, <12h ago")
+            elapsed_h = (now_dt - last_dt).total_seconds() / 3600
+            if elapsed_h < 12:
+                print(
+                    f"[stale-alert] suppressed — last alert {last_alerted[:16]}, "
+                    f"run_at {polled_at[:16]}, elapsed {elapsed_h:.1f}h < 12h window"
+                )
                 return False
         except Exception:
             pass
@@ -465,6 +485,7 @@ def main():
         set_output("slug", first["slug"])
         safe_title = first["title"].replace("\n", " ").replace("\r", "")
         set_output("title", safe_title)
+        notify_websub()
     else:
         set_output("new_draft", "false")
 

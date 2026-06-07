@@ -43,6 +43,7 @@ SEEN_COUNTS_PATH = Path("state/draft-seen-counts.json")
 # Escalation thresholds for unreviewed drafts (poll cycles = runs of make check-steam / GH Actions daily cron).
 STALE_ALERT_CYCLES = 3   # seen_count >= this → push luna-tg notification to boss
 STALE_ARCHIVE_CYCLES = 7  # seen_count >= this → notification recommends auto-archive
+MAX_STALE_CYCLES = 14    # seen_count >= this → alerts silenced; draft treated as EXPIRED (no more pings)
 STALE_DRAFT_CYCLES = STALE_ALERT_CYCLES  # backward-compat alias (used in stale list filter below)
 
 # PR #1 deadline escalation — separate [URGENT] path, independent of routine stale-draft alert.
@@ -216,6 +217,12 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
     count = stale_entry.get("seen_count", 0)
     last_alerted = stale_entry.get("alerted_at", "")
 
+    if count >= MAX_STALE_CYCLES:
+        print(
+            f"[stale-alert] EXPIRED — {stale_name} at {count} cycles (>= MAX_STALE_CYCLES={MAX_STALE_CYCLES}), alerts silenced"
+        )
+        return False
+
     if last_alerted:
         try:
             last_dt = datetime.fromisoformat(last_alerted.replace("Z", "+00:00"))
@@ -242,6 +249,7 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
         f"Draft: {stale_name}\n"
         f"Seen: {count} poll cycles "
         f"(first: {stale_entry.get('first_seen_at', '?')[:10]})\n"
+        f"Alert fired: {polled_at}\n"
         f"PR #1 → https://github.com/Tam4shii/spiritvale-site/pull/1\n"
         f"{action}"
     )
@@ -318,6 +326,7 @@ def fire_pr1_deadline_alert(blockers: dict, polled_at: str) -> bool:
     msg = (
         f"🔴 [URGENT] SpiritVale PR #1 — DECISION NEEDED\n"
         f"Playtest ends {PR1_DEADLINE_STR} — {time_str}\n"
+        f"Alert fired: {polled_at}\n"
         f"  merge → publishes /news page\n"
         f"  close → archives (no news page)\n"
         f"PR: {PR1_URL}"

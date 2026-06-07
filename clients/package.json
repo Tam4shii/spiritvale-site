@@ -22,7 +22,11 @@
     "patch-notes",
     "api-client"
   ],
+  "author": "Tam4shii",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Tam4shii/spiritvale-site.git",

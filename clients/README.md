@@ -1,5 +1,7 @@
 # spiritvale.js — JS/TS Client SDK
 
+[![npm](https://img.shields.io/npm/v/@spiritvale/client)](https://www.npmjs.com/package/@spiritvale/client)
+
 Zero-dependency ES module for the SpiritVale Community Hub API.
 Works in browser (native ESM) and Node ≥ 18 (native fetch).
 Full TypeScript types are co-located in `spiritvale.d.ts`.

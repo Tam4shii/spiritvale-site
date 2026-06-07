@@ -121,7 +121,12 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ✅ Live Steam poll: items_found=10; no new patch; [URGENT] alert #4 sent (15h to deadline)
 - ✅ **entity pages shipped** — 7 entity timelines + index; sitemap/llms.txt/homepage wired
 - 🚨 PR #1 still OPEN — boss action required
-**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — PR **#1**: https://github.com/Tam4shii/spiritvale-site/pull/1. Choose: (a) merge → publishes as news page, (b) close PR → archives, (c) leave draft → revisit post 2026-06-08.
+**run#12 status** (2026-06-07 idle-loop Forge):
+- ✅ `make check` exit 0 — all artifacts valid; baseline OK at 0.18.0; health severity: ok
+- ✅ Live Steam poll: items_found=10; no new patch; stale_draft seen_count=6; alert suppressed (<12h ago)
+- ✅ **health.json false-warn fix** — `build-health.py` now reads `state/last-poll.json` as freshness fallback; prevents false warn/critical during monitoring gaps. Commit 7de892a pushed.
+- 🚨 PR #1 still OPEN — boss action required (deadline passed 2026-06-08)
+**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — PR **#1**: https://github.com/Tam4shii/spiritvale-site/pull/1. Playtest ended 2026-06-08. Choose: (a) merge → publishes as news page, (b) close PR → archives.
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

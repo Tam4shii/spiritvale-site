@@ -43,6 +43,15 @@ def get_search_index() -> dict:
     return _get("/search-index.json")
 
 
+def get_health() -> dict:
+    """Structured poll-freshness data (/api/health.json).
+
+    Keys: severity ('ok'/'warn'/'critical'), stale (bool), hours_since_poll (float|None),
+          message (str), latest_version (str|None), total_patches (int|None).
+    """
+    return _get("/api/health.json")
+
+
 def get_diff(from_version: str, to_version: str) -> dict:
     """
     Cumulative diff between two versions (inclusive of to_version, exclusive of from_version).

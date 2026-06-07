@@ -126,6 +126,10 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ✅ Live Steam poll: items_found=10; no new patch; stale_draft seen_count=6; alert suppressed (<12h ago)
 - ✅ **health.json false-warn fix** — `build-health.py` now reads `state/last-poll.json` as freshness fallback; prevents false warn/critical during monitoring gaps. Commit 7de892a pushed.
 - 🚨 PR #1 still OPEN — boss action required (deadline passed 2026-06-08)
+**run#13 status** (2026-06-07 idle-loop Forge):
+- ✅ **build-health.py comment hardened** — dual-source fallback comment now explicitly says "gitignored"; FileNotFoundError path annotated as "expected on clean clone / CI". Prevents future regression from a reader simplifying the logic.
+- ✅ **`/status` slash command shipped** — `discord-example.py` + `spiritvale.py` (`get_health()`) — severity color-coded embed (green/amber/red); surfaces hours_since_poll, latest_version, total_patches directly in Discord. Warframestat.us pattern: Discord bot as primary adoption driver.
+- ℹ️ **Suppressed draft state (expected)**: `patches/drafts/announcement-spiritvale-official-date-release.json` seen_count=6 as of run#12. Alert suppression is correct — last alert was sent <12h prior. Next run will re-evaluate; if seen_count increments without a new alert, check `ALERT_COOLDOWN_HOURS` in `pull-steam-news.py`.
 **Next idle-loop action**: 🚨 BOSS ACTION NEEDED — PR **#1**: https://github.com/Tam4shii/spiritvale-site/pull/1. Playtest ended 2026-06-08. Choose: (a) merge → publishes as news page, (b) close PR → archives.
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.

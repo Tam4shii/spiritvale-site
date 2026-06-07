@@ -44,7 +44,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks
 
-from spiritvale import get_diff, get_index, get_latest, get_patch, get_search_index
+from spiritvale import get_diff, get_health, get_index, get_latest, get_patch, get_search_index
 
 ANNOUNCE_CHANNEL_ID = int(os.getenv("SPIRITVALE_CHANNEL_ID", "0"))
 
@@ -182,6 +182,29 @@ async def search_slash(interaction: discord.Interaction, query: str):
         if len(hits) > 8:
             lines.append(f"\n…and {len(hits) - 8} more · [full search](https://spiritvale.tama.sh/search/?q={query})")
         await interaction.followup.send("\n".join(lines)[:2000])
+    except Exception as exc:
+        await interaction.followup.send(f"❌ {exc}", ephemeral=True)
+
+
+@bot.tree.command(name="status", description="Show SpiritVale patch monitor health (data freshness)")
+async def status_slash(interaction: discord.Interaction):
+    await interaction.response.defer()
+    try:
+        h = get_health()
+        severity = h.get("severity", "unknown")
+        color = {"ok": 0x57F287, "warn": 0xFAA61A, "critical": 0xED4245}.get(severity, 0x99AAB5)
+        hours = h.get("hours_since_poll")
+        hours_str = f"{hours}h ago" if hours is not None else "unknown"
+        embed = discord.Embed(
+            title=f"SpiritVale Monitor — {severity.upper()}",
+            description=h.get("message", ""),
+            color=color,
+        )
+        embed.add_field(name="Latest", value=h.get("latest_version") or "—", inline=True)
+        embed.add_field(name="Patches", value=str(h.get("total_patches") or "—"), inline=True)
+        embed.add_field(name="Last polled", value=hours_str, inline=True)
+        embed.set_footer(text="spiritvale.tama.sh/api/health.json")
+        await interaction.followup.send(embed=embed)
     except Exception as exc:
         await interaction.followup.send(f"❌ {exc}", ephemeral=True)
 

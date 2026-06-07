@@ -29,6 +29,7 @@ python clients/bots/discord-example.py
 | `/patch version:0.17.0` | Specific version |
 | `/diff from:0.13.0 to:0.18.0` | Cumulative changes between two versions |
 | `/search query:shinobi` | Search all patch entries by keyword |
+| `/status` | Poll-monitor health card — severity, hours since last Steam check, patch count |
 
 ### Classic prefix commands (still supported)
 

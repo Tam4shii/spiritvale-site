@@ -49,8 +49,10 @@ def main():
         _write(out_dir / "health.json", health)
         return
 
-    # Use whichever poll timestamp is fresher: stats.json (stamped on new-patch commits)
-    # or state/last-poll.json (written by monitoring-only poll runs, not committed to git).
+    # state/last-poll.json is gitignored — monitoring-only runs write it locally but never
+    # commit it. Use whichever timestamp is fresher so health.json stays accurate on both
+    # fresh-clone/CI environments (falls back to stats.json) and live monitoring hosts
+    # (picks up last-poll.json). FileNotFoundError is expected on clean checkouts.
     last_polled = stats.get("last_polled_at")
     try:
         lp = json.loads(LAST_POLL_PATH.read_text())
@@ -58,7 +60,7 @@ def main():
         if last_poll_file_ts and (not last_polled or last_poll_file_ts > last_polled):
             last_polled = last_poll_file_ts
     except (FileNotFoundError, json.JSONDecodeError, TypeError):
-        pass
+        pass  # clean clone / CI — fall through to stats.json-only path
 
     hours_since = None
     if last_polled:

@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-06-02T18:10:03Z",
+  "entities": {
+    "boss": {
+      "name": "Bosses",
+      "count": 11,
+      "text_only_count": 4,
+      "url": "/entity/boss/"
+    },
+    "shinobi": {
+      "name": "Shinobi",
+      "count": 6,
+      "text_only_count": 0,
+      "url": "/entity/shinobi/"
+    },
+    "berserker": {
+      "name": "Berserker",
+      "count": 5,
+      "text_only_count": 0,
+      "url": "/entity/berserker/"
+    },
+    "necromancer": {
+      "name": "Necromancer",
+      "count": 5,
+      "text_only_count": 0,
+      "url": "/entity/necromancer/"
+    },
+    "echoing-spire": {
+      "name": "Echoing Spire",
+      "count": 4,
+      "text_only_count": 3,
+      "url": "/entity/echoing-spire/"
+    },
+    "forgotten-depths": {
+      "name": "Forgotten Depths",
+      "count": 3,
+      "text_only_count": 0,
+      "url": "/entity/forgotten-depths/"
+    },
+    "arena": {
+      "name": "Arena",
+      "count": 2,
+      "text_only_count": 0,
+      "url": "/entity/arena/"
+    }
+  }
+}

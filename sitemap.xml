@@ -189,6 +189,15 @@
   <url><loc>https://spiritvale.tama.sh/tag/arena/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
   <url><loc>https://spiritvale.tama.sh/tag/forgotten-depths/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
   <url><loc>https://spiritvale.tama.sh/tag/echoing-spire/feed.xml</loc><lastmod>2026-05-31</lastmod><changefreq>weekly</changefreq><priority>0.4</priority></url>
+  <!-- Entity timeline pages — per-entity cross-version balance history (poedb.tw pattern) -->
+  <url><loc>https://spiritvale.tama.sh/entity/</loc><lastmod>2026-06-07</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://spiritvale.tama.sh/entity/boss/</loc><lastmod>2026-06-07</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/entity/shinobi/</loc><lastmod>2026-06-07</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/entity/berserker/</loc><lastmod>2026-06-07</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/entity/necromancer/</loc><lastmod>2026-06-07</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/entity/echoing-spire/</loc><lastmod>2026-06-07</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/entity/forgotten-depths/</loc><lastmod>2026-06-07</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://spiritvale.tama.sh/entity/arena/</loc><lastmod>2026-06-07</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
   <url>
     <!-- shields.io endpoint badge — live patch version; embed in README / Discord -->
     <loc>https://spiritvale.tama.sh/badge/latest.json</loc>

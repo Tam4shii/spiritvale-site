@@ -44,6 +44,14 @@ STALE_ALERT_CYCLES = 3   # seen_count >= this → push luna-tg notification to b
 STALE_ARCHIVE_CYCLES = 7  # seen_count >= this → notification recommends auto-archive
 STALE_DRAFT_CYCLES = STALE_ALERT_CYCLES  # backward-compat alias (used in stale list filter below)
 
+# PR #1 deadline escalation — separate [URGENT] path, independent of routine stale-draft alert.
+# Fire when hours-to-deadline <= threshold so boss sees a distinct call-to-action, not just a stale-draft ping.
+PR1_DEADLINE_STR = "2026-06-08"  # playtest ends — merge/close decision needed before this date
+PR1_URL = "https://github.com/Tam4shii/spiritvale-site/pull/1"
+URGENT_HOURS_THRESHOLD = 48  # hours remaining before deadline → escalate to [URGENT]
+URGENT_DEDUP_HOURS = 6       # hours between re-fires of the [URGENT] message (shorter than stale 12h)
+PERSISTENT_BLOCKERS_PATH = Path("state/persistent-blockers.json")
+
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
 HTML_TAGS = re.compile(r"<[^>]+>")
@@ -233,6 +241,86 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
         return False
 
 
+def load_persistent_blockers() -> dict:
+    if PERSISTENT_BLOCKERS_PATH.exists():
+        return json.loads(PERSISTENT_BLOCKERS_PATH.read_text())
+    return {}
+
+
+def save_persistent_blockers(blockers: dict) -> None:
+    PERSISTENT_BLOCKERS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    PERSISTENT_BLOCKERS_PATH.write_text(json.dumps(blockers, indent=2) + "\n")
+    print(f"WROTE: {PERSISTENT_BLOCKERS_PATH} ({len(blockers)} blocker(s))")
+
+
+def fire_pr1_deadline_alert(blockers: dict, polled_at: str) -> bool:
+    """Fire a distinct [URGENT] Telegram alert when PR #1 deadline is ≤48h away.
+
+    This is intentionally separate from fire_stale_alert so the boss sees a
+    dedicated call-to-action with a specific deadline, not just a generic stale ping.
+    Returns True if notification was sent (caller must then save_persistent_blockers).
+    """
+    try:
+        deadline_dt = datetime.fromisoformat(PR1_DEADLINE_STR).replace(tzinfo=timezone.utc)
+    except Exception as e:
+        print(f"WARN: could not parse PR1_DEADLINE_STR={PR1_DEADLINE_STR!r}: {e}", file=sys.stderr)
+        return False
+
+    now_dt = datetime.now(tz=timezone.utc)
+    hours_remaining = (deadline_dt - now_dt).total_seconds() / 3600
+
+    if hours_remaining > URGENT_HOURS_THRESHOLD:
+        print(
+            f"[pr1-deadline] {hours_remaining:.1f}h remaining — above {URGENT_HOURS_THRESHOLD}h threshold, no urgent alert"
+        )
+        return False
+
+    # Dedup: skip if we already fired an [URGENT] alert within URGENT_DEDUP_HOURS
+    pr1 = blockers.get("pr1", {})
+    last_urgent = pr1.get("last_urgent_at", "")
+    if last_urgent:
+        try:
+            last_dt = datetime.fromisoformat(last_urgent.replace("Z", "+00:00"))
+            if (now_dt - last_dt).total_seconds() < URGENT_DEDUP_HOURS * 3600:
+                print(
+                    f"[pr1-deadline] suppressed — already sent [URGENT] at {last_urgent[:16]}, "
+                    f"<{URGENT_DEDUP_HOURS}h ago"
+                )
+                return False
+        except Exception:
+            pass
+
+    time_str = (
+        f"{hours_remaining:.0f}h remaining"
+        if hours_remaining >= 0
+        else f"OVERDUE by {abs(hours_remaining):.0f}h"
+    )
+    msg = (
+        f"🔴 [URGENT] SpiritVale PR #1 — DECISION NEEDED\n"
+        f"Playtest ends {PR1_DEADLINE_STR} — {time_str}\n"
+        f"  merge → publishes /news page\n"
+        f"  close → archives (no news page)\n"
+        f"PR: {PR1_URL}"
+    )
+
+    luna_tg = Path.home() / ".local/bin/luna-tg"
+    if not luna_tg.is_file():
+        print(f"WARN: luna-tg not found at {luna_tg} — PR1 urgent alert skipped", file=sys.stderr)
+        return False
+
+    try:
+        subprocess.run([str(luna_tg), msg], check=True, timeout=10)
+        if "pr1" not in blockers:
+            blockers["pr1"] = {"first_seen_at": polled_at, "alert_count": 0}
+        blockers["pr1"]["last_urgent_at"] = polled_at
+        blockers["pr1"]["alert_count"] = blockers["pr1"].get("alert_count", 0) + 1
+        print(f"[pr1-deadline] [URGENT] alert sent ({time_str}, alert #{blockers['pr1']['alert_count']})")
+        return True
+    except Exception as e:
+        print(f"WARN: PR1 urgent alert failed: {e}", file=sys.stderr)
+        return False
+
+
 def check_baseline_delta(current_count: int, index: dict) -> None:
     """Warn if newsitems count changed without a version bump — early-signal check."""
     if current_count != STEAM_NEWS_COUNT:
@@ -411,6 +499,12 @@ def main():
 
     if seen_counts_dirty:
         save_seen_counts(seen_counts)
+
+    # PR #1 deadline escalation — fires [URGENT] Telegram when ≤48h to playtest end.
+    # Separate from the routine stale-draft alert so boss sees a distinct call-to-action.
+    blockers = load_persistent_blockers()
+    if fire_pr1_deadline_alert(blockers, polled_at):
+        save_persistent_blockers(blockers)
 
     # Stale escalation — re-ping Discord for any draft stuck ≥ STALE_DRAFT_CYCLES poll cycles.
     # Gives the boss an actionable nudge with a concrete timeout, rather than silent "awaiting review".

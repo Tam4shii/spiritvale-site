@@ -120,6 +120,17 @@
 
 - **Landing page** — https://spiritvale.tama.sh/
 
+- **Entity timeline index** — https://spiritvale.tama.sh/entity/
+  Per-entity cross-version balance history (poedb.tw pattern). Lists all tracked entities with change counts.
+  Available entities: boss, shinobi, berserker, necromancer, echoing-spire, forgotten-depths, arena.
+
+- **Per-entity timeline page** — https://spiritvale.tama.sh/entity/{slug}/
+  E.g. https://spiritvale.tama.sh/entity/boss/ — all patch changes mentioning Bosses across every version.
+  Entries grouped by patch version, sorted newest-first. Includes text-matched entries (not just tagged).
+
+- **Entity manifest (JSON)** — https://spiritvale.tama.sh/entity/index.json
+  Machine-readable entity manifest: {entities: {slug: {name, count, text_only_count, url}}}.
+
 ## Archived versions (newest first)
 
 v0.18.0, v0.17.0, v0.16.7, v0.16.3, v0.16.0, v0.15.0, v0.14.0, v0.13.5, v0.13.4, v0.13.2, v0.13.0

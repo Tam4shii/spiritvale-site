@@ -116,7 +116,12 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 **Last Steam check**: 2026-06-07T08:33:03Z (idle-loop Forge 2026-06-07 run#11) — ✅ live Steam API poll (HTTP 200); items_found=10; new_draft=false. **🚨 ANNOUNCEMENT DRAFT STILL PENDING**: `patches/drafts/announcement-spiritvale-official-date-release.json` — seen_count=5 (first_seen: 2026-06-05T20:31Z); [URGENT] alert #4 sent via Telegram (15h to deadline). Awaiting boss decision on routing (PR #1).
 **🚨🚨 DEADLINE TODAY**: Playtest ends **2026-06-08 (TOMORROW)**. Demo launches **2026-06-12**. Early Access **2026-07-15** ~$15 USD. `make check-deadlines` → CRITICAL (days_until=1).
 **Poll terminology note** (added run#6): "dry-run" is ambiguous — future logs must say "live Steam API poll" (real HTTP call) or "skipped/mocked" explicitly. Never use "dry-run" for monitoring-mode polls.
-**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — Draft PR **#1**: https://github.com/Tam4shii/spiritvale-site/pull/1. Choose: (a) merge → publishes as news page, (b) close PR → archives, (c) leave draft → revisit post 2026-06-08. After PR resolved, playtest enters wipe/prep phase (no patches until EA launch ~July 15).
+**run#11 status** (2026-06-07 idle-loop Forge):
+- ✅ `make check` exit 0 — all 8 artifacts valid; baseline OK at 0.18.0
+- ✅ Live Steam poll: items_found=10; no new patch; [URGENT] alert #4 sent (15h to deadline)
+- ✅ **entity pages shipped** — 7 entity timelines + index; sitemap/llms.txt/homepage wired
+- 🚨 PR #1 still OPEN — boss action required
+**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — PR **#1**: https://github.com/Tam4shii/spiritvale-site/pull/1. Choose: (a) merge → publishes as news page, (b) close PR → archives, (c) leave draft → revisit post 2026-06-08.
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

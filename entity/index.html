@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale — Entity History</title>
+<meta name="description" content="Browse SpiritVale patch history by class, dungeon, or game system.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://spiritvale.tama.sh/entity/">
+<style>
+  :root{--bg:#0a0612;--fg:#e8e3f0;--muted:#8b82a0;--accent:#a78bfa;--accent-2:#7c3aed;--card:rgba(167,139,250,.08);--border:rgba(167,139,250,.2)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;min-height:100vh;padding:2rem;
+    background-image:radial-gradient(at 20% 30%,rgba(124,58,237,.15),transparent 50%),radial-gradient(at 80% 80%,rgba(167,139,250,.08),transparent 50%)}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  header{max-width:860px;margin:0 auto 2rem}
+  .breadcrumb{font-size:.8rem;color:var(--muted);margin-bottom:.5rem}
+  h1{font-size:1.8rem;font-weight:700;color:var(--accent);margin-bottom:.25rem}
+  .subtitle{color:var(--muted);font-size:.95rem}
+  .desc{margin-top:.6rem;color:var(--fg);font-size:.95rem;opacity:.85}
+  .section{max-width:860px;margin:1.5rem auto 0}
+  .section-head{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.6rem;padding-bottom:.35rem;border-bottom:1px solid var(--border)}
+  .section-version{font-size:1rem;font-weight:700;color:var(--accent)}
+  .section-meta{font-size:.8rem;color:var(--muted)}
+  .entries{display:flex;flex-direction:column;gap:.5rem;margin-left:1rem}
+  .entry{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem}
+  .entry-meta{font-size:.75rem;color:var(--muted);margin-bottom:.25rem}
+  .entry-text{font-size:.93rem}
+  .text-match{background:rgba(167,139,250,.18);border-radius:2px;padding:0 .15rem}
+  .entity-grid{max-width:860px;margin:2rem auto 0;display:flex;flex-wrap:wrap;gap:.5rem}
+  footer{max-width:860px;margin:3rem auto 0;font-size:.8rem;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="breadcrumb"><a href="/">SpiritVale</a> › Entities</div>
+  <h1>Entity History</h1>
+  <p class="subtitle">Browse patch changes by class, dungeon, or system — cross-version balance delta</p>
+</header>
+<div class="entity-grid"><a href="/entity/boss/" style="display:inline-flex;flex-direction:column;gap:.2rem;padding:.6rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--fg)"><span style="font-weight:600;color:var(--accent)">Bosses</span><span style="font-size:.8rem;color:var(--muted)">11 changes</span><span style="font-size:.75rem;color:var(--muted);max-width:180px;white-space:normal">World bosses with KS protection, regen mechanics, and exclus…</span></a><a href="/entity/shinobi/" style="display:inline-flex;flex-direction:column;gap:.2rem;padding:.6rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--fg)"><span style="font-weight:600;color:var(--accent)">Shinobi</span><span style="font-size:.8rem;color:var(--muted)">6 changes</span><span style="font-size:.75rem;color:var(--muted);max-width:180px;white-space:normal">Agility assassin specialising in clones, kunais, and burst c…</span></a><a href="/entity/berserker/" style="display:inline-flex;flex-direction:column;gap:.2rem;padding:.6rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--fg)"><span style="font-weight:600;color:var(--accent)">Berserker</span><span style="font-size:.8rem;color:var(--muted)">5 changes</span><span style="font-size:.75rem;color:var(--muted);max-width:180px;white-space:normal">Rage-fuelled brawler with high burst and self-sustain via Si…</span></a><a href="/entity/necromancer/" style="display:inline-flex;flex-direction:column;gap:.2rem;padding:.6rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--fg)"><span style="font-weight:600;color:var(--accent)">Necromancer</span><span style="font-size:.8rem;color:var(--muted)">5 changes</span><span style="font-size:.75rem;color:var(--muted);max-width:180px;white-space:normal">Summoner that reanimates enemies and commands undead minions…</span></a><a href="/entity/echoing-spire/" style="display:inline-flex;flex-direction:column;gap:.2rem;padding:.6rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--fg)"><span style="font-weight:600;color:var(--accent)">Echoing Spire</span><span style="font-size:.8rem;color:var(--muted)">4 changes</span><span style="font-size:.75rem;color:var(--muted);max-width:180px;white-space:normal">100-floor endgame dungeon requiring a Spire Key. Rewards Umb…</span></a><a href="/entity/forgotten-depths/" style="display:inline-flex;flex-direction:column;gap:.2rem;padding:.6rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--fg)"><span style="font-weight:600;color:var(--accent)">Forgotten Depths</span><span style="font-size:.8rem;color:var(--muted)">3 changes</span><span style="font-size:.75rem;color:var(--muted);max-width:180px;white-space:normal">Mid-game underground dungeon zone with Crafter NPCs.</span></a><a href="/entity/arena/" style="display:inline-flex;flex-direction:column;gap:.2rem;padding:.6rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--fg)"><span style="font-weight:600;color:var(--accent)">Arena</span><span style="font-size:.8rem;color:var(--muted)">2 changes</span><span style="font-size:.75rem;color:var(--muted);max-width:180px;white-space:normal">Instanced 2v2 and 3v3 PvP modes with MMR and leaderboard rew…</span></a></div>
+<footer>
+  <a href="/">Home</a> &middot; <a href="/search/">Search</a> &middot; <a href="/tag/">Tags</a>
+</footer>
+</body>
+</html>

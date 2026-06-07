@@ -130,6 +130,16 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ✅ **build-health.py comment hardened** — dual-source fallback comment now explicitly says "gitignored"; FileNotFoundError path annotated as "expected on clean clone / CI". Prevents future regression from a reader simplifying the logic.
 - ✅ **`/status` slash command shipped** — `discord-example.py` + `spiritvale.py` (`get_health()`) — severity color-coded embed (green/amber/red); surfaces hours_since_poll, latest_version, total_patches directly in Discord. Warframestat.us pattern: Discord bot as primary adoption driver.
 - ℹ️ **Suppressed draft state (expected)**: `patches/drafts/announcement-spiritvale-official-date-release.json` seen_count=6 as of run#12. Alert suppression is correct — last alert was sent <12h prior. Next run will re-evaluate; if seen_count increments without a new alert, check `ALERT_COOLDOWN_HOURS` in `pull-steam-news.py`.
+**run#14 status** (2026-06-07 idle-loop Forge):
+- ✅ `make check` exit 0 — all artifacts valid; baseline OK at 0.18.0; **health severity: ok** (dual-source fallback working)
+- ✅ **Merge conflict resolved** — local branch had diverged from remote (1 local commit vs 7 remote commits since `0f2da51`); rebased `5d4bca1` (WebSub stale-alert log) on top of remote; resolved conflict in `.github/scripts/pull-steam-news.py` by preserving both PR1 escalation constants and WebSub constants; pushed `a82f66c` to origin/main
+- ℹ️ **Root cause of health `warn`**: `patches/index.json.last_polled_at` is stale at 2026-06-05; `build-health.py` falls back to `state/last-poll.json` (gitignored, written by local poll runs) → health now reads `ok` locally. GH Actions runner will also write `state/last-poll.json` before building health (workflow unchanged — this was already working in run#12).
+- 🚨 PR #1 still OPEN — boss action required (deadline 2026-06-08 passed)
+**run#15 status** (2026-06-08 idle-loop Forge):
+- ✅ `make check` exit 0 — all artifacts valid; baseline OK at 0.18.0; health severity: ok
+- ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest
+- ✅ State committed — `state/draft-seen-counts.json` (seen_count=7, last_seen=2026-06-07T18:06Z)
+- 🚨 PR #1 still OPEN — URGENT alert #5 sent (6h remaining at poll time); playtest ended 2026-06-08; announcement covers June 12 demo + July 15 Early Access ~$15
 **Next idle-loop action**: 🚨 BOSS ACTION NEEDED — PR **#1**: https://github.com/Tam4shii/spiritvale-site/pull/1. Playtest ended 2026-06-08. Choose: (a) merge → publishes as news page, (b) close PR → archives.
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.

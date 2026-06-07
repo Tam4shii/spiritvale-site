@@ -13,6 +13,6 @@
       "deadline_status_json": "updated 2026-06-07 via make check-deadlines (days_until=1)"
     },
     "poll_terminology_note": "run#5 described as 'dry-run' in Step 1 output \u2014 this was ambiguous. All future idle-loop entries must use 'live Steam API poll' (real HTTP GET to api.steampowered.com) vs 'skipped/mocked' explicitly. run#6 onward uses this convention.",
-    "last_urgent_at": "2026-06-07T18:06:58Z"
+    "last_urgent_at": "2026-06-07T15:47:11Z"
   }
 }

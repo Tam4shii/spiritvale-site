@@ -188,6 +188,10 @@
         <span class="label">📖 Full Patch Notes</span>
         <span class="path">/patch/</span>
       </a>
+      <a class="link" href="/news/">
+        <span class="label">📰 News &amp; Announcements</span>
+        <span class="path">/news/</span>
+      </a>
       <a class="link" href="/patches/index.json">
         <span class="label">🗄️ Version Archive (JSON)</span>
         <span class="path">/patches/index.json</span>
@@ -232,6 +236,7 @@
   <footer>
     Made with 💜 by fans · Not affiliated with the developers<br>
     <a href="https://store.steampowered.com/app/3918510/">Steam Page</a>
+    <span id="data-freshness" style="color:var(--muted);font-size:0.8rem;display:block;margin-top:0.3rem"></span>
   </footer>
 </main>
 <script>
@@ -291,6 +296,9 @@
         showDeltaBanner(patch.version, lastSeen);
       }
       localStorage.setItem(LS_KEY, patch.version);
+
+      const freshEl = document.getElementById('data-freshness');
+      if (freshEl && patch.date) freshEl.textContent = `Latest: v${patch.version} · ${patch.date}`;
 
       const groups = GROUPS
         .filter(g => Array.isArray(patch[g.key]) && patch[g.key].length > 0)

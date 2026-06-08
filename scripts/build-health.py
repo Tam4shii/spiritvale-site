@@ -21,6 +21,18 @@ STEAM_BASELINE_PATH = ROOT / "state" / "steam-last-count.txt"
 LAST_POLL_PATH = ROOT / "state" / "last-poll.json"
 
 
+def _normalize_ts(ts: str | None) -> str | None:
+    """Normalise any UTC ISO timestamp to the canonical Z-suffix form.
+
+    Sources (stats.json, last-poll.json, patch released_at) may emit either
+    '2026-06-07T18:06:58Z' or '2026-06-07T18:06:58+00:00'.  health.json must
+    always emit the Z form so the field stays byte-identical across producers.
+    """
+    if ts is None:
+        return None
+    return ts.replace("+00:00", "Z")
+
+
 def _read_steam_baseline() -> int | None:
     """Return the last-recorded Steam newsitems count, or None if not set."""
     try:
@@ -39,6 +51,7 @@ def main():
     except FileNotFoundError:
         health = {
             "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "poll_completed_at": None,
             "stale": True,
             "hours_since_poll": None,
             "severity": "critical",
@@ -53,10 +66,10 @@ def main():
     # commit it. Use whichever timestamp is fresher so health.json stays accurate on both
     # fresh-clone/CI environments (falls back to stats.json) and live monitoring hosts
     # (picks up last-poll.json). FileNotFoundError is expected on clean checkouts.
-    last_polled = stats.get("last_polled_at")
+    last_polled = _normalize_ts(stats.get("last_polled_at"))
     try:
         lp = json.loads(LAST_POLL_PATH.read_text())
-        last_poll_file_ts = lp.get("polled_at")
+        last_poll_file_ts = _normalize_ts(lp.get("polled_at"))
         if last_poll_file_ts and (not last_polled or last_poll_file_ts > last_polled):
             last_polled = last_poll_file_ts
     except (FileNotFoundError, json.JSONDecodeError, TypeError):

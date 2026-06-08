@@ -1,0 +1,70 @@
+{
+  "generated_at": "2026-06-06T15:49:02Z",
+  "latest_version": "0.18.0",
+  "last_polled_at": "2026-06-05T20:31:49Z",
+  "poll_tz": "UTC",
+  "latest": {
+    "version": "0.18.0",
+    "title": "New and Revamped Maps",
+    "date": "2026-06-02",
+    "change_counts": {
+      "added": 3,
+      "changed": 6,
+      "fixed": 5,
+      "removed": 0
+    },
+    "archive_url": "/patches/v0.18.0.json",
+    "steam_news_id": "1833968530901053"
+  },
+  "index_summary": {
+    "total_versions": 11,
+    "items_found": 10
+  },
+  "health": {
+    "severity": "ok",
+    "stale": false,
+    "hours_since_poll": 14.4,
+    "message": "polled 14.4h ago",
+    "steam_baseline_match": true
+  },
+  "stats_summary": {
+    "total_patches": 11,
+    "total_entries": 196,
+    "change_totals": {
+      "added": 45,
+      "changed": 108,
+      "fixed": 41,
+      "removed": 2
+    },
+    "avg_days_between_patches": 10.4
+  },
+  "pending_drafts": [
+    {
+      "filename": "announcement-spiritvale-official-date-release.json",
+      "seen_count": 4,
+      "first_seen_at": "2026-06-05T20:31:49Z",
+      "last_seen_at": "2026-06-06T10:55:18Z",
+      "alerted_at": "2026-06-06T10:55:18Z"
+    }
+  ],
+  "pending_drafts_count": 1,
+  "deadline_alerts": [
+    {
+      "key": "pr1",
+      "description": "PR #1 spiritvale-site \u2014 merge/close decision for news page",
+      "deadline": "2026-06-08",
+      "days_until": 2,
+      "severity": "critical"
+    }
+  ],
+  "worst_deadline_severity": "critical",
+  "_links": {
+    "latest": "/patches/latest.json",
+    "index": "/patches/index.json",
+    "health": "/api/health.json",
+    "stats": "/stats.json",
+    "search": "/search-index.json",
+    "diff_index": "/diff/index.json",
+    "openapi": "/v1/openapi.json"
+  }
+}

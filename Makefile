@@ -1,4 +1,4 @@
-.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld state csv check check-ci check-types check-stats check-clean og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines help
+.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld state snapshot-state csv check check-ci check-types check-stats check-clean check-monitor og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags entities validate mirror stats health badge diff-endpoints jsonld state csv
@@ -122,6 +122,21 @@ check-clean:
 	  && echo "Working tree is clean ✓" \
 	  || (echo "ERROR: uncommitted changes detected — commit or stash before proceeding" && exit 1)
 
+# Read-only health status — safe for idle-loop monitoring passes.
+# Reads the committed api/health.json as-is; does NOT rebuild, write, or commit anything.
+# Use this in automated monitors instead of `make health` to prevent scope creep
+# (i.e. automated runs modifying tracked source files without an explicit task assignment).
+# Exits 0 for ok/warn, exits 1 for critical/missing.
+check-monitor:
+	@python3 -c "\
+import json, sys, os; \
+p = 'api/health.json'; \
+h = json.load(open(p)) if os.path.exists(p) else {'severity': 'critical', 'message': 'api/health.json not found — run make health first'}; \
+sev = h.get('severity', 'unknown'); hrs = h.get('hours_since_poll'); \
+hrs_str = f'{hrs}h ago' if hrs is not None else 'unknown'; \
+print(f'monitor: severity={sev} | polled={hrs_str} | {h.get(\"message\",\"\")}'); \
+sys.exit(0 if sev in ('ok', 'warn') else 1)"
+
 # Generate per-patch OG social-preview images to og/*.png.
 # Run: make og  (requires: pip install pillow)
 og:
@@ -213,6 +228,21 @@ news:
 state:
 	python3 scripts/build-state.py
 
+# Save a dated snapshot of state.json to state/history/YYYY-MM-DD.json.
+# Pattern: calamity-inc/warframe-worldstate-history — auto-committed daily snapshots
+# enable forensic diffing ("what changed between June 8 and July 15?").
+# Idempotent: multiple runs on the same date overwrite rather than accumulate.
+# Run manually or wire into the idle-loop commit step to build the history archive.
+snapshot-state:
+	@python3 -c "\
+import json, shutil, os, datetime; \
+src = 'state.json'; \
+today = datetime.date.today().isoformat(); \
+dst = f'state/history/{today}.json'; \
+os.makedirs('state/history', exist_ok=True); \
+shutil.copy(src, dst); \
+print(f'snapshot-state: {dst} ✓')"
+
 help:
 	@echo "Targets:"
 	@echo "  make build          — index + validate (run before any patch commit)"
@@ -227,12 +257,14 @@ help:
 	@echo "  make check-types    — validate .d.ts + openapi.json in sync with schema/patch.json"
 	@echo "  make check-stats    — verify stats.json is not stale relative to its inputs"
 	@echo "  make check-clean    — assert git working tree is clean (commit gate)"
+	@echo "  make check-monitor  — read-only health status (idle-loop safe, no writes)"
 	@echo "  make install-hooks  — install git pre-commit hook"
 	@echo "  make check-steam    — poll Steam API; new_draft=true (patch) | new_announcement=true (non-semver); stamps index + baseline"
 	@echo "  make check-drafts   — list unreviewed patch + announcement drafts in patches/drafts/"
 	@echo "  make check-ci       — verify GH Actions cron is firing (requires gh CLI)"
 	@echo "  make check-sdk      — dry-run npm pack for @spiritvale/client (pre-release gate)"
 	@echo "  make state          — generate state.json worldstate aggregation endpoint (/v1/state.json)"
+	@echo "  make snapshot-state — save state/history/YYYY-MM-DD.json dated snapshot (forensics archive)"
 	@echo "  make stats          — generate stats.json (cadence, change totals, top tags)"
 	@echo "  make health         — generate api/health.json (structured freshness endpoint)"
 	@echo "  make diff-endpoints — generate diff/v{from}...v{to}.json static endpoints"

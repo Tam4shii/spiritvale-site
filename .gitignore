@@ -9,8 +9,15 @@ node_modules/
 __pycache__/
 *.pyc
 *.pyo
-# Ephemeral state — updated every monitoring run, never committed
+# state/ — two-tier split:
+#
+#   IGNORED (ephemeral — regenerated every poll, never commit):
 state/last-poll.json
-# Persistent state (intentionally tracked): state/draft-seen-counts.json,
-# state/persistent-blockers.json, state/steam-news-baseline.json,
-# state/steam-last-count.txt, state/deadline-status.json
+#
+#   TRACKED (persistent — these ARE committed, do not add them below):
+#     state/draft-seen-counts.json   — draft staleness counters (idle-loop accumulates)
+#     state/persistent-blockers.json — deadline/blocker registry
+#     state/steam-news-baseline.json — Steam AppNews last-seen version
+#     state/steam-last-count.txt     — Steam news item count baseline
+#     state/deadline-status.json     — computed deadline severity cache
+#     state/history/                 — dated state.json snapshots (forensics)

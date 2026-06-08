@@ -131,6 +131,18 @@
 - **Entity manifest (JSON)** — https://spiritvale.tama.sh/entity/index.json
   Machine-readable entity manifest: {entities: {slug: {name, count, text_only_count, url}}}.
 
+## News & Announcements
+
+- **News index (HTML)** — https://spiritvale.tama.sh/news/
+  Official developer announcements, roadmap updates, and events. Distinct from versioned patch notes.
+
+- **News index (JSON)** — https://spiritvale.tama.sh/news/index.json
+  Machine-readable list: {count, items: [{slug, title, date, type, url, steam_url, steam_news_id}]}.
+  `type` values: `announcement` | `event` | `roadmap`.
+
+- **News Atom feed** — https://spiritvale.tama.sh/news/feed.xml
+  Subscribe to developer announcements separately from patch-note feed (`/feed.xml`).
+
 ## Archived versions (newest first)
 
 v0.18.0, v0.17.0, v0.16.7, v0.16.3, v0.16.0, v0.15.0, v0.14.0, v0.13.5, v0.13.4, v0.13.2, v0.13.0

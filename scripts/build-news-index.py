@@ -114,9 +114,18 @@ def build_html(items: list[dict]) -> None:
     for it in items:
         steam_link = f'<a href="{it["steam_url"]}" class="steam-link" target="_blank" rel="noopener">Steam ↗</a>' if it.get("steam_url") else ""
         type_badge = TYPE_LABEL.get(it["type"], it["type"].title())
-        body_preview = it["raw_body"][:280].replace("<", "&lt;").replace(">", "&gt;")
-        if len(it["raw_body"]) > 280:
+        raw = it["raw_body"]
+        body_preview = raw[:280].replace("<", "&lt;").replace(">", "&gt;")
+        if len(raw) > 280:
             body_preview += "…"
+            full_body = raw.replace("<", "&lt;").replace(">", "&gt;")
+            body_html = f"""<p class="body">{body_preview}</p>
+      <details class="body-expand">
+        <summary>Read full announcement</summary>
+        <p class="body-full">{full_body}</p>
+      </details>"""
+        else:
+            body_html = f'<p class="body">{body_preview}</p>'
         cards.append(f"""    <article id="{it['slug']}" class="card">
       <header>
         <span class="badge">{type_badge}</span>
@@ -124,10 +133,13 @@ def build_html(items: list[dict]) -> None:
         {steam_link}
       </header>
       <h2>{it['title'].replace('<', '&lt;')}</h2>
-      <p class="body">{body_preview}</p>
+      {body_html}
     </article>""")
 
     cards_html = "\n".join(cards) if cards else "    <p class='empty'>No announcements yet.</p>"
+
+    og_desc = items[0]["raw_body"][:160].replace('"', "&quot;") if items else "SpiritVale news, announcements, roadmap updates, and events."
+    og_title = items[0]["title"].replace('"', "&quot;") if items else "SpiritVale — News &amp; Announcements"
 
     html = f"""<!doctype html>
 <html lang="en">
@@ -136,6 +148,18 @@ def build_html(items: list[dict]) -> None:
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SpiritVale — News &amp; Announcements</title>
 <meta name="description" content="SpiritVale news, announcements, roadmap updates, and events.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SpiritVale Patch Archive">
+<meta property="og:url" content="{BASE_URL}/news/">
+<meta property="og:title" content="{og_title}">
+<meta property="og:description" content="{og_desc}">
+<meta property="og:image" content="{BASE_URL}/og/v0.18.0.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{og_title}">
+<meta name="twitter:description" content="{og_desc}">
+<meta name="twitter:image" content="{BASE_URL}/og/v0.18.0.png">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="canonical" href="{BASE_URL}/news/">
 <link rel="alternate" type="application/atom+xml" href="{BASE_URL}/news/feed.xml" title="SpiritVale News Feed">
@@ -166,6 +190,10 @@ def build_html(items: list[dict]) -> None:
   .steam-link:hover {{ text-decoration:underline; }}
   h2 {{ font-size:1.1rem; margin-bottom:.5rem; }}
   .body {{ color: var(--muted); font-size:.9rem; }}
+  .body-expand {{ margin-top:.5rem; }}
+  .body-expand summary {{ color: var(--accent); font-size:.85rem; cursor:pointer; user-select:none; }}
+  .body-expand summary:hover {{ text-decoration:underline; }}
+  .body-full {{ color: var(--muted); font-size:.9rem; margin-top:.5rem; white-space:pre-wrap; }}
   .empty {{ color: var(--muted); text-align:center; padding: 2rem; }}
   footer {{ color: var(--muted); font-size:.8rem; text-align:center; margin-top: 2.5rem; }}
   footer a {{ color: var(--accent); }}

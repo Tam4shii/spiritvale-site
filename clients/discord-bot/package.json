@@ -1,0 +1,16 @@
+{
+  "name": "spiritvale-discord-bot",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev":      "wrangler dev",
+    "deploy":   "wrangler deploy",
+    "register": "npx tsx register-commands.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240909.0",
+    "tsx":        "^4.15.0",
+    "typescript": "^5.5.0",
+    "wrangler":   "^3.65.0"
+  }
+}

@@ -1,0 +1,20 @@
+name            = "spiritvale-discord-bot"
+main            = "src/index.ts"
+compatibility_date = "2024-09-23"
+
+# Cron trigger — check for new patches every 5 minutes.
+# Calls scheduled() in index.ts; posts to PATCH_WEBHOOK_URL if latest_version changed.
+[triggers]
+crons = ["*/5 * * * *"]
+
+# KV namespace — persists last_version across cron runs for dedup.
+# Create: wrangler kv:namespace create STATE
+# Then replace YOUR_KV_NAMESPACE_ID below with the printed id.
+[[kv_namespaces]]
+binding  = "STATE"
+id       = "YOUR_KV_NAMESPACE_ID"
+
+# Secrets (set via: wrangler secret put <NAME>)
+#   DISCORD_PUBLIC_KEY  — bot's Ed25519 public key (Discord Dev Portal → General Info)
+#   DISCORD_BOT_TOKEN   — bot token (Discord Dev Portal → Bot → Reset Token)
+#   PATCH_WEBHOOK_URL   — Discord channel webhook URL for patch announcements

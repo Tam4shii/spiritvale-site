@@ -1,4 +1,4 @@
-.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld state snapshot-state csv check check-ci check-types check-stats check-clean check-monitor og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines help
+.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld state snapshot-state csv check check-ci check-types check-stats check-clean check-monitor og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines check-deploy help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags entities validate mirror stats health badge diff-endpoints jsonld state csv
@@ -207,6 +207,12 @@ check-sdk:
 	cd clients && npm pack --dry-run
 	@echo "SDK package check passed ✓"
 
+# Verify latest CF Pages deployment succeeded after a git push.
+# Requires: CLOUDFLARE_API_TOKEN env var. Skips gracefully if token not set or CF Pages
+# not yet connected (Blocker #1). Run after `git push` to confirm the fix is live.
+check-deploy:
+	python3 scripts/check-deploy.py
+
 # Check state/persistent-blockers.json for time-sensitive deadlines.
 # Distinct from stale-draft alerts (seen_count): this ladder fires on calendar dates.
 # Exits non-zero when any deadline is critical (≤2d), urgent (≤5d), or expired.
@@ -263,6 +269,7 @@ help:
 	@echo "  make check-drafts   — list unreviewed patch + announcement drafts in patches/drafts/"
 	@echo "  make check-ci       — verify GH Actions cron is firing (requires gh CLI)"
 	@echo "  make check-sdk      — dry-run npm pack for @spiritvale/client (pre-release gate)"
+	@echo "  make check-deploy   — verify latest CF Pages deployment succeeded (requires CLOUDFLARE_API_TOKEN)"
 	@echo "  make state          — generate state.json worldstate aggregation endpoint (/v1/state.json)"
 	@echo "  make snapshot-state — save state/history/YYYY-MM-DD.json dated snapshot (forensics archive)"
 	@echo "  make stats          — generate stats.json (cadence, change totals, top tags)"

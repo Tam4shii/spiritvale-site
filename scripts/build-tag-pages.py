@@ -88,12 +88,102 @@ def page_html(slug, entries):
 <header>
   <div class="breadcrumb"><a href="/">SpiritVale</a> › <a href="/tag/">Tags</a> › {name}</div>
   <h1>{name}</h1>
-  <p class="subtitle">{len(entries)} change{'s' if len(entries)!=1 else ''} across all patches</p>
+  <p class="subtitle">{len(entries)} change{'s' if len(entries)!=1 else ''} across all patches &middot; <a href="/tag/{slug}/timeline/" style="color:var(--accent)">📅 Timeline view →</a></p>
 </header>
 <div class="entries">{body}
 </div>
 <footer>
   <a href="/">Home</a> &middot; <a href="/search/">Search</a> &middot; <a href="/tag/">All Tags</a>
+</footer>
+</body>
+</html>"""
+
+
+def timeline_html(slug, entries):
+    """PoEDB-pattern: cross-version narrative, grouped by patch, oldest→newest."""
+    name = DISPLAY_NAME.get(slug, slug.replace('-', ' ').title())
+    by_version = {}
+    for e in entries:
+        v = e['version']
+        if v not in by_version:
+            by_version[v] = {'date': e['date'], 'patch_title': e['patch_title'], 'items': []}
+        by_version[v]['items'].append(e)
+
+    def version_key(v):
+        return [int(n) for n in v.split('.')]
+
+    sorted_versions = sorted(by_version.items(), key=lambda x: version_key(x[0]))
+
+    TIMELINE_CSS = """
+  .tl-version{border-left:2px solid var(--border);margin-left:.5rem;padding-left:1.25rem;margin-bottom:2rem;position:relative}
+  .tl-version::before{content:'';position:absolute;left:-5px;top:.55rem;width:8px;height:8px;background:var(--accent-2);border-radius:50%}
+  .tl-version-header{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.6rem;flex-wrap:wrap}
+  .tl-v-badge{font-size:.82rem;font-weight:700;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.15rem .55rem;color:var(--accent);text-decoration:none}
+  .tl-v-badge:hover{border-color:var(--accent)}
+  .tl-v-title{font-weight:600;font-size:.95rem}
+  .tl-v-date{font-size:.8rem;color:var(--muted);margin-left:auto}
+  .tl-item{padding:.25rem 0 .25rem .6rem;border-left:2px solid rgba(167,139,250,.15);font-size:.9rem;margin-top:.2rem}
+  .tl-item--added{border-left-color:#86efac}.tl-item--changed{border-left-color:#fcd34d}
+  .tl-item--fixed{border-left-color:#93c5fd}.tl-item--removed{border-left-color:#fca5a5}
+  .tl-item--deprecated{border-left-color:#fb923c}.tl-item--security{border-left-color:#f472b6}
+  .tl-tags{margin-top:.5rem}"""
+
+    sections = []
+    for version, vd in sorted_versions:
+        items_html = '\n'.join(
+            f'<div class="tl-item tl-item--{e["type"]}">'
+            f'{BADGE.get(e["type"], (e["type"], "#888"))[0]} {e["text"]}</div>'
+            for e in vd['items']
+        )
+        seen = set()
+        co_tags = []
+        for e in vd['items']:
+            for t in e.get('tags', []):
+                if t != slug and t not in seen:
+                    seen.add(t)
+                    co_tags.append(f'<a class="tag-chip" href="/tag/{t}/">{DISPLAY_NAME.get(t, t)}</a>')
+        tags_html = ('<div class="tl-tags">' + ''.join(co_tags) + '</div>') if co_tags else ''
+        sections.append(f"""
+  <div class="tl-version">
+    <div class="tl-version-header">
+      <a class="tl-v-badge" href="/patch/?v={version}">v{version}</a>
+      <span class="tl-v-title">{vd['patch_title'] or ''}</span>
+      <span class="tl-v-date">{vd['date']}</span>
+    </div>
+    <div class="tl-items">{items_html}</div>
+    {tags_html}
+  </div>""")
+
+    body = '\n'.join(sections) if sections else '<p style="color:var(--muted)">No entries found.</p>'
+    patch_word = 'patch' if len(sorted_versions) == 1 else 'patches'
+
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale — {name} Full Changelog</title>
+<meta name="description" content="Cross-version changelog for {name} in SpiritVale — {len(entries)} changes across {len(sorted_versions)} {patch_word}, oldest to newest.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SpiritVale — {name} Full Changelog">
+<meta property="og:description" content="Every {name} change across {len(sorted_versions)} {patch_word}.">
+<meta property="og:url" content="https://spiritvale.tama.sh/tag/{slug}/timeline/">
+<meta property="og:image" content="https://spiritvale.tama.sh/og/latest.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://spiritvale.tama.sh/tag/{slug}/timeline/">
+<style>{CSS}{TIMELINE_CSS}</style>
+</head>
+<body>
+<header>
+  <div class="breadcrumb"><a href="/">SpiritVale</a> › <a href="/tag/">Tags</a> › <a href="/tag/{slug}/">{name}</a> › Timeline</div>
+  <h1>{name} — Full Changelog</h1>
+  <p class="subtitle">{len(entries)} change{'s' if len(entries)!=1 else ''} across {len(sorted_versions)} {patch_word} · oldest → newest</p>
+</header>
+<div class="entries" style="max-width:860px;margin:2rem auto 0">
+{body}
+</div>
+<footer>
+  <a href="/tag/{slug}/">← All {name} entries</a> &middot; <a href="/search/">Search</a> &middot; <a href="/tag/">All Tags</a>
 </footer>
 </body>
 </html>"""
@@ -186,6 +276,10 @@ for slug, entries in by_tag.items():
         f.write(page_html(slug, entries))
     with open(os.path.join(slug_dir, 'feed.xml'), 'w') as f:
         f.write(tag_feed_xml(slug, entries))
+    tl_dir = os.path.join(slug_dir, 'timeline')
+    os.makedirs(tl_dir, exist_ok=True)
+    with open(os.path.join(tl_dir, 'index.html'), 'w') as f:
+        f.write(timeline_html(slug, entries))
 
 with open(os.path.join(TAG_DIR, 'index.html'), 'w') as f:
     f.write(tag_index_html({slug: len(entries) for slug, entries in by_tag.items()}))

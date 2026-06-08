@@ -325,6 +325,50 @@
     }
   }
 
+  // Milestone banner — phase-aware dismissal, ICT (UTC+7) anchored
+  (function showMilestoneBanner() {
+    // Cutoffs in ICT (UTC+7). Parsed as absolute instants, not local-clock guesses.
+    var DEMO_DATE = new Date('2026-06-12T00:00:00+07:00');
+    var EA_DATE   = new Date('2026-07-15T00:00:00+07:00');
+    var now = new Date();
+    var DISMISS_KEY = 'sv_milestone_dismiss';
+
+    var phase = now >= EA_DATE ? 'ea' : now >= DEMO_DATE ? 'demo-live' : 'pre-demo';
+    if (phase === 'ea') return; // auto-hide after EA launch
+
+    // Re-show when phase changes, even if previously dismissed
+    try {
+      var stored = JSON.parse(localStorage.getItem(DISMISS_KEY) || 'null');
+      if (stored && stored.phase === phase) return;
+    } catch (_) {}
+
+    var daysLeft = Math.ceil((DEMO_DATE - now) / 864e5);
+    var msg = phase === 'demo-live'
+      ? '🎮 <strong>Demo is live!</strong> Early Access launches July 15 → <a href="/news/" style="color:var(--accent)">read announcement</a>'
+      : '🗓️ Demo launches in <strong>' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '') + '</strong> → <a href="/news/" style="color:var(--accent)">stay tuned</a>';
+
+    var banner = document.createElement('div');
+    banner.id = 'milestone-banner';
+    banner.style.cssText = 'background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.3);border-radius:10px;padding:0.6rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:0.75rem;font-size:0.88rem';
+
+    var text = document.createElement('span');
+    text.innerHTML = msg;
+
+    var btn = document.createElement('button');
+    btn.setAttribute('aria-label', 'Dismiss');
+    btn.style.cssText = 'background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0 0.25rem';
+    btn.textContent = '✕';
+    btn.addEventListener('click', function () {
+      try { localStorage.setItem(DISMISS_KEY, JSON.stringify({ phase: phase })); } catch (_) {}
+      banner.remove();
+    });
+
+    banner.appendChild(text);
+    banner.appendChild(btn);
+    var hero = document.querySelector('.hero');
+    if (hero) hero.insertAdjacentElement('afterend', banner);
+  })();
+
   loadPatch();
 
   function showMilestoneBanner() {

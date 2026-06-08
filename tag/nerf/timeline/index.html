@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale — Nerf Full Changelog</title>
+<meta name="description" content="Cross-version changelog for Nerf in SpiritVale — 7 changes across 1 patch, oldest to newest.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SpiritVale — Nerf Full Changelog">
+<meta property="og:description" content="Every Nerf change across 1 patch.">
+<meta property="og:url" content="https://spiritvale.tama.sh/tag/nerf/timeline/">
+<meta property="og:image" content="https://spiritvale.tama.sh/og/latest.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://spiritvale.tama.sh/tag/nerf/timeline/">
+<style>
+  :root{--bg:#0a0612;--fg:#e8e3f0;--muted:#8b82a0;--accent:#a78bfa;--accent-2:#7c3aed;--card:rgba(167,139,250,.08);--border:rgba(167,139,250,.2)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Inter",sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;min-height:100vh;padding:2rem;
+    background-image:radial-gradient(at 20% 30%,rgba(124,58,237,.15),transparent 50%),radial-gradient(at 80% 80%,rgba(167,139,250,.08),transparent 50%)}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  header{max-width:860px;margin:0 auto 2rem}
+  .breadcrumb{font-size:.8rem;color:var(--muted);margin-bottom:.5rem}
+  h1{font-size:1.8rem;font-weight:700;color:var(--accent);margin-bottom:.25rem}
+  .subtitle{color:var(--muted);font-size:.95rem}
+  .entries{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:.75rem}
+  .entry{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem}
+  .entry-meta{font-size:.75rem;color:var(--muted);margin-bottom:.3rem}
+  .entry-text{font-size:.95rem}
+  .tag-chip{display:inline-block;font-size:.7rem;padding:.1rem .45rem;border-radius:4px;margin-right:.3rem;margin-top:.35rem;background:rgba(167,139,250,.15);border:1px solid var(--border);color:var(--muted)}
+  .tag-index{max-width:860px;margin:2rem auto 0;display:flex;flex-wrap:wrap;gap:.5rem}
+  footer{max-width:860px;margin:3rem auto 0;font-size:.8rem;color:var(--muted);text-align:center}
+
+  .tl-version{border-left:2px solid var(--border);margin-left:.5rem;padding-left:1.25rem;margin-bottom:2rem;position:relative}
+  .tl-version::before{content:'';position:absolute;left:-5px;top:.55rem;width:8px;height:8px;background:var(--accent-2);border-radius:50%}
+  .tl-version-header{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.6rem;flex-wrap:wrap}
+  .tl-v-badge{font-size:.82rem;font-weight:700;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:.15rem .55rem;color:var(--accent);text-decoration:none}
+  .tl-v-badge:hover{border-color:var(--accent)}
+  .tl-v-title{font-weight:600;font-size:.95rem}
+  .tl-v-date{font-size:.8rem;color:var(--muted);margin-left:auto}
+  .tl-item{padding:.25rem 0 .25rem .6rem;border-left:2px solid rgba(167,139,250,.15);font-size:.9rem;margin-top:.2rem}
+  .tl-item--added{border-left-color:#86efac}.tl-item--changed{border-left-color:#fcd34d}
+  .tl-item--fixed{border-left-color:#93c5fd}.tl-item--removed{border-left-color:#fca5a5}
+  .tl-item--deprecated{border-left-color:#fb923c}.tl-item--security{border-left-color:#f472b6}
+  .tl-tags{margin-top:.5rem}</style>
+</head>
+<body>
+<header>
+  <div class="breadcrumb"><a href="/">SpiritVale</a> › <a href="/tag/">Tags</a> › <a href="/tag/nerf/">Nerf</a> › Timeline</div>
+  <h1>Nerf — Full Changelog</h1>
+  <p class="subtitle">7 changes across 1 patch · oldest → newest</p>
+</header>
+<div class="entries" style="max-width:860px;margin:2rem auto 0">
+
+  <div class="tl-version">
+    <div class="tl-version-header">
+      <a class="tl-v-badge" href="/patch/?v=0.17.0">v0.17.0</a>
+      <span class="tl-v-title">The Echoing Spire</span>
+      <span class="tl-v-date">2026-05-25</span>
+    </div>
+    <div class="tl-items"><div class="tl-item tl-item--changed"><span style="color:#fcd34d">changed</span> Autocast reduced across the board: 20% → 10% and 30% → 20%; headgear autocast cards are now unique</div>
+<div class="tl-item tl-item--changed"><span style="color:#fcd34d">changed</span> Status damage reduced: divisor /8 → /10 (~20% reduction)</div>
+<div class="tl-item tl-item--changed"><span style="color:#fcd34d">changed</span> Scrap Fang: Slots 4 → 3, Multistrike 100% → 50%</div>
+<div class="tl-item tl-item--changed"><span style="color:#fcd34d">changed</span> Launcher: Slots 4 → 3</div>
+<div class="tl-item tl-item--changed"><span style="color:#fcd34d">changed</span> Siphon reclassified as leech — recovery over time, capped at 20% HP/MP (was instant)</div>
+<div class="tl-item tl-item--changed"><span style="color:#fcd34d">changed</span> Perfect Dodge: no longer scales with AGI, hard-capped at 95%</div>
+<div class="tl-item tl-item--changed"><span style="color:#fcd34d">changed</span> Shadow Step: cooldown 2 → 7 seconds (−1 per skill level)</div></div>
+    <div class="tl-tags"><a class="tag-chip" href="/tag/balance/">balance</a><a class="tag-chip" href="/tag/autocast/">autocast</a><a class="tag-chip" href="/tag/equipment/">equipment</a></div>
+  </div>
+</div>
+<footer>
+  <a href="/tag/nerf/">← All Nerf entries</a> &middot; <a href="/search/">Search</a> &middot; <a href="/tag/">All Tags</a>
+</footer>
+</body>
+</html>

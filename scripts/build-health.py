@@ -90,8 +90,11 @@ def main():
 
     # hours_since_poll semantics: 0.0 is the expected value immediately after a poll run.
     # Non-zero values reflect drift since the last Steam check — anything >24h triggers warn.
+    # poll_completed_at: ISO timestamp of the last Steam API poll (distinct from generated_at,
+    # which is when health.json was built). Makes poll→rebuild sequence explicit for consumers.
     health = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "poll_completed_at": last_polled,
         "poll_mode": "live",
         "stale": stale,
         "hours_since_poll": hours_since,

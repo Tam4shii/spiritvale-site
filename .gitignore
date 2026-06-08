@@ -9,5 +9,8 @@ node_modules/
 __pycache__/
 *.pyc
 *.pyo
-# Ephemeral poll timestamp — updated every monitoring run, never committed
+# Ephemeral state — updated every monitoring run, never committed
 state/last-poll.json
+# Persistent state (intentionally tracked): state/draft-seen-counts.json,
+# state/persistent-blockers.json, state/steam-news-baseline.json,
+# state/steam-last-count.txt, state/deadline-status.json

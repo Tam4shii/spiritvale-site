@@ -41,6 +41,17 @@ def main():
     patches_index = _load(ROOT / "patches" / "index.json") or {}
     latest_version = patches_index.get("latest_version")
 
+    # Dual-source last_polled_at — mirrors build-health.py fallback pattern.
+    # patches/index.json is only updated by GH Actions; local monitoring runs
+    # write state/last-poll.json (gitignored). Use whichever is more recent.
+    _index_ts = patches_index.get("last_polled_at")
+    last_poll_file = _load(ROOT / "state" / "last-poll.json") or {}
+    _file_ts = last_poll_file.get("polled_at")
+    if _file_ts and (not _index_ts or _file_ts > _index_ts):
+        last_polled_at = _file_ts
+    else:
+        last_polled_at = _index_ts
+
     latest_entry = next(
         (v for v in patches_index.get("versions", []) if v.get("current")),
         None,
@@ -68,7 +79,7 @@ def main():
     state = {
         "generated_at": now,
         "latest_version": latest_version,
-        "last_polled_at": patches_index.get("last_polled_at"),
+        "last_polled_at": last_polled_at,
         "poll_tz": patches_index.get("poll_tz", "UTC"),
         "latest": {
             "version": latest_entry.get("version"),

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-09T18:09:29Z",
+  "generated_at": "2026-06-09T20:31:28Z",
   "latest_version": "0.18.0",
-  "last_polled_at": "2026-06-09T18:07:38Z",
+  "last_polled_at": "2026-06-09T20:31:04Z",
   "poll_tz": "UTC",
   "latest": {
     "version": "0.18.0",
@@ -41,9 +41,9 @@
   "pending_drafts": [
     {
       "filename": "announcement-spiritvale-official-date-release.json",
-      "seen_count": 16,
+      "seen_count": 17,
       "first_seen_at": "2026-06-05T20:31:49Z",
-      "last_seen_at": "2026-06-09T18:07:38Z",
+      "last_seen_at": "2026-06-09T20:31:04Z",
       "alerted_at": "2026-06-08T18:07:03Z"
     }
   ],

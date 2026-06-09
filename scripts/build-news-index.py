@@ -109,6 +109,24 @@ def build_feed(items: list[dict]) -> None:
     print(f"news/feed.xml written — {len(items)} entries")
 
 
+def _paragraphs(text: str) -> list[str]:
+    """Split Steam raw_body (no newlines) into readable paragraphs.
+
+    Steam strips all newlines. We recover paragraph breaks by splitting on:
+      - ".<Capital>"  (no space — common in Steam exports)
+      - ". <Capital>" (with space)
+      - "!<Capital>" / "! <Capital>"
+    Each resulting chunk becomes its own <p>.
+    """
+    parts = re.split(r"[.!]\s*(?=[A-Z])", text)
+    paras = []
+    for p in parts:
+        p = p.strip()
+        if p:
+            paras.append(p if re.search(r"[.!]$", p) else p + ".")
+    return paras
+
+
 def build_html(items: list[dict]) -> None:
     cards = []
     for it in items:
@@ -118,11 +136,15 @@ def build_html(items: list[dict]) -> None:
         body_preview = raw[:280].replace("<", "&lt;").replace(">", "&gt;")
         if len(raw) > 280:
             body_preview += "…"
-            full_body = raw.replace("<", "&lt;").replace(">", "&gt;")
+            paras = _paragraphs(raw)
+            paras_html = "\n        ".join(
+                f'<p class="body-full">{p.replace("<", "&lt;").replace(">", "&gt;")}</p>'
+                for p in paras
+            )
             body_html = f"""<p class="body">{body_preview}</p>
       <details class="body-expand">
         <summary>Read full announcement</summary>
-        <p class="body-full">{full_body}</p>
+        {paras_html}
       </details>"""
         else:
             body_html = f'<p class="body">{body_preview}</p>'
@@ -193,7 +215,8 @@ def build_html(items: list[dict]) -> None:
   .body-expand {{ margin-top:.5rem; }}
   .body-expand summary {{ color: var(--accent); font-size:.85rem; cursor:pointer; user-select:none; }}
   .body-expand summary:hover {{ text-decoration:underline; }}
-  .body-full {{ color: var(--muted); font-size:.9rem; margin-top:.5rem; white-space:pre-wrap; }}
+  .body-full {{ color: var(--muted); font-size:.9rem; margin-top:.5rem; }}
+  .body-full + .body-full {{ margin-top:.5rem; }}
   .empty {{ color: var(--muted); text-align:center; padding: 2rem; }}
   footer {{ color: var(--muted); font-size:.8rem; text-align:center; margin-top: 2.5rem; }}
   footer a {{ color: var(--accent); }}

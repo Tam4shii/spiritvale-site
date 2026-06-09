@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-09T15:45:50Z",
+  "generated_at": "2026-06-09T15:44:39Z",
   "latest_version": "0.18.0",
   "last_polled_at": "2026-06-05T20:31:49Z",
   "poll_tz": "UTC",
@@ -58,60 +58,6 @@
     }
   ],
   "worst_deadline_severity": "expired",
-  "milestones": [
-    {
-      "key": "playtest-end",
-      "label": "Playtest ended / progress wipe",
-      "date": "2026-06-08",
-      "phase": "playtest-end",
-      "days_until": -1,
-      "past": true
-    },
-    {
-      "key": "demo",
-      "label": "Steam Demo launch",
-      "date": "2026-06-12",
-      "phase": "demo",
-      "days_until": 3,
-      "past": false
-    },
-    {
-      "key": "early-access",
-      "label": "Early Access launch",
-      "date": "2026-07-15",
-      "phase": "early-access",
-      "price_usd": 15.0,
-      "days_until": 36,
-      "past": false
-    }
-  ],
-  "upcoming_milestones": [
-    {
-      "key": "demo",
-      "label": "Steam Demo launch",
-      "date": "2026-06-12",
-      "phase": "demo",
-      "days_until": 3,
-      "past": false
-    },
-    {
-      "key": "early-access",
-      "label": "Early Access launch",
-      "date": "2026-07-15",
-      "phase": "early-access",
-      "price_usd": 15.0,
-      "days_until": 36,
-      "past": false
-    }
-  ],
-  "next_milestone": {
-    "key": "demo",
-    "label": "Steam Demo launch",
-    "date": "2026-06-12",
-    "phase": "demo",
-    "days_until": 3,
-    "past": false
-  },
   "_links": {
     "latest": "/patches/latest.json",
     "index": "/patches/index.json",

@@ -98,6 +98,57 @@ export interface SearchIndex {
   entries: SearchEntry[];
 }
 
+/** A known game lifecycle milestone (demo, early-access, etc.) */
+export interface Milestone {
+  key: string;
+  label: string;
+  /** YYYY-MM-DD */
+  date: string;
+  phase: "playtest-end" | "demo" | "early-access" | "full-release";
+  /** Present for monetised milestones */
+  price_usd?: number;
+  days_until: number;
+  past: boolean;
+}
+
+/** Shape of /state.json — worldstate aggregation endpoint */
+export interface WorldState {
+  generated_at: string;
+  latest_version: string;
+  last_polled_at: string | null;
+  poll_tz: "UTC";
+  latest: {
+    version: string;
+    title: string;
+    date: string;
+    change_counts: ChangeCounts;
+    archive_url: string;
+    steam_news_id?: string;
+  } | null;
+  index_summary: { total_versions: number; items_found: number };
+  health: {
+    severity: "ok" | "warn" | "critical";
+    stale: boolean;
+    hours_since_poll: number;
+    message: string;
+    steam_baseline_match: boolean;
+  };
+  stats_summary: {
+    total_patches: number;
+    total_entries: number;
+    change_totals: ChangeCounts;
+    avg_days_between_patches: number;
+  };
+  pending_drafts: Array<{ filename: string; seen_count: number; first_seen_at: string; last_seen_at: string; alerted_at?: string }>;
+  pending_drafts_count: number;
+  deadline_alerts: Array<{ key: string; description: string; deadline: string; days_until: number; severity: string }>;
+  worst_deadline_severity: string | null;
+  milestones: Milestone[];
+  upcoming_milestones: Milestone[];
+  next_milestone: Milestone | null;
+  _links: Record<string, string>;
+}
+
 /** Latest patch note (patches/latest.json) */
 export function getLatest(): Promise<PatchNote>;
 
@@ -112,6 +163,13 @@ export function getPatch(version: string): Promise<PatchNote>;
 
 /** Flat search index (all bullet entries across all patches) */
 export function getSearchIndex(): Promise<SearchIndex>;
+
+/**
+ * Worldstate aggregation endpoint — single fetch gives latest patch, health,
+ * pending drafts, deadline alerts, stats, and upcoming game milestones.
+ * Equivalent to warframestat.us /pc worldstate.
+ */
+export function getState(): Promise<WorldState>;
 
 /**
  * Compute a cumulative diff between two versions.

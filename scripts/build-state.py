@@ -14,10 +14,17 @@ Accessible at:
 Run: python3 scripts/build-state.py  OR  make state
 """
 import json
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
+
+# Known game milestones — update when developer posts new dates.
+_MILESTONES = [
+    {"key": "playtest-end", "label": "Playtest ended / progress wipe", "date": "2026-06-08", "phase": "playtest-end"},
+    {"key": "demo",         "label": "Steam Demo launch",              "date": "2026-06-12", "phase": "demo"},
+    {"key": "early-access", "label": "Early Access launch",            "date": "2026-07-15", "phase": "early-access", "price_usd": 15.00},
+]
 
 
 def _load(path: Path) -> dict | list | None:
@@ -47,6 +54,16 @@ def main():
     pending_drafts = [
         {"filename": k, **v} for k, v in draft_seen.items()
     ]
+
+    today = datetime.now(timezone.utc).date()
+    milestones_with_days = []
+    for m in _MILESTONES:
+        m_date = date.fromisoformat(m["date"])
+        days_until = (m_date - today).days
+        entry = {**m, "days_until": days_until, "past": days_until < 0}
+        milestones_with_days.append(entry)
+    upcoming = [m for m in milestones_with_days if not m["past"]]
+    next_milestone = upcoming[0] if upcoming else None
 
     state = {
         "generated_at": now,
@@ -82,6 +99,9 @@ def main():
         "pending_drafts_count": len(pending_drafts),
         "deadline_alerts": deadline_status.get("deadlines", []),
         "worst_deadline_severity": deadline_status.get("worst_severity"),
+        "milestones": milestones_with_days,
+        "upcoming_milestones": upcoming,
+        "next_milestone": next_milestone,
         "_links": {
             "latest": "/patches/latest.json",
             "index": "/patches/index.json",

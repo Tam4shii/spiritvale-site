@@ -43,6 +43,15 @@ export function getSearchIndex() {
 }
 
 /**
+ * Worldstate aggregation endpoint — single fetch gives latest patch, health,
+ * pending drafts, deadline alerts, stats, and upcoming game milestones.
+ * Equivalent to warframestat.us /pc worldstate.
+ */
+export function getState() {
+  return _get('/state.json');
+}
+
+/**
  * Compute a cumulative diff between two versions using the public index.
  * Returns { added, changed, fixed, removed } arrays where each entry carries
  * a `_version` annotation so callers can render per-version badges.

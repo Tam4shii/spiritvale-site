@@ -162,8 +162,14 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest; stale alert suppressed (<12h)
 - ✅ **Demo launch countdown banner shipped** — `index.html`: time-gated banner shows "Demo in N days" until June 12, "Demo live! EA July 15" until July 15, then auto-hides; dismissable via localStorage; links to /news/. Pushed (commit 3468049).
 - 🚨 PR #1 still OPEN — boss action required (playtest ended June 8, Demo June 12 tomorrow)
+**run#22 status** (2026-06-09 idle-loop Forge):
+- ✅ `make check` exit 0 — all artifacts valid; baseline OK at 0.18.0; health severity: ok
+- ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest; stale draft seen_count=9 (local sync), remote shows 12
+- ✅ **6 local commits pushed to origin/main** — rebased on top of remote (remote had 7 commits since last local sync); resolved state-file conflict by skipping local state commit (remote's seen_count=12 is more authoritative); commits include: licenses, .gitignore clarification, CF Pages deploy check, /news/ nav, phase-aware banner, banner date clarification + pyproject.toml
+- 🚨 PR #1 still OPEN — Demo launches **June 12 (3 days)** — boss action required: (a) merge → publishes /news/ page, (b) close → archives draft
 
-**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — PR **#1** is **merge-ready** (pre-classified by run#19): https://github.com/Tam4shii/spiritvale-site/pull/1. Playtest ended 2026-06-08. Choose: (a) merge → publishes as news page with structured timeline, (b) close PR → archives. Demo launches **June 12** (tomorrow).
+**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — PR **#1** is **merge-ready** (pre-classified by run#19): https://github.com/Tam4shii/spiritvale-site/pull/1. Playtest ended 2026-06-08. Choose: (a) merge → publishes as news page with structured timeline, (b) close PR → archives. Demo launches **June 12** (3 days from 2026-06-09).
+**Last push to origin/main**: run#22 (2026-06-09) — 6 commits pushed (f0cc598..1511a7c); local sync gap resolved via rebase.
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

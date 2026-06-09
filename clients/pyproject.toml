@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "spiritvale-client"
+version = "0.1.0"
+description = "Zero-dependency Python client for the SpiritVale Community Hub patch API"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Tam4shii" }]
+requires-python = ">=3.8"
+keywords = ["spiritvale", "game", "patch-notes", "api-client"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://spiritvale.tama.sh"
+Repository = "https://github.com/Tam4shii/spiritvale-site"
+"Bug Tracker" = "https://github.com/Tam4shii/spiritvale-site/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["spiritvale*"]
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]

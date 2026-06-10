@@ -17,7 +17,8 @@
         "changed": 6,
         "fixed": 5,
         "removed": 0
-      }
+      },
+      "i18n_available": ["th"]
     },
     {
       "version": "0.17.0",

@@ -333,9 +333,19 @@
     var EA_DATE   = new Date('2026-07-15T00:00:00+07:00');
     var now = new Date();
     var DISMISS_KEY = 'sv_milestone_dismiss';
+    var LEGACY_KEY  = 'sv_milestone_dismissed'; // old key used before 9e0d5cc
 
     var phase = now >= EA_DATE ? 'ea' : now >= DEMO_DATE ? 'demo-live' : 'pre-demo';
     if (phase === 'ea') return; // auto-hide after EA launch
+
+    // One-time migration: users who dismissed via the old key should stay dismissed
+    try {
+      if (localStorage.getItem(LEGACY_KEY) === '1' && !localStorage.getItem(DISMISS_KEY)) {
+        localStorage.setItem(DISMISS_KEY, JSON.stringify({ phase: phase }));
+        localStorage.removeItem(LEGACY_KEY);
+        return;
+      }
+    } catch (_) {}
 
     // Re-show when phase changes, even if previously dismissed
     try {

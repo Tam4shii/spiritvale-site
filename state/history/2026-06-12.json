@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-06-12T01:40:00Z",
+  "latest_version": "0.18.0",
+  "last_polled_at": "2026-06-12T01:40:00Z",
+  "poll_tz": "UTC",
+  "latest": {
+    "version": "0.18.0",
+    "title": "New and Revamped Maps",
+    "date": "2026-06-02",
+    "change_counts": {
+      "added": 3,
+      "changed": 6,
+      "fixed": 5,
+      "removed": 0
+    },
+    "archive_url": "/patches/v0.18.0.json",
+    "steam_news_id": "1833968530901053"
+  },
+  "index_summary": {
+    "total_versions": 11,
+    "note": "Demo launch day 2026-06-12 (SpiritVale Demo live in ICT)"
+  }
+}

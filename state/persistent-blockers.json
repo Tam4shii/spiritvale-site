@@ -3,7 +3,7 @@
     "description": "PR #1 spiritvale-site \u2014 merge/close decision for news page",
     "deadline": "2026-06-08",
     "first_seen_at": "2026-06-05T20:31:49Z",
-    "alert_count": 18,
+    "alert_count": 19,
     "last_alerted_at": "2026-06-07T00:00:00Z",
     "last_severity": "critical",
     "escalation_note": "T-1 day (FINAL WARNING). Playtest ends 2026-06-08 \u2014 TOMORROW. Discord PATCH_WEBHOOK not reachable locally; escalation logged here. Boss must act: (a) merge PR\u2192publishes news page, (b) close PR\u2192archives, (c) leave draft\u2192revisit post-2026-06-08. PR: https://github.com/Tam4shii/spiritvale-site/pull/1",
@@ -13,6 +13,6 @@
       "deadline_status_json": "updated 2026-06-07 via make check-deadlines (days_until=1)"
     },
     "poll_terminology_note": "run#5 described as 'dry-run' in Step 1 output \u2014 this was ambiguous. All future idle-loop entries must use 'live Steam API poll' (real HTTP GET to api.steampowered.com) vs 'skipped/mocked' explicitly. run#6 onward uses this convention.",
-    "last_urgent_at": "2026-06-18T13:19:02Z"
+    "last_urgent_at": "2026-06-18T22:55:01Z"
   }
 }

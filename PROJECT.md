@@ -181,8 +181,16 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ✅ **6 local commits pushed to origin/main** — rebased on top of remote (remote had 7 commits since last local sync); resolved state-file conflict by skipping local state commit (remote's seen_count=12 is more authoritative); commits include: licenses, .gitignore clarification, CF Pages deploy check, /news/ nav, phase-aware banner, banner date clarification + pyproject.toml
 - 🚨 PR #1 still OPEN — Demo launches **June 12 (3 days)** — boss action required: (a) merge → publishes /news/ page, (b) close → archives draft
 
-**Next idle-loop action**: 🚨 BOSS ACTION NEEDED — PR **#1** is **merge-ready** (pre-classified by run#19): https://github.com/Tam4shii/spiritvale-site/pull/1. Playtest ended 2026-06-08. Choose: (a) merge → publishes as news page with structured timeline, (b) close PR → archives. Demo launches **June 12** (3 days from 2026-06-09).
-**Last push to origin/main**: run#22 (2026-06-09) — 6 commits pushed (f0cc598..1511a7c); local sync gap resolved via rebase.
+**run#31 status** (2026-06-19 idle-loop Forge):
+- ✅ `make check` exit 0 — all 11 artifacts valid; baseline OK at 0.18.0; health severity: ok
+- ✅ Live Steam poll: items_found=10; no new patch; v0.18.0 still latest; `state/last-poll.json` = 2026-06-19T13:21:48Z
+- ✅ **Demo launched June 12** — milestone banner showing "Demo is live! EA July 15" ✅ (phase='demo-live' logic verified)
+- ✅ **Dead window starts June 22** (3 days) — alert suppression already active (PR#1 alerts downgraded to weekly); monitoring continues daily (free cron)
+- ℹ️ State: `state/draft-seen-counts.json` seen_count=35 committed (was 32); PR#1 still OPEN (boss action required — (a) merge or (b) close)
+- 🚨 PR #1 still OPEN — pre-classified, merge-ready: https://github.com/Tam4shii/spiritvale-site/pull/1
+
+**Next idle-loop action**: Monitoring mode. Dead window Jun 22–Jul 15 → resume full alert sensitivity Jul 15 (EA launch). No code changes needed until new Steam patch detected by GH Actions. PR #1 awaits boss decision.
+**Last push to origin/main**: run#31 (2026-06-19) — state/draft-seen-counts.json + PROJECT.md updated; run#30 was b84fc31 (cycles=32).
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

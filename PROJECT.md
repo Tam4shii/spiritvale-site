@@ -196,8 +196,14 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ✅ **SDK get_bot_json()** — `clients/spiritvale.py` adds `get_bot_json()` function; discord-example.py `/latest` command updated to use pre-formatted bot.json embed (tarkov.dev reference bot pattern)
 - 🚨 PR #1 still OPEN — dead window starts in **2 days** (Jun 22); alert #21 sent; boss action: merge or close
 
+**run#33 status** (2026-06-20 idle-loop Forge):
+- ✅ `make check` exit 0 — all 11 artifacts valid; baseline OK at 0.18.0; health severity: ok
+- ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest; seen_count=37 (was 36)
+- ✅ Synced local main with origin/main (was 4 commits behind from run#32)
+- 🚨 PR #1 still OPEN — dead window starts in **2 days** (Jun 22); CRITICAL stale alert sent (cycle #37 ≥ HYPER_STALE=28); boss action: merge or close
+
 **Next idle-loop action**: Monitoring mode — dead window starts Jun 22. No code changes needed; next meaningful check is 2026-07-15 (EA launch). PR #1 awaits boss decision.
-**Last push to origin/main**: run#32 (2026-06-20) — 3 commits (step4-audit + state-run#32 + sdk+mcp); seen_count=36.
+**Last push to origin/main**: run#33 (2026-06-20) — state-run#33; seen_count=37.
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

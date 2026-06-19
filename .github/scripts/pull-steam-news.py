@@ -53,10 +53,25 @@ PR1_DEADLINE_STR = "2026-06-08"  # playtest ends — merge/close decision needed
 PR1_URL = "https://github.com/Tam4shii/spiritvale-site/pull/1"
 URGENT_HOURS_THRESHOLD = 48  # hours remaining before deadline → escalate to [URGENT]
 URGENT_DEDUP_HOURS = 6       # hours between re-fires of the [URGENT] message (shorter than stale 12h)
+
+# Dead-window: dev focus shifts to EA polish; no patches expected; alerts are noise.
+# Stale-draft pings drop to weekly (168h) instead of every 6h.
+DEAD_WINDOW_START = "2026-06-22"
+DEAD_WINDOW_END = "2026-07-15"
+DEAD_WINDOW_DEDUP_HOURS = 168  # 1 week between re-fires during the dead window
 PERSISTENT_BLOCKERS_PATH = Path("state/persistent-blockers.json")
 
 WEBSUB_HUB = "https://pubsubhubbub.superfeedr.com/"
 FEED_SELF_URL = "https://spiritvale.tama.sh/feed.xml"
+
+def is_in_dead_window(now_dt=None):
+    """Return True if now falls in the known EA-prep quiet window (no patches expected)."""
+    if now_dt is None:
+        now_dt = datetime.now(tz=timezone.utc)
+    start = datetime.fromisoformat(DEAD_WINDOW_START).replace(tzinfo=timezone.utc)
+    end = datetime.fromisoformat(DEAD_WINDOW_END).replace(tzinfo=timezone.utc)
+    return start <= now_dt < end
+
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
 VERSION_RE = re.compile(r"v?(\d+\.\d+(?:\.\d+)?)")
@@ -335,16 +350,22 @@ def fire_pr1_deadline_alert(blockers: dict, polled_at: str) -> bool:
         )
         return False
 
-    # Dedup: skip if we already fired an [URGENT] alert within URGENT_DEDUP_HOURS
+    # Dead-window: reduce alert frequency to weekly (168h) to avoid noise during EA prep quiet period.
+    in_dead_window = is_in_dead_window(now_dt)
+    effective_dedup = DEAD_WINDOW_DEDUP_HOURS if in_dead_window else URGENT_DEDUP_HOURS
+    if in_dead_window:
+        print(f"[pr1-deadline] dead-window active ({DEAD_WINDOW_START}→{DEAD_WINDOW_END}) — dedup={effective_dedup}h")
+
+    # Dedup: skip if we already fired an [URGENT] alert within the effective dedup window
     pr1 = blockers.get("pr1", {})
     last_urgent = pr1.get("last_urgent_at", "")
     if last_urgent:
         try:
             last_dt = datetime.fromisoformat(last_urgent.replace("Z", "+00:00"))
-            if (now_dt - last_dt).total_seconds() < URGENT_DEDUP_HOURS * 3600:
+            if (now_dt - last_dt).total_seconds() < effective_dedup * 3600:
                 print(
                     f"[pr1-deadline] suppressed — already sent [URGENT] at {last_urgent[:16]}, "
-                    f"<{URGENT_DEDUP_HOURS}h ago"
+                    f"<{effective_dedup}h ago"
                 )
                 return False
         except Exception:

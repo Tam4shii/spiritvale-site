@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-19T18:08:45Z",
+  "generated_at": "2026-06-19T20:33:19Z",
   "latest_version": "0.18.0",
-  "last_polled_at": "2026-06-09T03:43:18Z",
+  "last_polled_at": "2026-06-19T20:31:35Z",
   "poll_tz": "UTC",
   "latest": {
     "version": "0.18.0",
@@ -41,10 +41,17 @@
   "pending_drafts": [
     {
       "filename": "announcement-spiritvale-official-date-release.json",
-      "seen_count": 34,
+      "seen_count": 36,
       "first_seen_at": "2026-06-05T20:31:49Z",
-      "last_seen_at": "2026-06-19T08:34:04Z",
-      "alerted_at": "2026-06-08T18:07:03Z"
+      "last_seen_at": "2026-06-19T20:31:35Z",
+      "alerted_at": "2026-06-08T18:07:03Z",
+      "seen_count_log": [
+        {
+          "at": "2026-06-19T20:31:35Z",
+          "count": 36,
+          "delta": 1
+        }
+      ]
     }
   ],
   "pending_drafts_count": 1,
@@ -56,7 +63,7 @@
       "days_until": -1,
       "severity": "expired",
       "last_alerted_at": "2026-06-07T00:00:00Z",
-      "alert_count": 20,
+      "alert_count": 21,
       "_suppression_source": "state/persistent-blockers.json"
     }
   ],

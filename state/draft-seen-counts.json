@@ -1,8 +1,15 @@
 {
   "announcement-spiritvale-official-date-release.json": {
-    "seen_count": 35,
+    "seen_count": 36,
     "first_seen_at": "2026-06-05T20:31:49Z",
-    "last_seen_at": "2026-06-19T13:21:48Z",
-    "alerted_at": "2026-06-08T18:07:03Z"
+    "last_seen_at": "2026-06-19T20:31:35Z",
+    "alerted_at": "2026-06-08T18:07:03Z",
+    "seen_count_log": [
+      {
+        "at": "2026-06-19T20:31:35Z",
+        "count": 36,
+        "delta": 1
+      }
+    ]
   }
 }

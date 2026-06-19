@@ -168,10 +168,17 @@ def save_seen_counts(counts: dict) -> None:
 
 
 def bump_seen_count(counts: dict, draft_name: str, polled_at: str) -> None:
-    """Increment the stale-draft counter for a draft that exists but hasn't been reviewed."""
+    """Increment the stale-draft counter for a draft that exists but hasn't been reviewed.
+
+    Appends to seen_count_log so every increment is timestamped — makes unexplained jumps
+    auditable (DIM-style per-entity change history: "seen 34×, last +1 at <ts>").
+    """
     entry = counts.get(draft_name, {"seen_count": 0, "first_seen_at": polled_at})
-    entry["seen_count"] = entry.get("seen_count", 0) + 1
+    prev = entry.get("seen_count", 0)
+    entry["seen_count"] = prev + 1
     entry["last_seen_at"] = polled_at
+    log = entry.setdefault("seen_count_log", [])
+    log.append({"at": polled_at, "count": entry["seen_count"], "delta": 1})
     counts[draft_name] = entry
 
 
@@ -353,8 +360,9 @@ def fire_pr1_deadline_alert(blockers: dict, polled_at: str) -> bool:
     # Dead-window: reduce alert frequency to weekly (168h) to avoid noise during EA prep quiet period.
     in_dead_window = is_in_dead_window(now_dt)
     effective_dedup = DEAD_WINDOW_DEDUP_HOURS if in_dead_window else URGENT_DEDUP_HOURS
+    dedup_mode = "dead-window" if in_dead_window else "normal"
     if in_dead_window:
-        print(f"[pr1-deadline] dead-window active ({DEAD_WINDOW_START}→{DEAD_WINDOW_END}) — dedup={effective_dedup}h")
+        print(f"[pr1-deadline] dead-window active ({DEAD_WINDOW_START}→{DEAD_WINDOW_END}) — dedup={effective_dedup}h (dedup-mode={dedup_mode})")
 
     # Dedup: skip if we already fired an [URGENT] alert within the effective dedup window
     pr1 = blockers.get("pr1", {})
@@ -365,7 +373,7 @@ def fire_pr1_deadline_alert(blockers: dict, polled_at: str) -> bool:
             if (now_dt - last_dt).total_seconds() < effective_dedup * 3600:
                 print(
                     f"[pr1-deadline] suppressed — already sent [URGENT] at {last_urgent[:16]}, "
-                    f"<{effective_dedup}h ago"
+                    f"<{effective_dedup}h ago (dedup-mode={dedup_mode})"
                 )
                 return False
         except Exception:
@@ -396,7 +404,7 @@ def fire_pr1_deadline_alert(blockers: dict, polled_at: str) -> bool:
             blockers["pr1"] = {"first_seen_at": polled_at, "alert_count": 0}
         blockers["pr1"]["last_urgent_at"] = polled_at
         blockers["pr1"]["alert_count"] = blockers["pr1"].get("alert_count", 0) + 1
-        print(f"[pr1-deadline] [URGENT] alert sent ({time_str}, alert #{blockers['pr1']['alert_count']})")
+        print(f"[pr1-deadline] [URGENT] alert sent ({time_str}, alert #{blockers['pr1']['alert_count']}, dedup-mode={dedup_mode})")
         return True
     except Exception as e:
         print(f"WARN: PR1 urgent alert failed: {e}", file=sys.stderr)

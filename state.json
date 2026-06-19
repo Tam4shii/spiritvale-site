@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T06:10:31Z",
+  "generated_at": "2026-06-19T18:08:45Z",
   "latest_version": "0.18.0",
   "last_polled_at": "2026-06-09T03:43:18Z",
   "poll_tz": "UTC",
@@ -41,9 +41,9 @@
   "pending_drafts": [
     {
       "filename": "announcement-spiritvale-official-date-release.json",
-      "seen_count": 32,
+      "seen_count": 34,
       "first_seen_at": "2026-06-05T20:31:49Z",
-      "last_seen_at": "2026-06-19T03:43:03Z",
+      "last_seen_at": "2026-06-19T08:34:04Z",
       "alerted_at": "2026-06-08T18:07:03Z"
     }
   ],
@@ -54,7 +54,10 @@
       "description": "PR #1 spiritvale-site \u2014 merge/close decision for news page",
       "deadline": "2026-06-08",
       "days_until": -1,
-      "severity": "expired"
+      "severity": "expired",
+      "last_alerted_at": "2026-06-07T00:00:00Z",
+      "alert_count": 20,
+      "_suppression_source": "state/persistent-blockers.json"
     }
   ],
   "worst_deadline_severity": "expired",

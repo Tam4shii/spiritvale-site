@@ -52,6 +52,26 @@ def _best_poll_ts(index_ts: str | None) -> str | None:
     return index_ts
 
 
+def _enrich_deadline_alerts(alerts: list, blockers: dict) -> list:
+    """Cross-reference persistent-blockers.json so alert suppression state is auditable.
+
+    Adds last_alerted_at + alert_count + _suppression_source to each alert whose key
+    appears in blockers. A reviewer can verify "suppression already active" by checking
+    these fields rather than opening a second file.
+    """
+    enriched = []
+    for alert in alerts:
+        key = alert.get("key")
+        blocker = blockers.get(key, {})
+        entry = dict(alert)
+        if blocker:
+            entry["last_alerted_at"] = blocker.get("last_alerted_at")
+            entry["alert_count"] = blocker.get("alert_count")
+            entry["_suppression_source"] = "state/persistent-blockers.json"
+        enriched.append(entry)
+    return enriched
+
+
 def main():
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -78,6 +98,7 @@ def main():
     stats = _load(ROOT / "stats.json") or {}
     draft_seen = _load(ROOT / "state" / "draft-seen-counts.json") or {}
     deadline_status = _load(ROOT / "state" / "deadline-status.json") or {}
+    persistent_blockers = _load(ROOT / "state" / "persistent-blockers.json") or {}
 
     pending_drafts = [
         {"filename": k, **v} for k, v in draft_seen.items()
@@ -125,7 +146,9 @@ def main():
         },
         "pending_drafts": pending_drafts,
         "pending_drafts_count": len(pending_drafts),
-        "deadline_alerts": deadline_status.get("deadlines", []),
+        "deadline_alerts": _enrich_deadline_alerts(
+            deadline_status.get("deadlines", []), persistent_blockers
+        ),
         "worst_deadline_severity": deadline_status.get("worst_severity"),
         "milestones": milestones_with_days,
         "upcoming_milestones": upcoming,

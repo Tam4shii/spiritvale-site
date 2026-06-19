@@ -189,8 +189,15 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ℹ️ State: `state/draft-seen-counts.json` seen_count=35 committed (was 32); PR#1 still OPEN (boss action required — (a) merge or (b) close)
 - 🚨 PR #1 still OPEN — pre-classified, merge-ready: https://github.com/Tam4shii/spiritvale-site/pull/1
 
-**Next idle-loop action**: Monitoring mode. Dead window Jun 22–Jul 15 → resume full alert sensitivity Jul 15 (EA launch). No code changes needed until new Steam patch detected by GH Actions. PR #1 awaits boss decision.
-**Last push to origin/main**: run#31 (2026-06-19) — state/draft-seen-counts.json + PROJECT.md updated; run#30 was b84fc31 (cycles=32).
+**run#32 status** (2026-06-20 idle-loop Forge):
+- ✅ `make check` exit 0 — all 11 artifacts valid; baseline OK at 0.18.0; health severity: ok
+- ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest; seen_count=36 (was 35)
+- ✅ **MCP server shipped** — `mcp/server.py` (FastMCP, 5 tools: get_latest_patch/list_patches/get_patch/search_patches/get_diff); works against local files, no HTTP needed; committed+pushed
+- ✅ **SDK get_bot_json()** — `clients/spiritvale.py` adds `get_bot_json()` function; discord-example.py `/latest` command updated to use pre-formatted bot.json embed (tarkov.dev reference bot pattern)
+- 🚨 PR #1 still OPEN — dead window starts in **2 days** (Jun 22); alert #21 sent; boss action: merge or close
+
+**Next idle-loop action**: Monitoring mode — dead window starts Jun 22. No code changes needed; next meaningful check is 2026-07-15 (EA launch). PR #1 awaits boss decision.
+**Last push to origin/main**: run#32 (2026-06-20) — 3 commits (step4-audit + state-run#32 + sdk+mcp); seen_count=36.
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

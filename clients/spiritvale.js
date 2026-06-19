@@ -52,6 +52,22 @@ export function getState() {
 }
 
 /**
+ * Search patch entries by keyword — case-insensitive substring match on text and tags.
+ * Returns the matching SearchEntry objects with no extra fetches beyond the search index.
+ *
+ * @param {string} query  e.g. "Paladin" or "crafting" or "crash"
+ * @returns {Promise<object[]>}
+ */
+export async function search(query) {
+  const index = await getSearchIndex();
+  const q = query.toLowerCase();
+  return index.entries.filter(e =>
+    e.text.toLowerCase().includes(q) ||
+    (e.tags ?? []).some(t => t.toLowerCase().includes(q))
+  );
+}
+
+/**
  * Compute a cumulative diff between two versions using the public index.
  * Returns { added, changed, fixed, removed } arrays where each entry carries
  * a `_version` annotation so callers can render per-version badges.

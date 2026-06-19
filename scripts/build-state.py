@@ -18,6 +18,11 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
+# state/last-poll.json is gitignored — monitoring runs write it locally but CI/fresh clones
+# never have it. Mirror the dual-source pattern from build-health.py: prefer the fresher
+# timestamp between patches/index.json and last-poll.json so state.json stays accurate on
+# both environments without requiring the gitignored file to exist.
+LAST_POLL_PATH = ROOT / "state" / "last-poll.json"
 
 # Known game milestones — update when developer posts new dates.
 _MILESTONES = [
@@ -33,6 +38,18 @@ def _load(path: Path) -> dict | list | None:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return None
+
+
+def _best_poll_ts(index_ts: str | None) -> str | None:
+    """Return whichever of index.json or last-poll.json carries the fresher timestamp."""
+    try:
+        lp = json.loads(LAST_POLL_PATH.read_text())
+        file_ts = lp.get("polled_at")
+        if file_ts and (not index_ts or file_ts > index_ts):
+            return file_ts
+    except (FileNotFoundError, json.JSONDecodeError, TypeError):
+        pass  # clean clone / CI — expected; fall through to index.json value
+    return index_ts
 
 
 def main():

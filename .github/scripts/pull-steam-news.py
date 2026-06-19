@@ -44,6 +44,7 @@ SEEN_COUNTS_PATH = Path("state/draft-seen-counts.json")
 STALE_ALERT_CYCLES = 3   # seen_count >= this → push luna-tg notification to boss
 STALE_ARCHIVE_CYCLES = 7  # seen_count >= this → notification recommends auto-archive
 MAX_STALE_CYCLES = 14    # seen_count >= this → alerts silenced; draft treated as EXPIRED (no more pings)
+HYPER_STALE_CYCLES = MAX_STALE_CYCLES * 2  # seen_count >= this → one-time CRITICAL re-escalation (human review required)
 STALE_DRAFT_CYCLES = STALE_ALERT_CYCLES  # backward-compat alias (used in stale list filter below)
 
 # PR #1 deadline escalation — separate [URGENT] path, independent of routine stale-draft alert.
@@ -216,6 +217,37 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
     """
     count = stale_entry.get("seen_count", 0)
     last_alerted = stale_entry.get("alerted_at", "")
+
+    if count >= HYPER_STALE_CYCLES:
+        # One-time CRITICAL re-escalation once we're 2× past MAX_STALE_CYCLES.
+        # After MAX_STALE_CYCLES the normal cooldown path was silenced, but a draft sitting
+        # this long (>= 28 cycles ≈ 28 days) genuinely warrants a human eyes check.
+        if not stale_entry.get("hyper_alerted_at"):
+            msg = (
+                f"🚨🚨🚨 SpiritVale: CRITICAL stale draft — human review required\n"
+                f"Draft: {stale_name}\n"
+                f"Seen: {count} poll cycles (>= HYPER_STALE={HYPER_STALE_CYCLES})\n"
+                f"First seen: {stale_entry.get('first_seen_at', '?')[:10]}\n"
+                f"Last routine alert: {stale_entry.get('alerted_at', 'never')[:16]}\n"
+                f"PR #1 → https://github.com/Tam4shii/spiritvale-site/pull/1\n"
+                f"Action: merge or close this PR — it has been open far too long."
+            )
+            luna_tg = Path.home() / ".local/bin/luna-tg"
+            if luna_tg.is_file():
+                try:
+                    subprocess.run([str(luna_tg), msg], check=True, timeout=10)
+                    stale_entry["hyper_alerted_at"] = polled_at
+                    print(f"[hyper-stale] CRITICAL escalation sent for {stale_name} (count={count})")
+                except Exception as e:
+                    print(f"WARN: hyper-stale alert failed: {e}", file=sys.stderr)
+            else:
+                print(f"WARN: luna-tg not found — hyper-stale alert skipped", file=sys.stderr)
+        else:
+            print(
+                f"[hyper-stale] already escalated at {stale_entry['hyper_alerted_at'][:16]}, "
+                f"count={count} — no re-fire"
+            )
+        return False
 
     if count >= MAX_STALE_CYCLES:
         print(

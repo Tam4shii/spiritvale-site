@@ -172,6 +172,14 @@ export function getSearchIndex(): Promise<SearchIndex>;
 export function getState(): Promise<WorldState>;
 
 /**
+ * Search patch entries by keyword — case-insensitive substring match on text and tags.
+ * Returns matching SearchEntry objects; no extra network requests beyond the search index fetch.
+ *
+ * @param query  e.g. "Paladin" or "crafting"
+ */
+export function search(query: string): Promise<SearchEntry[]>;
+
+/**
  * Compute a cumulative diff between two versions.
  * Returns change entries for all versions strictly after fromVersion up to and including toVersion.
  * Each entry includes a _version annotation for per-patch badge rendering.

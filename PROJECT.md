@@ -93,6 +93,19 @@
 - REST API endpoints (e.g. `/builds`, `/items`)
 - Multi-language toggle (TH/EN)
 
+## Monitoring Schedule (Dead-Window Aware)
+
+> Pattern: warframestat.us / wago.tools explicitly document known quiet windows to avoid alert fatigue during periods when no patches are expected.
+
+| Period | Window | Expected Activity | Poll cadence | Notes |
+|---|---|---|---|---|
+| Post-playtest | 2026-06-08 → 2026-06-12 | Demo prep; minor hotfixes possible | daily (GH Actions 01:00 UTC) | Demo launched June 12 |
+| **Dead window** | **2026-06-22 → 2026-07-15** | **No patches expected** (dev focus = EA polish) | **daily (unchanged — free)** | Alerts are noise; stale-draft pings suppressed |
+| EA Launch window | 2026-07-15 → 2026-07-22 | High patch probability (day-one fixes) | daily | Resume full alert sensitivity |
+| Post-EA steady | 2026-07-22 + | Normal cadence | daily | Typical 1-2 week patch cycle |
+
+**Dead-window alert behaviour**: GH Actions still polls daily (cron cost = 0). Stale-draft alerts during the dead window are expected noise — not a signal to act. Next meaningful check: **2026-07-15** (Early Access launch).
+
 ## Next Steps
 
 > **Monitoring mode** — no active development task; waiting for next Steam patch.

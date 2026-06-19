@@ -82,3 +82,17 @@ def get_diff(from_version: str, to_version: str) -> dict:
                 result[key].append({"text": entry, "_version": v})
 
     return result
+
+
+def get_bot_json() -> dict:
+    """Pre-formatted Discord embed payload (/patches/bot.json).
+
+    Returns the bot.json envelope which includes a pre-built Discord embed dict under
+    result['latest']['embed']. Consuming this avoids re-building embeds from raw patch
+    data — the same pattern used by tarkov.dev's reference Stash Discord bot.
+
+    Example:
+        data = get_bot_json()
+        embed_dict = data['latest']['embed']  # ready for discord.Embed.from_dict()
+    """
+    return _get("/patches/bot.json")

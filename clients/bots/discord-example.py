@@ -44,7 +44,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks
 
-from spiritvale import get_diff, get_health, get_index, get_latest, get_patch, get_search_index
+from spiritvale import get_bot_json, get_diff, get_health, get_index, get_latest, get_patch, get_search_index
 
 ANNOUNCE_CHANNEL_ID = int(os.getenv("SPIRITVALE_CHANNEL_ID", "0"))
 
@@ -124,10 +124,20 @@ async def poll_new_patch():
 async def latest_slash(interaction: discord.Interaction):
     await interaction.response.defer()
     try:
+        # Use pre-formatted embed from bot.json (tarkov.dev reference bot pattern) —
+        # avoids rebuilding the embed from raw patch data on every invocation.
+        bot_data = get_bot_json()
+        raw = bot_data["latest"]["embed"]
+        # bot.json uses thumbnail_url (flat); discord.Embed.from_dict expects {thumbnail: {url}}
+        embed_dict = {k: v for k, v in raw.items() if k != "thumbnail_url"}
+        if raw.get("thumbnail_url"):
+            embed_dict["thumbnail"] = {"url": raw["thumbnail_url"]}
+        embed = discord.Embed.from_dict(embed_dict)
+        await interaction.followup.send(embed=embed)
+    except Exception:
+        # Fallback: build embed from raw patch data if bot.json is unavailable or malformed
         data = get_latest()
         await interaction.followup.send(embed=_patch_embed(data))
-    except Exception as exc:
-        await interaction.followup.send(f"❌ {exc}", ephemeral=True)
 
 
 @bot.tree.command(name="patch", description="Show a specific SpiritVale patch by version")

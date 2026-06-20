@@ -488,6 +488,25 @@ def main():
 
     # Pre-compute timestamp so stale-count bumps and new draft writes share the same polled_at.
     polled_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    # Dead-window status banner — emitted on EVERY run so GH Actions logs are self-verifying.
+    # Suppression is silent inside fire_stale_alert / fire_pr1_deadline_alert; this banner
+    # lets reviewers confirm the flag is active without tracing into each function.
+    _now = datetime.fromisoformat(polled_at.replace("Z", "+00:00"))
+    if is_in_dead_window(_now):
+        print(
+            f"[dead-window] ACTIVE ({DEAD_WINDOW_START} → {DEAD_WINDOW_END}) — "
+            f"stale-draft dedup stretched to {DEAD_WINDOW_DEDUP_HOURS}h; "
+            f"PR#1 URGENT alerts throttled to weekly; resumes {DEAD_WINDOW_END}"
+        )
+    else:
+        _dw_start = datetime.fromisoformat(DEAD_WINDOW_START).replace(tzinfo=timezone.utc)
+        _days_to = (_dw_start - _now).days
+        if 0 < _days_to <= 7:
+            print(f"[dead-window] INACTIVE — starts in {_days_to} day(s) on {DEAD_WINDOW_START}")
+        else:
+            print(f"[dead-window] INACTIVE (outside {DEAD_WINDOW_START} → {DEAD_WINDOW_END})")
+
     seen_counts = load_seen_counts()
     seen_counts_dirty = False
 

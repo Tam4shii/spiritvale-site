@@ -636,6 +636,36 @@
           },
           "steam_baseline_match": {
             "type": "boolean"
+          },
+          "poll_completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO timestamp of the last Steam API poll. Distinct from generated_at (when health.json was built) — makes the poll→rebuild sequence explicit for consumers."
+          },
+          "dead_window": {
+            "type": "object",
+            "description": "Machine-readable quiet-period declaration. Bots should suppress 'no new patches' alerts when dead_window.active=true — this is an expected dev-focus gap, not a staleness bug. Pattern: warframestat.us / tarkov.dev.",
+            "properties": {
+              "active": {
+                "type": "boolean",
+                "description": "true if the current time falls within the known quiet period"
+              },
+              "start": {
+                "type": "string",
+                "format": "date",
+                "description": "ISO date when the quiet period begins (inclusive)"
+              },
+              "end": {
+                "type": "string",
+                "format": "date",
+                "description": "ISO date when the quiet period ends (exclusive); full alert sensitivity resumes"
+              },
+              "reason": {
+                "type": "string",
+                "description": "Human-readable explanation of why no patches are expected"
+              }
+            },
+            "required": ["active", "start", "end", "reason"]
           }
         }
       },

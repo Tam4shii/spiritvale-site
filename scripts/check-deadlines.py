@@ -26,6 +26,12 @@ ROOT = Path(__file__).parent.parent
 BLOCKERS_PATH = ROOT / "state" / "persistent-blockers.json"
 STATUS_PATH = ROOT / "state" / "deadline-status.json"
 
+# Known quiet windows — no patches expected; alerts cap at "warn" (no Telegram, no exit 1).
+# Pattern: warframestat.us / wago.tools document known quiet periods to prevent alert fatigue.
+DEAD_WINDOWS: list[tuple[str, str]] = [
+    ("2026-06-22", "2026-07-15"),  # EA polish window; Demo live, EA launches Jul 15
+]
+
 SEVERITY_DAYS = {
     "expired": -1,
     "critical": 2,
@@ -33,6 +39,15 @@ SEVERITY_DAYS = {
     "warn": 14,
     "ok": float("inf"),
 }
+
+
+def _in_dead_window(today: date) -> tuple[bool, str]:
+    """Return (True, label) if today falls in any known quiet window."""
+    for start_s, end_s in DEAD_WINDOWS:
+        s, e = date.fromisoformat(start_s), date.fromisoformat(end_s)
+        if s <= today <= e:
+            return True, f"dead window {start_s}→{end_s}"
+    return False, ""
 
 
 def classify(days_until: int) -> str:
@@ -131,11 +146,18 @@ def main():
         blockers = json.load(f)
 
     today = date.today()
+    dead_window, dead_window_label = _in_dead_window(today)
+    if dead_window:
+        print(f"[dead-window] {dead_window_label} — alert severity capped at warn; Telegram suppressed")
+
     results = []
     worst = "ok"
     severity_rank = ["ok", "warn", "urgent", "critical", "expired"]
 
     for key, blocker in blockers.items():
+        if blocker.get("archived"):
+            print(f"[archived] {key} — skipping (archived_at={blocker.get('archived_at', '?')})")
+            continue
         deadline_str = blocker.get("deadline")
         if not deadline_str:
             continue
@@ -157,6 +179,12 @@ def main():
             worst = severity
 
         _print_entry(entry)
+
+    # Dead-window cap: during known quiet periods, suppress actionable escalations.
+    # Worst severity is capped at "warn" so Telegram doesn't fire and exit code stays 0.
+    if dead_window and severity_rank.index(worst) > severity_rank.index("warn"):
+        print(f"[dead-window] {dead_window_label} — downgrading worst={worst} to warn (no Telegram, no exit 1)")
+        worst = "warn"
 
     # Operational risk is always LOW for this script — it is read-only and makes no
     # content changes. Editorial risk is derived from deadline severity.

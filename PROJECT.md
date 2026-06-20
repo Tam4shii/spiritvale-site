@@ -6,7 +6,7 @@
 
 | # | Item | Urgency | Action |
 |---|---|---|---|
-| 1 | **PR #1** — [SpiritVale Official Date release (June 8 / June 12 / July 15)](https://github.com/Tam4shii/spiritvale-site/pull/1) | 🟡 LOW — DRAFT, date context superseded | **Context**: PR branch (`steam-patch-draft/spiritvale-official-date-release`) adds `patches/draft-spiritvale-official-date-release.json` only. The milestone banner (`showMilestoneBanner()` in `index.html`) already encodes June 12 demo + July 15 EA live on main. PR is safe to **close** with note "superseded by milestone banner". |
+| 1 | **PR #1** — [SpiritVale Official Date release (June 8 / June 12 / July 15)](https://github.com/Tam4shii/spiritvale-site/pull/1) | 🟢 SILENCED — Telegram alerts archived (run#35); decide at EA (Jul 15) | **Context**: PR branch (`steam-patch-draft/spiritvale-official-date-release`) adds `patches/draft-spiritvale-official-date-release.json` only. The milestone banner (`showMilestoneBanner()` in `index.html`) already encodes June 12 demo + July 15 EA live on main. PR is safe to **close** with note "superseded by milestone banner". No pings until EA launch. |
 | 2 | **Push 5 local commits to origin/main** | 🟡 MEDIUM — local only, CF Pages not serving latest | Local `main` is 5 ahead of `origin/main`. Commits are clean (`make check` ✅). Push when CF Pages is confirmed connected (see item 3). |
 | 3 | **CF Pages not connected** | 🟡 MEDIUM — `spiritvale.tama.sh` not serving live | Go to dash.cloudflare.com → Pages → connect `Tam4shii/spiritvale-site` |
 
@@ -189,6 +189,18 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ℹ️ State: `state/draft-seen-counts.json` seen_count=35 committed (was 32); PR#1 still OPEN (boss action required — (a) merge or (b) close)
 - 🚨 PR #1 still OPEN — pre-classified, merge-ready: https://github.com/Tam4shii/spiritvale-site/pull/1
 
+**run#35 status** (2026-06-20 idle-loop Forge — Step 4 iteration):
+- ✅ **Alert fatigue fix**: `pr1` blocker archived in `persistent-blockers.json` (alert_count was 22, deadline expired 12d ago). `check-deadlines.py` now skips `archived:true` entries → exit 0, no Telegram.
+- ✅ **Dead-window code guard**: `DEAD_WINDOWS=[("2026-06-22","2026-07-15")]` added to `check-deadlines.py` (warframestat.us pattern). Severity auto-caps at "warn" during window → Telegram suppressed + exit 0. Takes effect Jun 22.
+- ✅ `state.json` rebuilt — `deadline_alerts=0`, `worst_severity=ok`
+- ℹ️ PR #1 still OPEN (merge-ready) — Telegram escalation silenced; boss to decide merge vs close at EA launch (2026-07-15)
+
+**run#34 status** (2026-06-20 idle-loop Forge):
+- ✅ `make check` exit 0 — all 11 artifacts valid; baseline OK at 0.18.0; health severity: ok
+- ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest; seen_count=38 (was 37)
+- ✅ State committed — `state/draft-seen-counts.json` + `state/persistent-blockers.json` pushed (commit a58c14f)
+- 🚨 PR #1 still OPEN — hyper-stale (38 cycles); URGENT alert #22 sent; dead window starts Jun 22 (2 days)
+
 **run#32 status** (2026-06-20 idle-loop Forge):
 - ✅ `make check` exit 0 — all 11 artifacts valid; baseline OK at 0.18.0; health severity: ok
 - ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest; seen_count=36 (was 35)
@@ -196,14 +208,8 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ✅ **SDK get_bot_json()** — `clients/spiritvale.py` adds `get_bot_json()` function; discord-example.py `/latest` command updated to use pre-formatted bot.json embed (tarkov.dev reference bot pattern)
 - 🚨 PR #1 still OPEN — dead window starts in **2 days** (Jun 22); alert #21 sent; boss action: merge or close
 
-**run#33 status** (2026-06-20 idle-loop Forge):
-- ✅ `make check` exit 0 — all 11 artifacts valid; baseline OK at 0.18.0; health severity: ok
-- ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest; seen_count=37 (was 36)
-- ✅ Synced local main with origin/main (was 4 commits behind from run#32)
-- 🚨 PR #1 still OPEN — dead window starts in **2 days** (Jun 22); CRITICAL stale alert sent (cycle #37 ≥ HYPER_STALE=28); boss action: merge or close
-
-**Next idle-loop action**: Monitoring mode — dead window starts Jun 22. No code changes needed; next meaningful check is 2026-07-15 (EA launch). PR #1 awaits boss decision.
-**Last push to origin/main**: run#33 (2026-06-20) — state-run#33; seen_count=37.
+**Next idle-loop action**: Monitoring mode — dead window starts Jun 22 (2 days); code guard active from Jun 22. No Telegram escalations until EA launch (2026-07-15). PR #1 awaits boss decision (merge or close) — no longer pinging.
+**Last push to origin/main**: run#34 (2026-06-20) — state commit a58c14f (seen_count=38).
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

@@ -50,3 +50,14 @@ jobs:
                 \"footer\": { \"text\": \"spiritvale.tama.sh\" }
               }]
             }"
+
+      - name: Notify WebSub hub (push delivery to Atom subscribers)
+        if: steps.detect.outputs.skip == 'false'
+        run: |
+          # Ping Superfeedr hub so RSS readers subscribed via WebSub get push delivery
+          # instead of waiting for their next poll. feed.xml is already updated at this
+          # point (post-merge), so the hub fetches the live feed immediately.
+          curl -s -f -X POST "https://pubsubhubbub.superfeedr.com/" \
+            -d "hub.mode=publish&hub.url=https://spiritvale.tama.sh/feed.xml" \
+            && echo "[websub] hub notified — push delivery triggered for feed.xml" \
+            || echo "[websub] WARN: hub notify failed (non-fatal)"

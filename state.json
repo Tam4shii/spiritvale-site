@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-19T20:33:19Z",
+  "generated_at": "2026-06-20T08:34:01Z",
   "latest_version": "0.18.0",
   "last_polled_at": "2026-06-19T20:31:35Z",
   "poll_tz": "UTC",
@@ -23,8 +23,8 @@
   "health": {
     "severity": "ok",
     "stale": false,
-    "hours_since_poll": 0.0,
-    "message": "polled 0.0h ago",
+    "hours_since_poll": 9.7,
+    "message": "polled 9.7h ago",
     "steam_baseline_match": true
   },
   "stats_summary": {
@@ -41,40 +41,39 @@
   "pending_drafts": [
     {
       "filename": "announcement-spiritvale-official-date-release.json",
-      "seen_count": 36,
+      "seen_count": 37,
       "first_seen_at": "2026-06-05T20:31:49Z",
-      "last_seen_at": "2026-06-19T20:31:35Z",
+      "last_seen_at": "2026-06-20T00:00:00Z",
       "alerted_at": "2026-06-08T18:07:03Z",
+      "hyper_alerted_at": "2026-06-20T00:00:00Z",
+      "triage_note": "EXPECTED NOISE \u2014 dead window (2026-06-22 to 2026-07-15). This is an announcement-type draft (not a patch), covering Demo Jun 12 (already launched) + EA Jul 15 (upcoming). CRITICAL re-escalation fired run#32; further CRITICAL alerts suppressed by dead-window guard added run#33. Boss action pending: merge PR#1 (publish /news page) or close (archive). No code action needed until EA launch.",
+      "triage_by": "idle-loop-forge-run#33",
+      "triage_at": "2026-06-20T00:00:00Z",
       "seen_count_log": [
         {
           "at": "2026-06-19T20:31:35Z",
           "count": 36,
           "delta": 1
+        },
+        {
+          "at": "2026-06-20T00:00:00Z",
+          "count": 37,
+          "delta": 1,
+          "note": "run#33 \u2014 CRITICAL hyper-stale alert fired; hyper_alerted_at backfilled (code bug: return False prevented persistence)"
         }
       ]
     }
   ],
   "pending_drafts_count": 1,
-  "deadline_alerts": [
-    {
-      "key": "pr1",
-      "description": "PR #1 spiritvale-site \u2014 merge/close decision for news page",
-      "deadline": "2026-06-08",
-      "days_until": -1,
-      "severity": "expired",
-      "last_alerted_at": "2026-06-07T00:00:00Z",
-      "alert_count": 21,
-      "_suppression_source": "state/persistent-blockers.json"
-    }
-  ],
-  "worst_deadline_severity": "expired",
+  "deadline_alerts": [],
+  "worst_deadline_severity": "ok",
   "milestones": [
     {
       "key": "playtest-end",
       "label": "Playtest ended / progress wipe",
       "date": "2026-06-08",
       "phase": "playtest-end",
-      "days_until": -11,
+      "days_until": -12,
       "past": true
     },
     {
@@ -82,7 +81,7 @@
       "label": "Steam Demo launch",
       "date": "2026-06-12",
       "phase": "demo",
-      "days_until": -7,
+      "days_until": -8,
       "past": true
     },
     {
@@ -91,7 +90,7 @@
       "date": "2026-07-15",
       "phase": "early-access",
       "price_usd": 15.0,
-      "days_until": 26,
+      "days_until": 25,
       "past": false
     }
   ],
@@ -102,7 +101,7 @@
       "date": "2026-07-15",
       "phase": "early-access",
       "price_usd": 15.0,
-      "days_until": 26,
+      "days_until": 25,
       "past": false
     }
   ],
@@ -112,7 +111,7 @@
     "date": "2026-07-15",
     "phase": "early-access",
     "price_usd": 15.0,
-    "days_until": 26,
+    "days_until": 25,
     "past": false
   },
   "_links": {

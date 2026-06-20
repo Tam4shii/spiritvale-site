@@ -1,20 +1,16 @@
 {
   "pr1": {
-    "description": "PR #1 spiritvale-site \u2014 merge/close decision for news page",
+    "description": "PR #1 spiritvale-site — merge/close decision for news page",
     "deadline": "2026-06-08",
     "first_seen_at": "2026-06-05T20:31:49Z",
     "alert_count": 22,
     "last_alerted_at": "2026-06-07T00:00:00Z",
     "last_severity": "critical",
-    "escalation_note": "T-1 day (FINAL WARNING). Playtest ends 2026-06-08 \u2014 TOMORROW. Discord PATCH_WEBHOOK not reachable locally; escalation logged here. Boss must act: (a) merge PR\u2192publishes news page, (b) close PR\u2192archives, (c) leave draft\u2192revisit post-2026-06-08. PR: https://github.com/Tam4shii/spiritvale-site/pull/1",
-    "escalation_channels_attempted": {
-      "discord_webhook": "not reachable (secret only in GH Actions env)",
-      "project_md": "updated run#6 \u2014 FINAL WARNING header added",
-      "deadline_status_json": "updated 2026-06-07 via make check-deadlines (days_until=1)"
-    },
-    "poll_terminology_note": "run#5 described as 'dry-run' in Step 1 output \u2014 this was ambiguous. All future idle-loop entries must use 'live Steam API poll' (real HTTP GET to api.steampowered.com) vs 'skipped/mocked' explicitly. run#6 onward uses this convention.",
     "last_urgent_at": "2026-06-20T03:43:06Z",
     "dead_window_until": "2026-07-15",
-    "dead_window_reason": "EA launch dead window Jun 22–Jul 15. No patch expected; no further Telegram alerts until window closes or steam_version > v0.18.0."
+    "dead_window_reason": "EA launch dead window Jun 22–Jul 15. No patch expected; no further Telegram alerts until window closes or steam_version > v0.18.0.",
+    "archived": true,
+    "archived_at": "2026-06-20T04:00:00Z",
+    "archived_reason": "Original deadline 2026-06-08 expired 12d ago; 22 Telegram escalations sent with zero response. PR is pre-classified + merge-ready. Boss to decide merge vs close at EA launch (2026-07-15). Archived to stop daily EXPIRED escalation."
   }
 }

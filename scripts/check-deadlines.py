@@ -199,6 +199,10 @@ def main():
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "today": str(today),
         "worst_severity": worst,
+        "dead_window": {
+            "active": dead_window,
+            "label": dead_window_label if dead_window else None,
+        },
         "operational_risk": "low",
         "editorial_risk": editorial_risk,
         "dead_window": {
@@ -221,6 +225,10 @@ def main():
     print(f"\n── Risk Assessment ──")
     print(f"Operational risk : LOW  (read-only — no content or schema changes)")
     print(f"Editorial risk   : {editorial_risk.upper()}")
+    if dead_window:
+        print(f"Dead window      : ACTIVE — {dead_window_label} (Telegram suppressed, severity capped at warn)")
+    else:
+        print(f"Dead window      : inactive (alerts enabled)")
     if worst in ALERT_SEVERITIES:
         if already_alerted:
             print(f"Idempotency      : already alerted at severity={worst} today — Telegram skipped")

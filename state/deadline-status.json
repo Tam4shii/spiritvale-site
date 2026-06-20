@@ -1,7 +1,11 @@
 {
-  "generated_at": "2026-06-20T08:33:45Z",
+  "generated_at": "2026-06-20T11:03:21Z",
   "today": "2026-06-20",
   "worst_severity": "ok",
+  "dead_window": {
+    "active": false,
+    "label": null
+  },
   "operational_risk": "low",
   "editorial_risk": "low",
   "dead_window": {

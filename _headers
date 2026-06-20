@@ -77,10 +77,19 @@
 /api/
   Content-Type: text/html; charset=utf-8
   Cache-Control: public, max-age=3600, s-maxage=3600
+  # ── Security decision log (api/ CSP divergence from global rule) ──
+  # ADDED script-src cdn.redoc.ly: Redoc standalone bundle loads from CDN.
+  #   Without this, the global 'self'-only script-src silently blocks the bundle,
+  #   rendering the API explorer blank. Scope limited to /api/ only.
+  # ADDED worker-src blob:: Redoc spawns a web worker via blob: URL for syntax
+  #   highlighting. Falls back to script-src if unset; blob: is least-privilege.
+  # UNCHANGED everything else — same as global rule.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.redoc.ly; worker-src blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'
 
 /api/index.html
   Content-Type: text/html; charset=utf-8
   Cache-Control: public, max-age=3600, s-maxage=3600
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.redoc.ly; worker-src blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'self'
 
 /openapi.json
   Content-Type: application/json; charset=utf-8

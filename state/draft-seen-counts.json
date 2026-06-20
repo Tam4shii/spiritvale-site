@@ -1,11 +1,11 @@
 {
   "announcement-spiritvale-official-date-release.json": {
-    "seen_count": 37,
+    "seen_count": 38,
     "first_seen_at": "2026-06-05T20:31:49Z",
-    "last_seen_at": "2026-06-20T00:00:00Z",
+    "last_seen_at": "2026-06-20T10:55:29Z",
     "alerted_at": "2026-06-08T18:07:03Z",
     "hyper_alerted_at": "2026-06-20T00:00:00Z",
-    "triage_note": "EXPECTED NOISE — dead window (2026-06-22 to 2026-07-15). This is an announcement-type draft (not a patch), covering Demo Jun 12 (already launched) + EA Jul 15 (upcoming). CRITICAL re-escalation fired run#32; further CRITICAL alerts suppressed by dead-window guard added run#33. Boss action pending: merge PR#1 (publish /news page) or close (archive). No code action needed until EA launch.",
+    "triage_note": "EXPECTED NOISE \u2014 dead window (2026-06-22 to 2026-07-15). This is an announcement-type draft (not a patch), covering Demo Jun 12 (already launched) + EA Jul 15 (upcoming). CRITICAL re-escalation fired run#32; further CRITICAL alerts suppressed by dead-window guard added run#33. Boss action pending: merge PR#1 (publish /news page) or close (archive). No code action needed until EA launch.",
     "triage_by": "idle-loop-forge-run#33",
     "triage_at": "2026-06-20T00:00:00Z",
     "seen_count_log": [
@@ -18,7 +18,12 @@
         "at": "2026-06-20T00:00:00Z",
         "count": 37,
         "delta": 1,
-        "note": "run#33 — CRITICAL hyper-stale alert fired; hyper_alerted_at backfilled (code bug: return False prevented persistence)"
+        "note": "run#33 \u2014 CRITICAL hyper-stale alert fired; hyper_alerted_at backfilled (code bug: return False prevented persistence)"
+      },
+      {
+        "at": "2026-06-20T10:55:29Z",
+        "count": 38,
+        "delta": 1
       }
     ]
   }

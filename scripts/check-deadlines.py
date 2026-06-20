@@ -62,8 +62,30 @@ LUNA_TG = os.environ.get("LUNA_TG", os.path.expanduser("~/.local/bin/luna-tg"))
 ALERT_SEVERITIES = {"critical", "urgent", "expired"}
 
 
-def _send_tg_alert(worst: str, results: list) -> bool:
+def _dead_window_active(blockers: dict, today) -> tuple[bool, str]:
+    """Return (is_active, reason) if any blocker has a dead_window_until in the future."""
+    for blocker in blockers.values():
+        dw = blocker.get("dead_window_until")
+        if not dw:
+            continue
+        try:
+            dw_date = date.fromisoformat(dw)
+        except ValueError:
+            continue
+        if today <= dw_date:
+            reason = blocker.get("dead_window_reason", f"dead window until {dw}")
+            return True, f"until {dw}: {reason}"
+    return False, ""
+
+
+def _send_tg_alert(worst: str, results: list, blockers: dict, today) -> bool:
     """Fire luna-tg when severity is critical/urgent/expired. Returns True if sent."""
+    # Suppress alerts during declared dead window to prevent alert fatigue.
+    dw_active, dw_reason = _dead_window_active(blockers, today)
+    if dw_active:
+        print(f"Dead window active — Telegram suppressed ({dw_reason})")
+        return False
+
     if not os.path.isfile(LUNA_TG) or not os.access(LUNA_TG, os.X_OK):
         print(f"WARN: luna-tg not executable at {LUNA_TG} — Telegram alert skipped")
         return False
@@ -143,6 +165,7 @@ def main():
     # Idempotency advisory: read last_severity from persistent-blockers to detect
     # whether the worst-severity blocker has already been alerted at this level today.
     already_alerted = _check_idempotency(blockers, worst, today)
+    dw_active, dw_reason = _dead_window_active(blockers, today)
 
     status = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -150,6 +173,10 @@ def main():
         "worst_severity": worst,
         "operational_risk": "low",
         "editorial_risk": editorial_risk,
+        "dead_window": {
+            "active": dw_active,
+            "reason": dw_reason if dw_active else None,
+        },
         "idempotency": {
             "already_alerted_today": already_alerted,
             "note": "alert skipped (same severity already logged today)" if already_alerted else "alert may fire",
@@ -161,15 +188,19 @@ def main():
         f.write("\n")
 
     print(f"\nstate/deadline-status.json written — worst_severity={worst}")
+    if dw_active:
+        print(f"Dead window      : ACTIVE ({dw_reason})")
     print(f"\n── Risk Assessment ──")
     print(f"Operational risk : LOW  (read-only — no content or schema changes)")
     print(f"Editorial risk   : {editorial_risk.upper()}")
     if worst in ALERT_SEVERITIES:
         if already_alerted:
             print(f"Idempotency      : already alerted at severity={worst} today — Telegram skipped")
+        elif dw_active:
+            print(f"Dead window      : alert suppressed until {dw_reason.split(':')[0]}")
         else:
             print(f"Idempotency      : first alert at severity={worst} — firing Telegram notification")
-            _send_tg_alert(worst, results)
+            _send_tg_alert(worst, results, blockers, today)
     else:
         print(f"Idempotency      : severity={worst} below alert threshold — no notification")
 

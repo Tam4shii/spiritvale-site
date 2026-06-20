@@ -1,9 +1,13 @@
 {
-  "generated_at": "2026-06-09T15:44:07Z",
-  "today": "2026-06-09",
+  "generated_at": "2026-06-20T03:51:00Z",
+  "today": "2026-06-20",
   "worst_severity": "expired",
   "operational_risk": "low",
   "editorial_risk": "high",
+  "dead_window": {
+    "active": true,
+    "reason": "until 2026-07-15: EA launch dead window Jun 22\u2013Jul 15. No patch expected; no further Telegram alerts until window closes or steam_version > v0.18.0."
+  },
   "idempotency": {
     "already_alerted_today": false,
     "note": "alert may fire"
@@ -13,7 +17,7 @@
       "key": "pr1",
       "description": "PR #1 spiritvale-site \u2014 merge/close decision for news page",
       "deadline": "2026-06-08",
-      "days_until": -1,
+      "days_until": -12,
       "severity": "expired"
     }
   ]

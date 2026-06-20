@@ -1,0 +1,50 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//spiritvale.tama.sh//SpiritVale Patch Calendar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:SpiritVale — Patch & Milestone Calendar
+X-WR-CALDESC:Patch release dates and launch milestones for SpiritVale (Steam App 3918510). Subscribe to stay updated on Early Access launch and upcoming patches.
+X-WR-TIMEZONE:UTC
+REFRESH-INTERVAL;VALUE=DURATION:P1D
+X-PUBLISHED-TTL:PT24H
+BEGIN:VEVENT
+UID:spiritvale-early-access-2026-07-15@spiritvale.tama.sh
+DTSTART;VALUE=DATE:20260715
+DTEND;VALUE=DATE:20260716
+SUMMARY:SpiritVale — Early Access Launch (~$15 USD)
+DESCRIPTION:SpiritVale Early Access goes live on Steam. Expected price ~$15 USD.\n\nPatch notes: https://spiritvale.tama.sh/patch/\nLatest JSON: https://spiritvale.tama.sh/patches/latest.json\nDiff viewer: https://spiritvale.tama.sh/diff/
+URL:https://store.steampowered.com/app/3918510/
+CATEGORIES:MILESTONE,LAUNCH
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+DTSTAMP:20260620T000000Z
+LAST-MODIFIED:20260620T000000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:spiritvale-demo-2026-06-12@spiritvale.tama.sh
+DTSTART;VALUE=DATE:20260612
+DTEND;VALUE=DATE:20260613
+SUMMARY:SpiritVale — Steam Demo Live
+DESCRIPTION:SpiritVale Steam Demo launched. Progress wiped from playtest.\n\nPatch notes: https://spiritvale.tama.sh/patch/
+URL:https://store.steampowered.com/app/3918510/
+CATEGORIES:MILESTONE,DEMO
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+DTSTAMP:20260620T000000Z
+LAST-MODIFIED:20260620T000000Z
+END:VEVENT
+BEGIN:VEVENT
+UID:spiritvale-patch-v0.18.0@spiritvale.tama.sh
+DTSTART;VALUE=DATE:20260602
+DTEND;VALUE=DATE:20260603
+SUMMARY:SpiritVale v0.18.0 — New and Revamped Maps
+DESCRIPTION:Latest patch: 3 added / 6 changed / 5 fixed / 0 removed.\n\nFull notes: https://spiritvale.tama.sh/patch/?v=0.18.0\nJSON: https://spiritvale.tama.sh/patches/v0.18.0.json
+URL:https://spiritvale.tama.sh/patch/?v=0.18.0
+CATEGORIES:PATCH
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+DTSTAMP:20260620T000000Z
+LAST-MODIFIED:20260620T000000Z
+END:VEVENT
+END:VCALENDAR

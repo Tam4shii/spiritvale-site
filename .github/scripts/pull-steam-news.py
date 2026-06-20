@@ -244,6 +244,17 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
         # One-time CRITICAL re-escalation once we're 2× past MAX_STALE_CYCLES.
         # After MAX_STALE_CYCLES the normal cooldown path was silenced, but a draft sitting
         # this long (>= 28 cycles ≈ 28 days) genuinely warrants a human eyes check.
+        #
+        # Dead-window exception: during the EA-prep quiet period (Jun 22 – Jul 15) there is
+        # no expected patch activity. A CRITICAL stale-draft alert during the dead window is
+        # expected noise — suppress until EA launch (Jul 15) when the boss resumes review.
+        now_dt = datetime.now(tz=timezone.utc)
+        if is_in_dead_window(now_dt):
+            print(
+                f"[hyper-stale] SUPPRESSED — dead window ({DEAD_WINDOW_START}→{DEAD_WINDOW_END}); "
+                f"{stale_name} count={count} — will re-evaluate after {DEAD_WINDOW_END}"
+            )
+            return False
         if not stale_entry.get("hyper_alerted_at"):
             msg = (
                 f"🚨🚨🚨 SpiritVale: CRITICAL stale draft — human review required\n"
@@ -255,15 +266,20 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
                 f"Action: merge or close this PR — it has been open far too long."
             )
             luna_tg = Path.home() / ".local/bin/luna-tg"
+            sent = False
             if luna_tg.is_file():
                 try:
                     subprocess.run([str(luna_tg), msg], check=True, timeout=10)
-                    stale_entry["hyper_alerted_at"] = polled_at
+                    sent = True
                     print(f"[hyper-stale] CRITICAL escalation sent for {stale_name} (count={count})")
                 except Exception as e:
                     print(f"WARN: hyper-stale alert failed: {e}", file=sys.stderr)
             else:
                 print(f"WARN: luna-tg not found — hyper-stale alert skipped", file=sys.stderr)
+            # Always mark as attempted (sent or failed) so we never enter a retry storm.
+            # If notification failed, the flag value encodes the failure for auditability.
+            stale_entry["hyper_alerted_at"] = polled_at if sent else f"{polled_at}_SEND_FAILED"
+            return True  # caller must save_seen_counts to persist hyper_alerted_at
         else:
             print(
                 f"[hyper-stale] already escalated at {stale_entry['hyper_alerted_at'][:16]}, "
@@ -282,10 +298,14 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
             last_dt = datetime.fromisoformat(last_alerted.replace("Z", "+00:00"))
             now_dt = datetime.now(tz=timezone.utc)
             elapsed_h = (now_dt - last_dt).total_seconds() / 3600
-            if elapsed_h < 12:
+            # During the dead window (dev focus = EA polish, no patches expected) stale-draft
+            # alerts are expected noise — stretch dedup to weekly so boss isn't spammed for 25 days.
+            dedup_h = DEAD_WINDOW_DEDUP_HOURS if is_in_dead_window(now_dt) else 12
+            if elapsed_h < dedup_h:
                 print(
                     f"[stale-alert] suppressed — last alert {last_alerted[:16]}, "
-                    f"run_at {polled_at[:16]}, elapsed {elapsed_h:.1f}h < 12h window"
+                    f"run_at {polled_at[:16]}, elapsed {elapsed_h:.1f}h < {dedup_h}h window"
+                    + (" (dead-window)" if dedup_h == DEAD_WINDOW_DEDUP_HOURS else "")
                 )
                 return False
         except Exception:

@@ -53,6 +53,9 @@ PR1_DEADLINE_STR = "2026-06-08"  # playtest ends — merge/close decision needed
 PR1_URL = "https://github.com/Tam4shii/spiritvale-site/pull/1"
 URGENT_HOURS_THRESHOLD = 48  # hours remaining before deadline → escalate to [URGENT]
 URGENT_DEDUP_HOURS = 6       # hours between re-fires of the [URGENT] message (shorter than stale 12h)
+# Stop URGENT re-fires once deadline is this many days in the past — boss has seen ≥22 alerts;
+# further pings are noise. Status remains visible in PROJECT.md + GitHub PR.
+OVERDUE_SILENCE_DAYS = 7
 
 # Dead-window: dev focus shifts to EA polish; no patches expected; alerts are noise.
 # Stale-draft pings drop to weekly (168h) instead of every 6h.
@@ -370,6 +373,16 @@ def fire_pr1_deadline_alert(blockers: dict, polled_at: str) -> bool:
 
     now_dt = datetime.now(tz=timezone.utc)
     hours_remaining = (deadline_dt - now_dt).total_seconds() / 3600
+
+    # Silence once deadline is > OVERDUE_SILENCE_DAYS past — alert#22 already sent; more is noise.
+    # Boss can still act via GitHub PR directly. Status remains in PROJECT.md.
+    if hours_remaining < -(OVERDUE_SILENCE_DAYS * 24):
+        print(
+            f"[pr1-deadline] AUTO-SILENCED — deadline {PR1_DEADLINE_STR} is "
+            f"{abs(hours_remaining / 24):.1f} days overdue (> OVERDUE_SILENCE_DAYS={OVERDUE_SILENCE_DAYS}). "
+            f"No more URGENT pings. Resolve via GitHub: {PR1_URL}"
+        )
+        return False
 
     if hours_remaining > URGENT_HOURS_THRESHOLD:
         print(

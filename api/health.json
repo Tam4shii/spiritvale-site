@@ -1,14 +1,20 @@
 {
-  "generated_at": "2026-06-20T01:39:39Z",
-  "poll_completed_at": "2026-06-20T01:39:39Z",
+  "generated_at": "2026-06-20T06:11:14Z",
+  "poll_completed_at": "2026-06-19T20:31:35Z",
   "poll_mode": "live",
   "stale": false,
-  "hours_since_poll": 0.0,
+  "hours_since_poll": 9.7,
   "hours_since_poll_note": "0.0 = measured immediately after a poll; non-zero = drift since last Steam check",
   "severity": "ok",
-  "message": "polled 0.0h ago",
+  "message": "polled 9.7h ago",
   "latest_version": "0.18.0",
   "total_patches": 11,
   "steam_newsitems_baseline": 10,
-  "steam_baseline_match": true
+  "steam_baseline_match": true,
+  "dead_window": {
+    "active": false,
+    "start": "2026-06-22",
+    "end": "2026-07-15",
+    "reason": "EA polish prep \u2014 no new patches expected until Early Access launch"
+  }
 }

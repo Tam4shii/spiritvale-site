@@ -16,6 +16,11 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Dead window: EA polish prep — no patches expected; bots should suppress "stale" noise.
+# Mirrors warframestat.us/tarkov.dev pattern of machine-readable quiet-period declaration.
+DEAD_WINDOW_START = "2026-06-22"
+DEAD_WINDOW_END = "2026-07-15"
+
 ROOT = Path(__file__).parent.parent
 STEAM_BASELINE_PATH = ROOT / "state" / "steam-last-count.txt"
 LAST_POLL_PATH = ROOT / "state" / "last-poll.json"
@@ -101,6 +106,18 @@ def main():
     steam_baseline = _read_steam_baseline()
     total_patches = stats.get("total_patches")
 
+    # Dead-window: structured quiet-period for bot/consumer awareness (tarkov.dev/warframestat.us pattern).
+    # Bots reading health.json can check dead_window.active before surfacing "no new patches" alerts.
+    now_dt = datetime.now(timezone.utc)
+    dw_start = datetime.fromisoformat(DEAD_WINDOW_START).replace(tzinfo=timezone.utc)
+    dw_end = datetime.fromisoformat(DEAD_WINDOW_END).replace(tzinfo=timezone.utc)
+    dead_window = {
+        "active": dw_start <= now_dt < dw_end,
+        "start": DEAD_WINDOW_START,
+        "end": DEAD_WINDOW_END,
+        "reason": "EA polish prep — no new patches expected until Early Access launch",
+    }
+
     # hours_since_poll semantics: 0.0 is the expected value immediately after a poll run.
     # Non-zero values reflect drift since the last Steam check — anything >24h triggers warn.
     # poll_completed_at: ISO timestamp of the last Steam API poll (distinct from generated_at,
@@ -120,6 +137,7 @@ def main():
         # >= because our archive may contain historical patches older than Steam's news feed window.
         # False only when total_patches < steam_baseline (we missed patches Steam knows about).
         "steam_baseline_match": (total_patches >= steam_baseline) if (total_patches is not None and steam_baseline is not None) else None,
+        "dead_window": dead_window,
     }
     _write(out_dir / "health.json", health)
     baseline_note = f", baseline={steam_baseline}, match={health['steam_baseline_match']}" if steam_baseline else ""

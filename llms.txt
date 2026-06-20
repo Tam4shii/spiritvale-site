@@ -143,6 +143,11 @@
 - **News Atom feed** — https://spiritvale.tama.sh/news/feed.xml
   Subscribe to developer announcements separately from patch-note feed (`/feed.xml`).
 
+- **iCal calendar feed** — https://spiritvale.tama.sh/calendar/calendar.ics
+  Subscribe to SpiritVale milestones in any calendar app (Google Calendar, Apple Calendar, Outlook, etc.) via "Add by URL".
+  Includes: EA launch (2026-07-15), Demo launch (2026-06-12), and latest patch release dates.
+  Updated when new patches ship. Content-Type: text/calendar; charset=utf-8. SteamDB event-calendar pattern.
+
 ## Archived versions (newest first)
 
 v0.18.0, v0.17.0, v0.16.7, v0.16.3, v0.16.0, v0.15.0, v0.14.0, v0.13.5, v0.13.4, v0.13.2, v0.13.0

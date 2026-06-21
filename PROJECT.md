@@ -189,6 +189,12 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ℹ️ State: `state/draft-seen-counts.json` seen_count=35 committed (was 32); PR#1 still OPEN (boss action required — (a) merge or (b) close)
 - 🚨 PR #1 still OPEN — pre-classified, merge-ready: https://github.com/Tam4shii/spiritvale-site/pull/1
 
+**run#39 status** (2026-06-21 idle-loop Forge — Step 4 iteration):
+- ✅ `make check-dead-window` — 3/3 boundary tests passed before window opens 2026-06-22 tomorrow (Step 2 fix: guard verified, not just "already coded")
+- ✅ **Known-artifact documentation** — `patches/drafts/README.md` now has "Known Stale Artifacts" section explaining WHY announcement draft is safe to ignore (dead window, content superseded by milestone banner) + items_found=10 healthy-baseline note (Step 2 fix: decision documented, not silently dismissed)
+- ✅ **Public `/status` page** — `status/index.html` added; consumes `api/health.json`; severity pill, version, hours-since-poll, dead-window banner, baseline match row (Step 3 pattern: the-hideout/status public status page)
+- ✅ Pushed commit 252be1a to origin/main; `make check` exit 0 all 11 artifacts valid
+
 **run#35 status** (2026-06-20 idle-loop Forge — Step 4 iteration):
 - ✅ **Alert fatigue fix**: `pr1` blocker archived in `persistent-blockers.json` (alert_count was 22, deadline expired 12d ago). `check-deadlines.py` now skips `archived:true` entries → exit 0, no Telegram.
 - ✅ **Dead-window code guard**: `DEAD_WINDOWS=[("2026-06-22","2026-07-15")]` added to `check-deadlines.py` (warframestat.us pattern). Severity auto-caps at "warn" during window → Telegram suppressed + exit 0. Takes effect Jun 22.

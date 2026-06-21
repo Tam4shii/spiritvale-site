@@ -12,6 +12,7 @@ Requires: Python ≥ 3.8 (no third-party dependencies)
 """
 
 import json
+import urllib.error
 import urllib.request
 
 _BASE = "https://spiritvale.tama.sh"
@@ -21,6 +22,21 @@ def _get(path: str) -> dict:
     url = f"{_BASE}{path}"
     with urllib.request.urlopen(url) as resp:
         return json.loads(resp.read().decode())
+
+
+def _get_conditional(path, etag=None):
+    """Conditional GET using If-None-Match. Returns (data, new_etag) or (None, etag) on 304."""
+    url = f"{_BASE}{path}"
+    req = urllib.request.Request(url)
+    if etag:
+        req.add_header("If-None-Match", etag)
+    try:
+        with urllib.request.urlopen(req) as resp:
+            return json.loads(resp.read().decode()), resp.headers.get("ETag")
+    except urllib.error.HTTPError as exc:
+        if exc.code == 304:
+            return None, etag
+        raise
 
 
 def get_latest() -> dict:
@@ -96,3 +112,23 @@ def get_bot_json() -> dict:
         embed_dict = data['latest']['embed']  # ready for discord.Embed.from_dict()
     """
     return _get("/patches/bot.json")
+
+
+def get_latest_if_changed(etag=None):
+    """Conditional GET for the latest patch — efficient for bots polling on a schedule.
+
+    Returns (data, new_etag) when the patch changed; (None, same_etag) when unchanged (HTTP 304).
+    Store the returned etag across calls so the CDN can skip the response body when nothing changed.
+
+    Pattern from warframestat.us Discord bot fleet — avoids re-processing unchanged data on
+    every poll tick, which matters when hundreds of bots poll the same endpoint every 5 minutes.
+
+    Example (discord.py bot polling every 5 min):
+        etag = None
+        while True:
+            patch, etag = get_latest_if_changed(etag)
+            if patch:
+                await channel.send(f"New patch: {patch['title']}")
+            await asyncio.sleep(300)
+    """
+    return _get_conditional("/patches/latest.json", etag)

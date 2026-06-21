@@ -1,4 +1,4 @@
-.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld state snapshot-state csv check check-ci check-types check-stats check-clean check-monitor og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines check-deploy help
+.PHONY: build index tags entities validate mirror stats health badge diff-endpoints jsonld state snapshot-state csv check check-ci check-types check-stats check-clean check-monitor og install-hooks check-steam check-baseline check-sdk check-drafts check-deadlines check-deploy check-dead-window help
 
 # Regenerate all derived artifacts (run before committing a new patch).
 build: index tags entities validate mirror stats health badge diff-endpoints jsonld state csv
@@ -89,6 +89,11 @@ base = json.load(open('state/steam-news-baseline.json')) if __import__('os').pat
 iv = idx.get('latest_version'); bv = base.get('latest_version'); \
 (print(f'baseline: OK (both {iv})') if iv == bv else (print(f'ERROR: baseline drift — index={iv} but baseline={bv}; run make check-steam to sync', file=sys.stderr) or sys.exit(1))) \
 if bv else print('baseline: SKIP (no baseline file yet)')"
+	@python3 -c "\
+with open('_headers') as f: h = f.read(); \
+assert 'cdn.redoc.ly' in h, 'ERROR: cdn.redoc.ly missing from /api/ CSP in _headers — Redoc bundle will be blocked'; \
+assert 'worker-src blob:' in h, 'ERROR: worker-src blob: missing from /api/ CSP in _headers — Redoc web worker will be blocked'; \
+print('_headers CSP: OK (cdn.redoc.ly + worker-src blob: present)')"
 	@echo "All checks passed."
 
 # Validate clients/spiritvale.d.ts and openapi.json are in sync with schema/patch.json.
@@ -220,6 +225,26 @@ check-deploy:
 check-deadlines:
 	python3 scripts/check-deadlines.py
 
+# Dry-run self-test for the dead-window suppression logic in pull-steam-news.py.
+# Imports is_in_dead_window() from the actual script (no constant duplication) and tests
+# 3 boundary cases: one day inside, one day before, and the exclusive end date.
+# Catches silent flag breakage before the window opens — run once after any edit to the
+# DEAD_WINDOW_START/END constants or is_in_dead_window() function.
+check-dead-window:
+	@python3 -c "\
+import importlib.util; \
+spec = importlib.util.spec_from_file_location('psn', '.github/scripts/pull-steam-news.py'); \
+mod = importlib.util.module_from_spec(spec); \
+spec.loader.exec_module(mod); \
+from datetime import datetime, timezone, timedelta; \
+dw_s = datetime.fromisoformat(mod.DEAD_WINDOW_START).replace(tzinfo=timezone.utc); \
+dw_e = datetime.fromisoformat(mod.DEAD_WINDOW_END).replace(tzinfo=timezone.utc); \
+inside = dw_s + timedelta(days=1); before = dw_s - timedelta(days=1); \
+assert mod.is_in_dead_window(inside), f'FAIL: {inside.date()} should be IN window'; \
+assert not mod.is_in_dead_window(before), f'FAIL: {before.date()} should be OUTSIDE window'; \
+assert not mod.is_in_dead_window(dw_e), f'FAIL: end date {dw_e.date()} is exclusive — should be OUTSIDE window'; \
+print(f'check-dead-window: OK — 3/3 boundary tests passed ({mod.DEAD_WINDOW_START} → {mod.DEAD_WINDOW_END})')"
+
 # Generate news/ namespace — announcement index, HTML listing, and Atom feed.
 # Pattern: warframestat.us /news/ — announcements/roadmaps distinct from versioned patches.
 # Source: patches/drafts/announcement-*.json. Run after adding new announcement drafts.
@@ -278,4 +303,5 @@ help:
 	@echo "  make jsonld         — inject Schema.org JSON-LD into index.html + patch/index.html (SEO)"
 	@echo "  make badge          — generate badge/latest.json + badge/freshness.json (shields.io endpoint badges)"
 	@echo "  make check-deadlines — check state/persistent-blockers.json for calendar deadlines (distinct from stale-draft alerts)"
+	@echo "  make check-dead-window — dry-run verify is_in_dead_window() boundaries (3 test cases, imports from pull-steam-news.py)"
 	@echo "  make news           — build news/ namespace (index.json + index.html + feed.xml) from announcement drafts"

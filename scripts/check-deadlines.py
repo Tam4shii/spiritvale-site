@@ -195,19 +195,27 @@ def main():
     already_alerted = _check_idempotency(blockers, worst, today)
     dw_active, dw_reason = _dead_window_active(blockers, today)
 
+    # Combined dead-window state: either the hardcoded DEAD_WINDOWS list OR a per-blocker
+    # dead_window_until field can suppress alerts. Both sources are surfaced so auditors
+    # can confirm suppression without opening a second file.
+    any_dw = dead_window or dw_active
+
     status = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "today": str(today),
         "worst_severity": worst,
-        "dead_window": {
-            "active": dead_window,
-            "label": dead_window_label if dead_window else None,
-        },
         "operational_risk": "low",
         "editorial_risk": editorial_risk,
         "dead_window": {
-            "active": dw_active,
-            "reason": dw_reason if dw_active else None,
+            "active": any_dw,
+            "hardcoded_window": {
+                "active": dead_window,
+                "label": dead_window_label if dead_window else None,
+            },
+            "blocker_window": {
+                "active": dw_active,
+                "reason": dw_reason if dw_active else None,
+            },
         },
         "idempotency": {
             "already_alerted_today": already_alerted,
@@ -220,13 +228,16 @@ def main():
         f.write("\n")
 
     print(f"\nstate/deadline-status.json written — worst_severity={worst}")
-    if dw_active:
-        print(f"Dead window      : ACTIVE ({dw_reason})")
     print(f"\n── Risk Assessment ──")
     print(f"Operational risk : LOW  (read-only — no content or schema changes)")
     print(f"Editorial risk   : {editorial_risk.upper()}")
-    if dead_window:
-        print(f"Dead window      : ACTIVE — {dead_window_label} (Telegram suppressed, severity capped at warn)")
+    if any_dw:
+        sources = []
+        if dead_window:
+            sources.append(f"hardcoded ({dead_window_label})")
+        if dw_active:
+            sources.append(f"blocker ({dw_reason})")
+        print(f"Dead window      : ACTIVE — {' | '.join(sources)} (Telegram suppressed)")
     else:
         print(f"Dead window      : inactive (alerts enabled)")
     if worst in ALERT_SEVERITIES:

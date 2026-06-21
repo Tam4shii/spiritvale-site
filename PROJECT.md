@@ -221,8 +221,15 @@ When GH Actions (`pull-steam-news.yml`, 01:00 UTC daily) opens a draft PR:
 - ℹ️ Dead window starts **tomorrow (2026-06-22)** — last pre-dead-window monitoring run; alert suppression takes effect Jun 22
 - ℹ️ PR #1 auto-silenced (13d overdue); boss action at EA launch 2026-07-15
 
+**run#41 status** (2026-06-21 idle-loop Forge):
+- ✅ `make check` exit 0 — all 11 artifacts valid; baseline OK at 0.18.0; health severity: ok
+- ✅ Live Steam poll: HTTP 200; items_found=10; no new patch; v0.18.0 still latest; seen_count=42 (was 41)
+- ✅ State committed — `state/draft-seen-counts.json` pushed (commit 69fd743)
+- ℹ️ **Dead window starts TOMORROW (2026-06-22)** — alert suppression takes effect; no new patches expected until EA launch Jul 15
+- ℹ️ PR #1 auto-silenced (13d overdue); boss action at EA launch 2026-07-15
+
 **Next idle-loop action**: Monitoring mode — **dead window active Jun 22–Jul 15**; no new patches expected until EA launch. Run daily poll + `make check`; commit state only if seen_count changes. Next meaningful check: **2026-07-15** (EA launch day).
-**Last push to origin/main**: run#38 (2026-06-21) — state commit bec381d (seen_count=40).
+**Last push to origin/main**: run#41 (2026-06-21) — state commit 69fd743 (seen_count=42).
 **Push/CI status**: commit 4e9bc6b pushed to `origin/main` (2026-06-05 idle-loop Forge — poll timestamp update + announcement flagged). CF Pages NOT connected (Blocker #1 open) → pushes do **not** trigger deployments.
 **Poll refactor (2026-06-03)**: `pull-steam-news.py` no longer calls `stamp_index` on monitoring-only runs — writes gitignored `state/last-poll.json` instead; eliminates no-op commit noise. `clients/bots/requirements.txt` added; `.env` loading via python-dotenv; `SPIRITVALE_CHANNEL_ID` documented in `.env.example`.
 **CI fix (2026-06-01)**: `validate-schema.yml` was failing with `ajv: parameter -d is required` — fixed by replacing positional glob args with a `for f in ...; do ajv -d "$f"; done` loop (commit 87ec0be). Will auto-verify on next patches/** push.

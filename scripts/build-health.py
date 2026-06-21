@@ -90,18 +90,22 @@ def main():
         severity = "warn"
         stale = True
         message = "last_polled_at missing from stats.json"
+        warn_flags = ["NO_POLL_TS"]
     elif hours_since <= 24:
         severity = "ok"
         stale = False
         message = f"polled {hours_since}h ago"
+        warn_flags = []
     elif hours_since <= 72:
         severity = "warn"
         stale = True
         message = f"poll is {hours_since}h old (>24h threshold)"
+        warn_flags = ["STALE_POLL_TS"]
     else:
         severity = "critical"
         stale = True
         message = f"poll is {hours_since}h old (>72h — Steam check may be broken)"
+        warn_flags = ["STALE_POLL_TS", "CRITICAL_STALENESS"]
 
     steam_baseline = _read_steam_baseline()
     total_patches = stats.get("total_patches")
@@ -130,6 +134,7 @@ def main():
         "hours_since_poll": hours_since,
         "hours_since_poll_note": "0.0 = measured immediately after a poll; non-zero = drift since last Steam check",
         "severity": severity,
+        "warn_flags": warn_flags,
         "message": message,
         "latest_version": stats.get("latest_version"),
         "total_patches": total_patches,

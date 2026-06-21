@@ -135,12 +135,29 @@ check-clean:
 check-monitor:
 	@python3 -c "\
 import json, sys, os; \
+from datetime import datetime, timezone, timedelta; \
 p = 'api/health.json'; \
-h = json.load(open(p)) if os.path.exists(p) else {'severity': 'critical', 'message': 'api/health.json not found — run make health first'}; \
+h = json.load(open(p)) if os.path.exists(p) else {'severity': 'critical', 'message': 'api/health.json not found — run make health first', 'warn_flags': []}; \
 sev = h.get('severity', 'unknown'); hrs = h.get('hours_since_poll'); \
+flags = h.get('warn_flags', []); flags_str = ','.join(flags) if flags else 'none'; \
 hrs_str = f'{hrs}h ago' if hrs is not None else 'unknown'; \
-print(f'monitor: severity={sev} | polled={hrs_str} | {h.get(\"message\",\"\")}'); \
-decision = 'No action. Monitoring continues.' if sev in ('ok', 'warn') else f'ESCALATE — severity={sev}. Run: make health check-steam'; \
+dw = h.get('dead_window', {}); \
+dw_start = dw.get('start', ''); dw_end = dw.get('end', ''); \
+now_utc = datetime.now(timezone.utc); \
+dw_start_dt = datetime.fromisoformat(dw_start).replace(tzinfo=timezone.utc) if dw_start else None; \
+dw_end_dt = datetime.fromisoformat(dw_end).replace(tzinfo=timezone.utc) if dw_end else None; \
+dw_active = bool(dw_start_dt and dw_end_dt and dw_start_dt <= now_utc < dw_end_dt); \
+dw_imminent = bool(dw_start_dt and not dw_active and 0 < (dw_start_dt - now_utc).total_seconds() <= 86400); \
+hrs_to_start = round((dw_start_dt - now_utc).total_seconds() / 3600, 1) if dw_imminent else None; \
+dw_str = (f'ACTIVE ({dw_start}→{dw_end})' if dw_active else \
+  (f'INACTIVE — opens in {hrs_to_start}h ({dw_start}→{dw_end})' if dw_imminent else \
+  ('INACTIVE' if dw_start else 'none'))); \
+print(f'monitor: severity={sev} | warn_flags=[{flags_str}] | polled={hrs_str} | dead_window={dw_str}'); \
+print(f'message: {h.get(\"message\",\"\")}'); \
+decision = ('No action. Dead window active — stale-poll warn is expected until {dw_end}.'.format(dw_end=dw_end) if (sev in ('ok','warn') and dw_active) \
+  else (f'No action. Dead window opens in {hrs_to_start}h ({dw_start}→{dw_end}) — stale-poll warn will suppress once active.' if (sev in ('ok','warn') and dw_imminent) \
+  else ('No action. Monitoring continues.' if sev in ('ok','warn') \
+  else f'ESCALATE — severity={sev}. Run: make health check-steam'))); \
 print(f'DECISION: {decision}'); \
 sys.exit(0 if sev in ('ok', 'warn') else 1)"
 

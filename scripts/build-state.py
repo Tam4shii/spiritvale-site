@@ -137,6 +137,7 @@ def main():
             "hours_since_poll": health.get("hours_since_poll"),
             "message": health.get("message"),
             "steam_baseline_match": health.get("steam_baseline_match"),
+            "dead_window": health.get("dead_window"),
         },
         "stats_summary": {
             "total_patches": stats.get("total_patches"),

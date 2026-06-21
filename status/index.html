@@ -101,7 +101,7 @@
 <main>
   <a class="back" href="/">← SpiritVale Community Hub</a>
   <h1>Service Status</h1>
-  <p class="subtitle">Patch tracker freshness · polled daily via GH Actions · data from <a href="/api/health.json" style="color:var(--accent)">/api/health.json</a></p>
+  <p class="subtitle">Patch tracker freshness · polled daily at <strong>01:00 UTC</strong> via GH Actions · data from <a href="/api/health.json" style="color:var(--accent)">/api/health.json</a></p>
 
   <div id="loading">Loading status…</div>
 
@@ -119,22 +119,23 @@
       <div class="row"><span class="row-label">Latest patch</span><span id="val-version" class="row-value"></span></div>
       <div class="row"><span class="row-label">Total patches</span><span id="val-total" class="row-value"></span></div>
       <div class="row"><span class="row-label">Hours since poll</span><span id="val-hours" class="row-value"></span></div>
-      <div class="row"><span class="row-label">Steam items baseline</span><span id="val-baseline" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Steam items</span><span id="val-baseline" class="row-value"></span></div>
     </div>
 
     <div class="status-card">
       <h2>Monitoring Window</h2>
       <div class="row"><span class="row-label">Dead window</span><span id="val-dw" class="row-value"></span></div>
-      <div class="row"><span class="row-label">Window start</span><span id="val-dw-start" class="row-value"></span></div>
-      <div class="row"><span class="row-label">Window end</span><span id="val-dw-end" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Window start (UTC)</span><span id="val-dw-start" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Window end (UTC)</span><span id="val-dw-end" class="row-value"></span></div>
       <div class="row"><span class="row-label">Reason</span><span id="val-dw-reason" class="row-value" style="max-width:260px;text-align:right"></span></div>
+      <div class="row"><span class="row-label">Escalation trigger</span><span class="row-value" style="color:var(--muted);font-size:0.85rem">patch version bump or HTTP ≠ 200</span></div>
     </div>
 
     <div class="status-card">
       <h2>Data Sources</h2>
-      <div class="row"><span class="row-label">health.json generated</span><span id="val-generated" class="row-value"></span></div>
-      <div class="row"><span class="row-label">Poll completed</span><span id="val-polled" class="row-value"></span></div>
-      <div class="row"><span class="row-label">Baseline match</span><span id="val-match" class="row-value"></span></div>
+      <div class="row"><span class="row-label">health.json generated (UTC)</span><span id="val-generated" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Poll completed (UTC)</span><span id="val-polled" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Steam item count</span><span id="val-match" class="row-value"></span></div>
     </div>
   </div>
 
@@ -177,20 +178,45 @@
       setEl('val-version', h.latest_version ? 'v' + h.latest_version : '—');
       setEl('val-total', h.total_patches !== undefined ? h.total_patches + ' versions' : '—');
       setEl('val-hours', h.hours_since_poll !== undefined ? h.hours_since_poll + 'h' : '—');
-      setEl('val-baseline', h.steam_newsitems_baseline !== undefined ? h.steam_newsitems_baseline + ' items' : '—');
+      var bl = h.steam_newsitems_baseline;
+      var tp = h.total_patches;
+      setEl('val-baseline',
+        (bl !== undefined && bl !== null && tp !== undefined && tp !== null)
+          ? tp + ' archived / ' + bl + ' Steam baseline'
+          : (bl !== undefined && bl !== null ? bl + ' items (Steam)' : '—'));
 
       var dw = h.dead_window || {};
-      setEl('val-dw', dw.active ? 'ACTIVE' : 'Inactive');
-      setEl('val-dw-start', dw.start || '—');
-      setEl('val-dw-end', dw.end || '—');
+      // Compute dead_window.active client-side from UTC dates so the page
+      // stays accurate even when health.json is a few hours stale. The pre-built
+      // `dw.active` boolean can lag if the CDN-cached file crossed a boundary.
+      var nowUtc = Date.now();
+      var dwActive = false;
+      if (dw.start && dw.end) {
+        dwActive = nowUtc >= new Date(dw.start + 'T00:00:00Z').getTime() &&
+                   nowUtc <  new Date(dw.end   + 'T00:00:00Z').getTime();
+      }
+      setEl('val-dw', dwActive ? 'ACTIVE' : 'Inactive');
+      setEl('val-dw-start', dw.start ? dw.start + ' UTC' : '—');
+      setEl('val-dw-end', dw.end ? dw.end + ' UTC' : '—');
       setEl('val-dw-reason', dw.reason || '—');
-      if (dw.active) {
+      if (dwActive) {
         document.getElementById('dead-window-banner').classList.add('visible');
       }
 
       setEl('val-generated', fmtDate(h.generated_at));
       setEl('val-polled', fmtDate(h.poll_completed_at));
-      setEl('val-match', h.steam_baseline_match ? '✓ Match' : '⚠ Mismatch');
+      // SteamDB-style: show found/expected counts alongside match status
+      var baseline = h.steam_newsitems_baseline;
+      var total    = h.total_patches;
+      var matchOk  = h.steam_baseline_match;
+      var matchText = '—';
+      if (baseline !== undefined && baseline !== null) {
+        var foundStr = total !== undefined && total !== null ? total + ' found' : '? found';
+        var expStr   = '≥' + baseline + ' expected';
+        var icon     = matchOk === true ? ' ✓' : matchOk === false ? ' ⚠' : '';
+        matchText = foundStr + ' / ' + expStr + icon;
+      }
+      setEl('val-match', matchText);
     })
     .catch(function(e) {
       document.getElementById('loading').textContent = 'Could not load status — ' + e.message;

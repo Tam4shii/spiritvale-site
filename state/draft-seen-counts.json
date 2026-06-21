@@ -1,4 +1,10 @@
 {
+  "_policy": {
+    "seen_count_semantics": "informational, monotonic — counts how many polling runs observed this draft un-actioned",
+    "max_stale_threshold": null,
+    "action_trigger": "manual — boss decision to merge PR#1 (publish /news page) or close (archive). Unbounded growth during dead window 2026-06-22 to 2026-07-15 is expected and not a signal of drift.",
+    "auto_suppress": "CRITICAL alerts suppressed by dead-window guard (run#33+). Stale-draft seen_count increments silently during dead window."
+  },
   "announcement-spiritvale-official-date-release.json": {
     "seen_count": 43,
     "first_seen_at": "2026-06-05T20:31:49Z",

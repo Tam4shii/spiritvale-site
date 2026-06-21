@@ -257,7 +257,7 @@
 
   const LS_KEY = 'sv_lastSeenVersion';
 
-  function showDeltaBanner(currentVersion, lastVersion) {
+  function showDeltaBanner(currentVersion, lastVersion, missedCount) {
     const banner = document.createElement('div');
     banner.id = 'delta-banner';
     banner.style.cssText = [
@@ -274,8 +274,11 @@
     ].join(';');
 
     const diffUrl = `/diff/?from=${encodeURIComponent(lastVersion)}&to=${encodeURIComponent(currentVersion)}`;
+    const countLabel = (missedCount && missedCount > 1)
+      ? `${missedCount} new patches`
+      : 'new update';
     banner.innerHTML = `
-      <span>🆕 New update since <strong>v${esc(lastVersion)}</strong> — <a href="${diffUrl}" style="color:var(--accent)">view what changed →</a></span>
+      <span>🆕 ${countLabel} since <strong>v${esc(lastVersion)}</strong> — <a href="${diffUrl}" style="color:var(--accent)">view what changed →</a></span>
       <button onclick="document.getElementById('delta-banner').remove()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;padding:0 0.25rem" aria-label="Dismiss">✕</button>
     `;
 
@@ -293,7 +296,17 @@
 
       const lastSeen = localStorage.getItem(LS_KEY);
       if (lastSeen && lastSeen !== patch.version) {
-        showDeltaBanner(patch.version, lastSeen);
+        let missedCount = 1;
+        try {
+          const idxRes = await fetch('/patches/index.json');
+          if (idxRes.ok) {
+            const idx = await idxRes.json();
+            const versions = idx.versions || [];
+            const lastSeenIdx = versions.findIndex(v => v.version === lastSeen);
+            if (lastSeenIdx > 0) missedCount = lastSeenIdx;
+          }
+        } catch (_) {}
+        showDeltaBanner(patch.version, lastSeen, missedCount);
       }
       localStorage.setItem(LS_KEY, patch.version);
 

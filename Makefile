@@ -140,6 +140,8 @@ h = json.load(open(p)) if os.path.exists(p) else {'severity': 'critical', 'messa
 sev = h.get('severity', 'unknown'); hrs = h.get('hours_since_poll'); \
 hrs_str = f'{hrs}h ago' if hrs is not None else 'unknown'; \
 print(f'monitor: severity={sev} | polled={hrs_str} | {h.get(\"message\",\"\")}'); \
+decision = 'No action. Monitoring continues.' if sev in ('ok', 'warn') else f'ESCALATE — severity={sev}. Run: make health check-steam'; \
+print(f'DECISION: {decision}'); \
 sys.exit(0 if sev in ('ok', 'warn') else 1)"
 
 # Generate per-patch OG social-preview images to og/*.png.

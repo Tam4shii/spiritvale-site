@@ -1,14 +1,14 @@
 {
   "_policy": {
-    "seen_count_semantics": "informational, monotonic — counts how many polling runs observed this draft un-actioned",
+    "seen_count_semantics": "informational, monotonic \u2014 counts how many polling runs observed this draft un-actioned",
     "max_stale_threshold": null,
-    "action_trigger": "manual — boss decision to merge PR#1 (publish /news page) or close (archive). Unbounded growth during dead window 2026-06-22 to 2026-07-15 is expected and not a signal of drift.",
+    "action_trigger": "manual \u2014 boss decision to merge PR#1 (publish /news page) or close (archive). Unbounded growth during dead window 2026-06-22 to 2026-07-15 is expected and not a signal of drift.",
     "auto_suppress": "CRITICAL alerts suppressed by dead-window guard (run#33+). Stale-draft seen_count increments silently during dead window."
   },
   "announcement-spiritvale-official-date-release.json": {
-    "seen_count": 43,
+    "seen_count": 44,
     "first_seen_at": "2026-06-05T20:31:49Z",
-    "last_seen_at": "2026-06-21T18:07:10Z",
+    "last_seen_at": "2026-06-21T20:32:23Z",
     "alerted_at": "2026-06-08T18:07:03Z",
     "hyper_alerted_at": "2026-06-20T00:00:00Z",
     "triage_note": "EXPECTED NOISE \u2014 dead window (2026-06-22 to 2026-07-15). This is an announcement-type draft (not a patch), covering Demo Jun 12 (already launched) + EA Jul 15 (upcoming). CRITICAL re-escalation fired run#32; further CRITICAL alerts suppressed by dead-window guard added run#33. Boss action pending: merge PR#1 (publish /news page) or close (archive). No code action needed until EA launch.",
@@ -54,6 +54,11 @@
       {
         "at": "2026-06-21T18:07:10Z",
         "count": 43,
+        "delta": 1
+      },
+      {
+        "at": "2026-06-21T20:32:23Z",
+        "count": 44,
         "delta": 1
       }
     ]

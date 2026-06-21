@@ -47,6 +47,14 @@ MAX_STALE_CYCLES = 14    # seen_count >= this → alerts silenced; draft treated
 HYPER_STALE_CYCLES = MAX_STALE_CYCLES * 2  # seen_count >= this → one-time CRITICAL re-escalation (human review required)
 STALE_DRAFT_CYCLES = STALE_ALERT_CYCLES  # backward-compat alias (used in stale list filter below)
 
+# Draft name patterns that carry high community signal — emit [HIGH-SIGNAL] log warning
+# even when auto-silenced (expired / dead-window suppressed), keeping GH Actions logs auditable.
+# Prevents a major announcement (e.g. official release date) from silently vanishing from logs.
+HIGH_SIGNAL_PATTERNS = re.compile(
+    r"official|release|launch|ea-release|early.access|wipe|date-release",
+    re.IGNORECASE,
+)
+
 # PR #1 deadline escalation — separate [URGENT] path, independent of routine stale-draft alert.
 # Fire when hours-to-deadline <= threshold so boss sees a distinct call-to-action, not just a stale-draft ping.
 PR1_DEADLINE_STR = "2026-06-08"  # playtest ends — merge/close decision needed before this date
@@ -74,6 +82,15 @@ def is_in_dead_window(now_dt=None):
     start = datetime.fromisoformat(DEAD_WINDOW_START).replace(tzinfo=timezone.utc)
     end = datetime.fromisoformat(DEAD_WINDOW_END).replace(tzinfo=timezone.utc)
     return start <= now_dt < end
+
+
+def is_high_signal_draft(name: str) -> bool:
+    """Return True if draft name matches HIGH_SIGNAL_PATTERNS.
+
+    Used to emit a [HIGH-SIGNAL] log warning before any silence/suppression return,
+    so GH Actions logs remain auditable even when routine notifications are muted.
+    """
+    return bool(HIGH_SIGNAL_PATTERNS.search(name))
 
 
 PATCH_KEYWORDS = re.compile(r"patch|update|hotfix|fix|build|release", re.IGNORECASE)
@@ -253,6 +270,12 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
         # expected noise — suppress until EA launch (Jul 15) when the boss resumes review.
         now_dt = datetime.now(tz=timezone.utc)
         if is_in_dead_window(now_dt):
+            if is_high_signal_draft(stale_name):
+                print(
+                    f"[HIGH-SIGNAL] {stale_name} matches high-signal pattern and is suppressed by "
+                    f"dead-window — count={count}, first={stale_entry.get('first_seen_at','?')[:10]}. "
+                    f"Verify this draft does not require manual action before {DEAD_WINDOW_END}."
+                )
             print(
                 f"[hyper-stale] SUPPRESSED — dead window ({DEAD_WINDOW_START}→{DEAD_WINDOW_END}); "
                 f"{stale_name} count={count} — will re-evaluate after {DEAD_WINDOW_END}"
@@ -291,6 +314,11 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
         return False
 
     if count >= MAX_STALE_CYCLES:
+        if is_high_signal_draft(stale_name):
+            print(
+                f"[HIGH-SIGNAL] {stale_name} is expired (count={count} >= MAX_STALE_CYCLES={MAX_STALE_CYCLES}) "
+                f"but matches a high-signal pattern — review manually if this covers a major release event."
+            )
         print(
             f"[stale-alert] EXPIRED — {stale_name} at {count} cycles (>= MAX_STALE_CYCLES={MAX_STALE_CYCLES}), alerts silenced"
         )

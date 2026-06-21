@@ -90,13 +90,20 @@ async function handleInteraction(req: Request, env: Env): Promise<Response> {
       return Response.json({ type: 4, data: { embeds: [patchEmbed(patch)] } });
     }
     if (name === 'status') {
-      const h = await api('/api/health.json');
+      const [h, s] = await Promise.all([api('/api/health.json'), api('/state.json')]);
       const color: number = ({ ok: 0x57f287, warn: 0xfaa61a, critical: 0xed4245 } as any)[h.severity] ?? 0x99aab5;
+      const fields: object[] = [
+        { name: 'Latest', value: h.latest_version ?? '—', inline: true },
+        { name: 'Patches', value: String(h.total_patches ?? s?.stats_summary?.total_patches ?? '—'), inline: true },
+        { name: 'Last polled', value: h.hours_since_poll != null ? `${h.hours_since_poll}h ago` : 'unknown', inline: true },
+      ];
+      const ms = s?.next_milestone;
+      if (ms) {
+        const when = ms.past ? 'past' : `${ms.days_until}d away`;
+        fields.push({ name: '📅 Next milestone', value: `${ms.label} · ${ms.date} — ${when}`, inline: false });
+      }
       return Response.json({ type: 4, data: { embeds: [{ title: `SpiritVale — ${String(h.severity).toUpperCase()}`,
-        description: h.message ?? '', color, footer: { text: `${BASE}/api/health.json` },
-        fields: [{ name: 'Latest', value: h.latest_version ?? '—', inline: true },
-                 { name: 'Patches', value: String(h.total_patches ?? '—'), inline: true },
-                 { name: 'Last polled', value: h.hours_since_poll != null ? `${h.hours_since_poll}h ago` : 'unknown', inline: true }] }] } });
+        description: h.message ?? '', color, footer: { text: `${BASE}/state.json` }, fields }] } });
     }
     return Response.json({ type: 4, data: { content: `Unknown command: ${name}`, flags: 64 } });
   } catch (err) {

@@ -220,11 +220,14 @@ def _write_poll_state(
     items_found: int,
     latest_item_id: str | None = None,
     latest_item_title: str | None = None,
+    top_items: list | None = None,
 ) -> None:
     """Write ephemeral poll state to a gitignored file (never commits).
 
     Includes latest_item_id/title as a concrete anchor so auditors can confirm
     which article Steam returned most recently without re-running the poll.
+    top_items: list of {id, title, date} for first 3 Steam items — makes
+    items_found=N auditable without re-running the poll (SteamDB pattern).
     """
     try:
         POLL_STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -233,6 +236,8 @@ def _write_poll_state(
             state["latest_item_id"] = latest_item_id
         if latest_item_title is not None:
             state["latest_item_title"] = latest_item_title
+        if top_items:
+            state["top_items"] = top_items
         POLL_STATE_PATH.write_text(json.dumps(state, indent=2) + "\n")
     except Exception as e:
         print(f"WARN: could not write poll state: {e}", file=sys.stderr)
@@ -271,10 +276,18 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
         now_dt = datetime.now(tz=timezone.utc)
         if is_in_dead_window(now_dt):
             if is_high_signal_draft(stale_name):
+                triage_note = stale_entry.get("triage_note", "")
+                triage_by = stale_entry.get("triage_by", "")
+                note_line = (
+                    f" Triage ({triage_by}): {triage_note}"
+                    if triage_note
+                    else " (no triage_note recorded — manual review recommended)"
+                )
                 print(
                     f"[HIGH-SIGNAL] {stale_name} matches high-signal pattern and is suppressed by "
                     f"dead-window — count={count}, first={stale_entry.get('first_seen_at','?')[:10]}. "
                     f"Verify this draft does not require manual action before {DEAD_WINDOW_END}."
+                    f"\n  {note_line}"
                 )
             print(
                 f"[hyper-stale] SUPPRESSED — dead window ({DEAD_WINDOW_START}→{DEAD_WINDOW_END}); "
@@ -315,9 +328,17 @@ def fire_stale_alert(stale_name: str, stale_entry: dict, polled_at: str) -> bool
 
     if count >= MAX_STALE_CYCLES:
         if is_high_signal_draft(stale_name):
+            triage_note = stale_entry.get("triage_note", "")
+            triage_by = stale_entry.get("triage_by", "")
+            note_line = (
+                f" Triage ({triage_by}): {triage_note}"
+                if triage_note
+                else " (no triage_note — manual review needed before silence is justified)"
+            )
             print(
                 f"[HIGH-SIGNAL] {stale_name} is expired (count={count} >= MAX_STALE_CYCLES={MAX_STALE_CYCLES}) "
                 f"but matches a high-signal pattern — review manually if this covers a major release event."
+                f"\n  {note_line}"
             )
         print(
             f"[stale-alert] EXPIRED — {stale_name} at {count} cycles (>= MAX_STALE_CYCLES={MAX_STALE_CYCLES}), alerts silenced"
@@ -603,13 +624,28 @@ def main():
 
     # Always write ephemeral poll state (gitignored — no commit noise on every run).
     # Anchor on the first item so auditors know exactly which Steam article was top-of-feed.
+    # top_items (first 3) makes items_found=N auditable — mirrors SteamDB "browse unprocessed" UX.
     top = items[0] if items else {}
+    top_items_manifest = [
+        {
+            "id": str(i.get("gid", "")),
+            "title": i.get("title", "").strip(),
+            "date": datetime.fromtimestamp(i.get("date", 0), tz=timezone.utc).strftime("%Y-%m-%d"),
+        }
+        for i in items[:3]
+    ]
     _write_poll_state(
         polled_at,
         len(items),
         latest_item_id=str(top.get("gid", "")) or None,
         latest_item_title=top.get("title", "").strip() or None,
+        top_items=top_items_manifest,
     )
+    # Emit item manifest to stdout so GH Actions logs show what the 10 items are
+    # without requiring a re-poll (SteamDB unprocessed-items pattern).
+    if top_items_manifest:
+        for rank, ti in enumerate(top_items_manifest, 1):
+            print(f"[steam-items] #{rank}: [{ti['date']}] {ti['title']} (id={ti['id']})")
 
     patch_drafts = [d for d in new_drafts if not d.get("is_announcement")]
     announcement_drafts = [d for d in new_drafts if d.get("is_announcement")]

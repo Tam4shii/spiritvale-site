@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpiritVale — Service Status</title>
+<meta name="description" content="Live freshness status for the SpiritVale community hub — latest patch version, poll health, and monitoring window.">
+<meta name="robots" content="noindex,follow">
+<meta property="og:title" content="SpiritVale Status">
+<meta property="og:description" content="Patch tracker freshness and polling health.">
+<meta property="og:url" content="https://spiritvale.tama.sh/status/">
+<meta property="og:site_name" content="SpiritVale Community Hub">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="canonical" href="https://spiritvale.tama.sh/status/">
+<style>
+  :root {
+    --bg: #0a0612;
+    --fg: #e8e3f0;
+    --muted: #8b82a0;
+    --accent: #a78bfa;
+    --accent-2: #7c3aed;
+    --card: rgba(167, 139, 250, 0.08);
+    --border: rgba(167, 139, 250, 0.2);
+    --ok: #34d399;
+    --warn: #fbbf24;
+    --critical: #f87171;
+    --unknown: #8b82a0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem;
+    background-image:
+      radial-gradient(at 20% 30%, rgba(124, 58, 237, 0.15), transparent 50%),
+      radial-gradient(at 80% 70%, rgba(167, 139, 250, 0.1), transparent 50%);
+  }
+  main { max-width: 540px; margin: 0 auto; }
+  .back { display: inline-block; color: var(--muted); text-decoration: none; font-size: 0.85rem; margin-bottom: 2rem; }
+  .back:hover { color: var(--accent); }
+  h1 { font-size: 1.75rem; font-weight: 700; color: var(--accent); margin-bottom: 0.25rem; }
+  .subtitle { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+
+  .status-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .status-card h2 { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .pill-ok    { background: rgba(52, 211, 153, 0.15); color: var(--ok);       border: 1px solid rgba(52,211,153,0.3); }
+  .pill-warn  { background: rgba(251,191, 36, 0.15); color: var(--warn);      border: 1px solid rgba(251,191,36,0.3); }
+  .pill-crit  { background: rgba(248,113,113, 0.15); color: var(--critical);  border: 1px solid rgba(248,113,113,0.3); }
+  .pill-none  { background: rgba(139,130,160, 0.15); color: var(--unknown);   border: 1px solid rgba(139,130,160,0.3); }
+
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot-ok   { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+  .dot-warn { background: var(--warn); box-shadow: 0 0 6px var(--warn); }
+  .dot-crit { background: var(--critical); box-shadow: 0 0 6px var(--critical); }
+  .dot-none { background: var(--unknown); }
+
+  .row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(167,139,250,0.08); }
+  .row:last-child { border-bottom: none; }
+  .row-label { color: var(--muted); font-size: 0.9rem; }
+  .row-value { font-size: 0.9rem; font-weight: 500; }
+
+  .dead-window-banner {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.25);
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.85rem;
+    color: var(--warn);
+    margin-bottom: 1.25rem;
+    display: none;
+  }
+  .dead-window-banner.visible { display: block; }
+
+  .footer { text-align: center; margin-top: 2rem; color: var(--muted); font-size: 0.8rem; }
+  .footer a { color: var(--accent); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  #loading { color: var(--muted); font-size: 0.9rem; margin: 3rem 0; text-align: center; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="/">← SpiritVale Community Hub</a>
+  <h1>Service Status</h1>
+  <p class="subtitle">Patch tracker freshness · polled daily via GH Actions · data from <a href="/api/health.json" style="color:var(--accent)">/api/health.json</a></p>
+
+  <div id="loading">Loading status…</div>
+
+  <div id="dead-window-banner" class="dead-window-banner">
+    ⏸ Dead window active — dev focus on EA polish. No patches expected until EA launch (Jul 15). Daily poll continues; stale-draft alerts suppressed.
+  </div>
+
+  <div id="status-root" style="display:none">
+    <div class="status-card">
+      <h2>Overall Health</h2>
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem">
+        <div id="sev-pill" class="pill">…</div>
+        <span id="sev-message" style="color:var(--muted);font-size:0.9rem"></span>
+      </div>
+      <div class="row"><span class="row-label">Latest patch</span><span id="val-version" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Total patches</span><span id="val-total" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Hours since poll</span><span id="val-hours" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Steam items baseline</span><span id="val-baseline" class="row-value"></span></div>
+    </div>
+
+    <div class="status-card">
+      <h2>Monitoring Window</h2>
+      <div class="row"><span class="row-label">Dead window</span><span id="val-dw" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Window start</span><span id="val-dw-start" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Window end</span><span id="val-dw-end" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Reason</span><span id="val-dw-reason" class="row-value" style="max-width:260px;text-align:right"></span></div>
+    </div>
+
+    <div class="status-card">
+      <h2>Data Sources</h2>
+      <div class="row"><span class="row-label">health.json generated</span><span id="val-generated" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Poll completed</span><span id="val-polled" class="row-value"></span></div>
+      <div class="row"><span class="row-label">Baseline match</span><span id="val-match" class="row-value"></span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Raw data: <a href="/api/health.json">/api/health.json</a> · Refreshes every ~60s (CDN) ·
+    <a href="/">Hub</a> · <a href="/patch/">Patches</a>
+  </div>
+</main>
+<script>
+(function() {
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    try {
+      return new Date(iso).toLocaleString('en-GB', { dateStyle:'medium', timeStyle:'short', timeZone:'UTC' }) + ' UTC';
+    } catch { return iso; }
+  }
+  function setEl(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+  function sevClass(sev) {
+    return { ok: 'pill-ok', warn: 'pill-warn', critical: 'pill-crit' }[sev] || 'pill-none';
+  }
+  function sevDot(sev) {
+    return { ok: 'dot-ok', warn: 'dot-warn', critical: 'dot-crit' }[sev] || 'dot-none';
+  }
+
+  fetch('/api/health.json?_=' + Date.now())
+    .then(function(r) { return r.json(); })
+    .then(function(h) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('status-root').style.display = '';
+
+      var sev = h.severity || 'unknown';
+      var pill = document.getElementById('sev-pill');
+      pill.className = 'pill ' + sevClass(sev);
+      pill.innerHTML = '<span class="dot ' + sevDot(sev) + '"></span>' + sev.toUpperCase();
+      setEl('sev-message', h.message || '');
+
+      setEl('val-version', h.latest_version ? 'v' + h.latest_version : '—');
+      setEl('val-total', h.total_patches !== undefined ? h.total_patches + ' versions' : '—');
+      setEl('val-hours', h.hours_since_poll !== undefined ? h.hours_since_poll + 'h' : '—');
+      setEl('val-baseline', h.steam_newsitems_baseline !== undefined ? h.steam_newsitems_baseline + ' items' : '—');
+
+      var dw = h.dead_window || {};
+      setEl('val-dw', dw.active ? 'ACTIVE' : 'Inactive');
+      setEl('val-dw-start', dw.start || '—');
+      setEl('val-dw-end', dw.end || '—');
+      setEl('val-dw-reason', dw.reason || '—');
+      if (dw.active) {
+        document.getElementById('dead-window-banner').classList.add('visible');
+      }
+
+      setEl('val-generated', fmtDate(h.generated_at));
+      setEl('val-polled', fmtDate(h.poll_completed_at));
+      setEl('val-match', h.steam_baseline_match ? '✓ Match' : '⚠ Mismatch');
+    })
+    .catch(function(e) {
+      document.getElementById('loading').textContent = 'Could not load status — ' + e.message;
+    });
+})();
+</script>
+</body>
+</html>

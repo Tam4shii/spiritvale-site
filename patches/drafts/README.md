@@ -36,3 +36,27 @@ banner. Review → decide: publish as news item, archive, or ignore.
 ```bash
 make check-drafts   # list all unreviewed drafts in this directory
 ```
+
+## Known Stale Artifacts (safe to ignore — documented decisions)
+
+### `announcement-spiritvale-official-date-release.json`
+
+**Status**: EXPECTED NOISE — do not act until EA launch (2026-07-15)
+
+**Why it's safe to ignore**:
+- This is an **announcement**, not a patch (`"type": "announcement"`, `"version": "0.0.0"`). It covers the official release dates: Demo June 12, EA July 15 ~$15 USD.
+- The events it announced are either **already live** (Demo launched June 12) or **upcoming** (EA July 15).
+- The milestone banner (`showMilestoneBanner()` in `index.html`) already encodes these dates live on main — the announcement content is superseded by the existing UI.
+- Dead window (2026-06-22 → 2026-07-15): servers are down per developer notice. No patches expected. Alert dedup stretched to 168h (weekly) during this window.
+
+**Boss action at EA launch (2026-07-15)**: decide merge vs close on PR #1.
+- Merge → publishes `/news/` page with the announcement content
+- Close → archives draft (milestone banner already covers the key info)
+
+**Machine-readable audit trail**: `state/draft-seen-counts.json["announcement-spiritvale-official-date-release.json"].triage_note` (written by idle-loop Forge run#33)
+
+---
+
+### `items_found=10` in poll logs
+
+`items_found=10` is the **healthy baseline** — the script requests `count=10` from the Steam API (`STEAM_NEWS_COUNT=10`) and got back 10 items. `items_found == STEAM_NEWS_COUNT` means no items were dropped. A mismatch would trigger a `WARN: expected N items` in the logs and a count-delta alert from `check_baseline_delta()`. No reconciliation action needed when `items_found=10`.

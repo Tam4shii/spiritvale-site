@@ -100,6 +100,20 @@ def get_diff(from_version: str, to_version: str) -> dict:
     return result
 
 
+def get_entity_index() -> dict:
+    """Entity index — all tracked entities with patch mention counts (/entity/index.json).
+
+    Keys: generated_at (str), entities (dict of slug → {name, count, text_only_count, url}).
+    Slugs: 'boss', 'shinobi', 'berserker', 'necromancer', 'echoing-spire', 'forgotten-depths', 'arena'.
+
+    Example:
+        idx = get_entity_index()
+        for slug, e in idx['entities'].items():
+            print(f"{e['name']}: {e['count']} patch mentions")
+    """
+    return _get("/entity/index.json")
+
+
 def get_bot_json() -> dict:
     """Pre-formatted Discord embed payload (/patches/bot.json).
 

@@ -44,7 +44,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands, tasks
 
-from spiritvale import get_bot_json, get_diff, get_health, get_index, get_latest, get_patch, get_search_index
+from spiritvale import get_bot_json, get_diff, get_entity_index, get_health, get_index, get_latest, get_patch, get_search_index
 
 ANNOUNCE_CHANNEL_ID = int(os.getenv("SPIRITVALE_CHANNEL_ID", "0"))
 
@@ -192,6 +192,36 @@ async def search_slash(interaction: discord.Interaction, query: str):
         if len(hits) > 8:
             lines.append(f"\n…and {len(hits) - 8} more · [full search](https://spiritvale.tama.sh/search/?q={query})")
         await interaction.followup.send("\n".join(lines)[:2000])
+    except Exception as exc:
+        await interaction.followup.send(f"❌ {exc}", ephemeral=True)
+
+
+@bot.tree.command(name="entity", description="Show patch history for a SpiritVale entity (class, boss, dungeon)")
+@app_commands.describe(slug="Entity name or slug, e.g. 'shinobi', 'boss', 'berserker'")
+async def entity_slash(interaction: discord.Interaction, slug: str):
+    await interaction.response.defer()
+    try:
+        idx = get_entity_index()
+        entities = idx.get("entities", {})
+        key = slug.lower().replace(" ", "-")
+        entry = entities.get(key)
+        if not entry:
+            names = ", ".join(f"`{k}`" for k in sorted(entities))
+            await interaction.followup.send(
+                f"❌ Unknown entity `{slug}`. Available: {names}", ephemeral=True
+            )
+            return
+        embed = discord.Embed(
+            title=f"SpiritVale — {entry['name']}",
+            url=f"https://spiritvale.tama.sh{entry['url']}",
+            description=(
+                f"**{entry['count']}** patch changes across all versions\n"
+                f"[Full timeline →](https://spiritvale.tama.sh{entry['url']})"
+            ),
+            color=0x5865F2,
+        )
+        embed.set_footer(text="spiritvale.tama.sh · /entity for class/boss/dungeon history")
+        await interaction.followup.send(embed=embed)
     except Exception as exc:
         await interaction.followup.send(f"❌ {exc}", ephemeral=True)
 

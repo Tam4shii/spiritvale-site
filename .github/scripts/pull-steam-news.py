@@ -187,18 +187,31 @@ def save_seen_counts(counts: dict) -> None:
     print(f"WROTE: {SEEN_COUNTS_PATH} ({len(counts)} tracked draft(s))")
 
 
-def bump_seen_count(counts: dict, draft_name: str, polled_at: str) -> None:
+def bump_seen_count(
+    counts: dict,
+    draft_name: str,
+    polled_at: str,
+    item_gid: str | None = None,
+    item_title: str | None = None,
+) -> None:
     """Increment the stale-draft counter for a draft that exists but hasn't been reviewed.
 
     Appends to seen_count_log so every increment is timestamped — makes unexplained jumps
     auditable (DIM-style per-entity change history: "seen 34×, last +1 at <ts>").
+    item_gid / item_title: the Steam news item that triggered this bump — recorded in the log
+    entry so debugging a noise increment doesn't require re-running the poll.
     """
     entry = counts.get(draft_name, {"seen_count": 0, "first_seen_at": polled_at})
     prev = entry.get("seen_count", 0)
     entry["seen_count"] = prev + 1
     entry["last_seen_at"] = polled_at
     log = entry.setdefault("seen_count_log", [])
-    log.append({"at": polled_at, "count": entry["seen_count"], "delta": 1})
+    log_entry: dict = {"at": polled_at, "count": entry["seen_count"], "delta": 1}
+    if item_gid is not None:
+        log_entry["item_gid"] = item_gid
+    if item_title is not None:
+        log_entry["item_title"] = item_title
+    log.append(log_entry)
     counts[draft_name] = entry
 
 
@@ -585,8 +598,10 @@ def main():
             draft_path = PATCHES_DIR / f"draft-{slug}.json"
 
         if draft_path.exists():
-            # Draft already written but not yet reviewed — bump staleness counter
-            bump_seen_count(seen_counts, draft_path.name, polled_at)
+            # Draft already written but not yet reviewed — bump staleness counter.
+            # Pass gid+title so the log entry identifies which Steam item re-confirmed the draft
+            # exists — makes noise-vs-signal debugging cold-readable without re-polling.
+            bump_seen_count(seen_counts, draft_path.name, polled_at, item_gid=gid, item_title=title)
             seen_counts_dirty = True
             continue
 

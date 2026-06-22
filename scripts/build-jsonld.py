@@ -3,11 +3,16 @@
 Generate Schema.org JSON-LD structured data and inject into HTML pages.
 
 Pages updated:
-  index.html        → SoftwareApplication (game metadata + latest version)
+  index.html        → WebSite + SoftwareApplication (game metadata + latest version)
   patch/index.html  → ItemList of TechArticle (one per patch version)
+  search/index.html → WebSite with SearchAction (enables Google Sitelinks Search Box)
+  news/index.html   → CollectionPage (announcements)
+  stats/index.html  → WebPage (stats hub)
+  status/index.html → WebPage (service status)
 
 Pattern from SteamDB + wago.tools: JSON-LD on patch pages drives Google rich results
 for "<game> <version> patch notes" queries — highest-leverage static SEO change available.
+SearchAction schema on /search/ enables Google Sitelinks Search Box in SERP.
 
 Injection is idempotent: uses <!-- LD+JSON START --> / <!-- LD+JSON END --> markers.
 Re-running replaces the existing block without duplicating it.
@@ -19,9 +24,14 @@ from pathlib import Path
 
 BASE_URL = "https://spiritvale.tama.sh"
 INDEX_PATH = Path("patches/index.json")
+NEWS_INDEX_PATH = Path("news/index.html")
 PAGES = {
     "index": Path("index.html"),
     "patch": Path("patch/index.html"),
+    "search": Path("search/index.html"),
+    "news": Path("news/index.html"),
+    "stats": Path("stats/index.html"),
+    "status": Path("status/index.html"),
 }
 
 MARKER_START = "<!-- LD+JSON START -->"
@@ -94,6 +104,57 @@ def build_patch_jsonld(index: dict) -> dict:
     }
 
 
+def build_search_jsonld() -> dict:
+    """SearchAction schema — enables Google Sitelinks Search Box in SERP."""
+    return {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "SpiritVale Community Hub",
+        "url": f"{BASE_URL}/",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": f"{BASE_URL}/search/?q={{search_term_string}}",
+            },
+            "query-input": "required name=search_term_string",
+        },
+    }
+
+
+def build_news_jsonld() -> dict:
+    return {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "SpiritVale News & Announcements",
+        "description": "Official SpiritVale roadmap updates, events, and developer announcements.",
+        "url": f"{BASE_URL}/news/",
+        "isPartOf": {"@type": "WebSite", "url": f"{BASE_URL}/"},
+    }
+
+
+def build_stats_jsonld() -> dict:
+    return {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "SpiritVale Patch Statistics",
+        "description": "Aggregated patch statistics for SpiritVale — change frequency, tag distribution, and version history.",
+        "url": f"{BASE_URL}/stats/",
+        "isPartOf": {"@type": "WebSite", "url": f"{BASE_URL}/"},
+    }
+
+
+def build_status_jsonld() -> dict:
+    return {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "SpiritVale Community Hub — Status",
+        "description": "Health and uptime status for the SpiritVale Community Hub API and data feeds.",
+        "url": f"{BASE_URL}/status/",
+        "isPartOf": {"@type": "WebSite", "url": f"{BASE_URL}/"},
+    }
+
+
 def make_script_block(jsonld: dict) -> str:
     return (
         f"{MARKER_START}\n"
@@ -137,6 +198,10 @@ def main() -> None:
 
     process_page(PAGES["index"], build_home_jsonld(index))
     process_page(PAGES["patch"], build_patch_jsonld(index))
+    process_page(PAGES["search"], build_search_jsonld())
+    process_page(PAGES["news"], build_news_jsonld())
+    process_page(PAGES["stats"], build_stats_jsonld())
+    process_page(PAGES["status"], build_status_jsonld())
 
     print("JSON-LD build complete.")
 

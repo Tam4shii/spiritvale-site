@@ -5,6 +5,17 @@
     "action_trigger": "manual \u2014 boss decision to merge PR#1 (publish /news page) or close (archive). Unbounded growth during dead window 2026-06-22 to 2026-07-15 is expected and not a signal of drift.",
     "auto_suppress": "CRITICAL alerts suppressed by dead-window guard (run#33+). Stale-draft seen_count increments silently during dead window."
   },
+  "_run_label_index": {
+    "semantics": "Maps named run labels to the seen_count committed at end of that run. seen_count \u2260 run number \u2014 the counter is a monotonic polling-cycle count; run labels are session names assigned separately.",
+    "index": {
+      "run#43": 44,
+      "run#44": 45,
+      "run#45": 46
+    },
+    "corrections": {
+      "run#45_report_error": "Step 1 log stated 'seen_count incremented 45\u219247 (2 new cycles since run#44)'. Actual: run#44 committed seen_count=45; run#45 committed seen_count=46 \u2014 1 new cycle, not 2. The '\u219247' figure was a report artifact. JSON ground truth (seen_count=46 in this file) is authoritative over prose logs."
+    }
+  },
   "announcement-spiritvale-official-date-release.json": {
     "seen_count": 48,
     "first_seen_at": "2026-06-05T20:31:49Z",

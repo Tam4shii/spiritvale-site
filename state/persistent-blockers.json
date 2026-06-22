@@ -11,6 +11,10 @@
     "dead_window_reason": "EA launch dead window Jun 22–Jul 15. No patch expected; no further Telegram alerts until window closes or steam_version > v0.18.0.",
     "archived": true,
     "archived_at": "2026-06-20T04:00:00Z",
-    "archived_reason": "Original deadline 2026-06-08 expired 12d ago; 22 Telegram escalations sent with zero response. PR is pre-classified + merge-ready. Boss to decide merge vs close at EA launch (2026-07-15). Archived to stop daily EXPIRED escalation."
+    "archived_reason": "Original deadline 2026-06-08 expired 12d ago; 22 Telegram escalations sent with zero response. PR is pre-classified + merge-ready. Boss to decide merge vs close at EA launch (2026-07-15). Archived to stop daily EXPIRED escalation.",
+    "pr_title": "feat(news): publish /news page — SpiritVale official release date announcement",
+    "pr_scope": "Adds /news page covering Demo Jun 12 (already launched) + EA Jul 15 (upcoming). Draft source: patches/drafts/announcement-spiritvale-official-date-release.json",
+    "next_review": "2026-07-15",
+    "next_review_reason": "EA (Early Access) launch date — boss decides merge vs close at that milestone"
   }
 }

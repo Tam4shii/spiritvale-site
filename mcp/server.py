@@ -11,6 +11,7 @@ Run:      python mcp/server.py
 from __future__ import annotations
 
 import json
+from collections import defaultdict
 from pathlib import Path
 
 from fastmcp import FastMCP
@@ -112,6 +113,57 @@ def get_diff(version_from: str, version_to: str) -> dict:
                 result[key].append({"version": ver, "text": text})
     totals = {k: len(v) for k, v in result.items()}
     return {"from": version_from, "to": version_to, "totals": totals, **result}
+
+
+@mcp.tool()
+def get_tag_timeline(tag: str | None = None) -> dict:
+    """Return per-version change counts for a tag — shows buff/nerf trend over patches.
+
+    Pass a tag (e.g. 'shinobi', 'balance', 'necromancer') to see its history across
+    all versions. Omit tag to get a summary of every tag. Use list_patches() for dates.
+
+    Inspired by poe.ninja class-activity charts: turns raw bullet lists into trends.
+    """
+    index_path = REPO / "search-index.json"
+    if not index_path.exists():
+        return {}
+    entries = json.loads(index_path.read_text()).get("entries", [])
+
+    patches_index = json.loads((PATCHES / "index.json").read_text())
+    version_dates = {v["version"]: v["date"] for v in patches_index.get("versions", [])}
+    version_order = [v["version"] for v in reversed(patches_index.get("versions", []))]
+
+    # {tag: {version: {type: count}}}
+    data: dict = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+    for e in entries:
+        ver = e["version"]
+        etype = e.get("type", "changed")
+        for t in e.get("tags", []):
+            data[t][ver][etype] += 1
+
+    def format_series(t: str) -> list[dict]:
+        return [
+            {
+                "version": ver,
+                "date": version_dates.get(ver, ""),
+                "added": data[t][ver].get("added", 0),
+                "changed": data[t][ver].get("changed", 0),
+                "fixed": data[t][ver].get("fixed", 0),
+                "removed": data[t][ver].get("removed", 0),
+                "total": sum(data[t][ver].values()),
+            }
+            for ver in version_order
+            if ver in data[t]
+        ]
+
+    if tag:
+        if tag not in data:
+            raise ValueError(
+                f"Tag '{tag}' not found. Known tags: {sorted(data.keys())}"
+            )
+        return {"tag": tag, "timeline": format_series(tag)}
+
+    return {"tags": {t: format_series(t) for t in sorted(data.keys())}}
 
 
 if __name__ == "__main__":

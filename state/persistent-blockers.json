@@ -3,6 +3,7 @@
     "description": "PR #1 spiritvale-site — merge/close decision for news page",
     "deadline": "2026-06-08",
     "first_seen_at": "2026-06-05T20:31:49Z",
+    "pr_opened_at": "2026-06-05",
     "alert_count": 22,
     "last_alerted_at": "2026-06-07T00:00:00Z",
     "last_severity": "critical",

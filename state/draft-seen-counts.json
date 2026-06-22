@@ -10,10 +10,11 @@
     "index": {
       "run#43": 44,
       "run#44": 45,
-      "run#45": 46
+      "run#45": 46,
+      "run#46": 47
     },
     "corrections": {
-      "run#45_report_error": "Step 1 log stated 'seen_count incremented 45\u219247 (2 new cycles since run#44)'. Actual: run#44 committed seen_count=45; run#45 committed seen_count=46 \u2014 1 new cycle, not 2. The '\u219247' figure was a report artifact. JSON ground truth (seen_count=46 in this file) is authoritative over prose logs."
+      "run#45_report_error": "Step 1 log stated 'seen_count incremented 45\u219247 (2 new cycles since run#44)'. Actual: run#44 committed seen_count=45; run#45 committed seen_count=46 \u2014 1 new cycle, not 2. The '\u219247' figure was a report artifact. JSON ground truth is authoritative over prose logs. RESOLVED: run#46 (interstitial automated poll at 2026-06-22T08:31:10Z) committed seen_count=47 \u2014 the '\u219247' figure was not a report artifact, it reflected real post-run#45 state that had not yet been labeled."
     }
   },
   "announcement-spiritvale-official-date-release.json": {

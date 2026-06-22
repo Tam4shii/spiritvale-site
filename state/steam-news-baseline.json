@@ -1,5 +1,7 @@
 {
   "count": 10,
   "latest_version": "0.18.0",
-  "checked_at": "2026-06-05T20:31:49Z"
+  "checked_at": "2026-06-05T20:31:49Z",
+  "run_label": "pre-index",
+  "_run_label_semantics": "wago-pattern: each baseline sync should write the run label that confirmed it, enabling build-vs-build audit. Value 'pre-index' means this baseline predates the _run_label_index (started run#43). Going forward: write actual run label (e.g. 'run#47') here on each check-steam commit."
 }

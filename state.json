@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-22T03:45:03Z",
+  "generated_at": "2026-06-23T01:36:59Z",
   "latest_version": "0.18.0",
-  "last_polled_at": "2026-06-22T03:43:18Z",
+  "last_polled_at": "2026-06-23T01:36:59Z",
   "poll_tz": "UTC",
   "latest": {
     "version": "0.18.0",
@@ -53,10 +53,23 @@
       "auto_suppress": "CRITICAL alerts suppressed by dead-window guard (run#33+). Stale-draft seen_count increments silently during dead window."
     },
     {
+      "filename": "_run_label_index",
+      "semantics": "Maps named run labels to the seen_count committed at end of that run. seen_count \u2260 run number \u2014 the counter is a monotonic polling-cycle count; run labels are session names assigned separately.",
+      "index": {
+        "run#43": 44,
+        "run#44": 45,
+        "run#45": 46,
+        "run#46": 47
+      },
+      "corrections": {
+        "run#45_report_error": "Step 1 log stated 'seen_count incremented 45\u219247 (2 new cycles since run#44)'. Actual: run#44 committed seen_count=45; run#45 committed seen_count=46 \u2014 1 new cycle, not 2. The '\u219247' figure was a report artifact. JSON ground truth is authoritative over prose logs. RESOLVED: run#46 (interstitial automated poll at 2026-06-22T08:31:10Z) committed seen_count=47 \u2014 the '\u219247' figure was not a report artifact, it reflected real post-run#45 state that had not yet been labeled."
+      }
+    },
+    {
       "filename": "announcement-spiritvale-official-date-release.json",
-      "seen_count": 45,
+      "seen_count": 51,
       "first_seen_at": "2026-06-05T20:31:49Z",
-      "last_seen_at": "2026-06-22T03:43:18Z",
+      "last_seen_at": "2026-06-23T01:36:59Z",
       "alerted_at": "2026-06-08T18:07:03Z",
       "hyper_alerted_at": "2026-06-20T00:00:00Z",
       "triage_note": "EXPECTED NOISE \u2014 dead window (2026-06-22 to 2026-07-15). This is an announcement-type draft (not a patch), covering Demo Jun 12 (already launched) + EA Jul 15 (upcoming). CRITICAL re-escalation fired run#32; further CRITICAL alerts suppressed by dead-window guard added run#33. Boss action pending: merge PR#1 (publish /news page) or close (archive). No code action needed until EA launch.",
@@ -113,11 +126,47 @@
           "at": "2026-06-22T03:43:18Z",
           "count": 45,
           "delta": 1
+        },
+        {
+          "at": "2026-06-22T06:09:40Z",
+          "count": 46,
+          "delta": 1
+        },
+        {
+          "at": "2026-06-22T08:31:10Z",
+          "count": 47,
+          "delta": 1
+        },
+        {
+          "at": "2026-06-22T13:19:17Z",
+          "count": 48,
+          "delta": 1
+        },
+        {
+          "at": "2026-06-22T15:45:52Z",
+          "count": 49,
+          "delta": 1,
+          "item_gid": "1834602721187686",
+          "item_title": "SpiritVale Official Date release!"
+        },
+        {
+          "at": "2026-06-22T18:07:04Z",
+          "count": 50,
+          "delta": 1,
+          "item_gid": "1834602721187686",
+          "item_title": "SpiritVale Official Date release!"
+        },
+        {
+          "at": "2026-06-23T01:36:59Z",
+          "count": 51,
+          "delta": 1,
+          "item_gid": "1834602721187686",
+          "item_title": "SpiritVale Official Date release!"
         }
       ]
     }
   ],
-  "pending_drafts_count": 2,
+  "pending_drafts_count": 3,
   "deadline_alerts": [],
   "worst_deadline_severity": "ok",
   "milestones": [
@@ -126,7 +175,7 @@
       "label": "Playtest ended / progress wipe",
       "date": "2026-06-08",
       "phase": "playtest-end",
-      "days_until": -14,
+      "days_until": -15,
       "past": true
     },
     {
@@ -134,7 +183,7 @@
       "label": "Steam Demo launch",
       "date": "2026-06-12",
       "phase": "demo",
-      "days_until": -10,
+      "days_until": -11,
       "past": true
     },
     {
@@ -143,7 +192,7 @@
       "date": "2026-07-15",
       "phase": "early-access",
       "price_usd": 15.0,
-      "days_until": 23,
+      "days_until": 22,
       "past": false
     }
   ],
@@ -154,7 +203,7 @@
       "date": "2026-07-15",
       "phase": "early-access",
       "price_usd": 15.0,
-      "days_until": 23,
+      "days_until": 22,
       "past": false
     }
   ],
@@ -164,7 +213,7 @@
     "date": "2026-07-15",
     "phase": "early-access",
     "price_usd": 15.0,
-    "days_until": 23,
+    "days_until": 22,
     "past": false
   },
   "_links": {

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-14T03:50:31Z",
-  "poll_completed_at": "2026-07-14T03:50:31Z",
+  "generated_at": "2026-07-15T03:51:32Z",
+  "poll_completed_at": "2026-07-15T03:51:32Z",
   "poll_mode": "live",
   "stale": false,
   "hours_since_poll": 0.0,
@@ -13,7 +13,7 @@
   "steam_newsitems_baseline": 10,
   "steam_baseline_match": true,
   "dead_window": {
-    "active": true,
+    "active": false,
     "start": "2026-06-22",
     "end": "2026-07-15",
     "reason": "EA polish prep \u2014 no new patches expected until Early Access launch"

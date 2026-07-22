@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-21T04:09:13Z",
+  "generated_at": "2026-07-22T04:10:31Z",
   "latest_version": "0.18.0",
-  "last_polled_at": "2026-07-21T04:09:13Z",
+  "last_polled_at": "2026-07-22T04:10:31Z",
   "poll_tz": "UTC",
   "latest": {
     "version": "0.18.0",
@@ -69,7 +69,7 @@
       "filename": "announcement-spiritvale-official-date-release.json",
       "seen_count": 51,
       "first_seen_at": "2026-06-05T20:31:49Z",
-      "last_seen_at": "2026-07-21T04:09:13Z",
+      "last_seen_at": "2026-07-22T04:10:31Z",
       "alerted_at": "2026-06-08T18:07:03Z",
       "hyper_alerted_at": "2026-06-20T00:00:00Z",
       "triage_note": "EXPECTED NOISE \u2014 dead window (2026-06-22 to 2026-07-15). This is an announcement-type draft (not a patch), covering Demo Jun 12 (already launched) + EA Jul 15 (upcoming). CRITICAL re-escalation fired run#32; further CRITICAL alerts suppressed by dead-window guard added run#33. Boss action pending: merge PR#1 (publish /news page) or close (archive). No code action needed until EA launch.",
@@ -157,7 +157,7 @@
           "item_title": "SpiritVale Official Date release!"
         },
         {
-          "at": "2026-07-21T04:09:13Z",
+          "at": "2026-07-22T04:10:31Z",
           "count": 51,
           "delta": 1,
           "item_gid": "1834602721187686",
@@ -175,7 +175,7 @@
       "label": "Playtest ended / progress wipe",
       "date": "2026-06-08",
       "phase": "playtest-end",
-      "days_until": -43,
+      "days_until": -44,
       "past": true
     },
     {
@@ -183,7 +183,7 @@
       "label": "Steam Demo launch",
       "date": "2026-06-12",
       "phase": "demo",
-      "days_until": -39,
+      "days_until": -40,
       "past": true
     },
     {
@@ -192,7 +192,7 @@
       "date": "2026-07-15",
       "phase": "early-access",
       "price_usd": 15.0,
-      "days_until": -6,
+      "days_until": -7,
       "past": true
     }
   ],
